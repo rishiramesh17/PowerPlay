@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+opencv-python
+torch
+torchvision
+ultralytics
+easyocr
+moviepy
+ffmpeg-python
+python-multipart
+yt-dlp
