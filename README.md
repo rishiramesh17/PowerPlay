@@ -185,7 +185,7 @@ MIT License - see LICENSE file for details.
 
 - **Documentation**: Check the README files in each folder
 - **Issues**: Create an issue in the repository
-- **Email**: support@powerplay.com
+- **Email**: rishi17ramesh@gmail.com
 
 ## 🔄 Development Workflow
 
