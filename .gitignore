@@ -21,7 +21,7 @@ dist/
 *.mp4
 *.avi
 
-# Env files (Crucial)
+# Env files 
 .env
 .env.*
 !.env.example
