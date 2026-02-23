@@ -68,8 +68,8 @@ Backend will be available at: `http://localhost:5000`
 - **Forms**: React Hook Form + Zod
 
 ### Backend
-- **Framework**: Express.js
-- **Language**: JavaScript/Node.js
+- **Framework**: FastAPI/Express.js
+- **Language**: Python
 - **Database**: PostgreSQL with Prisma ORM
 - **Authentication**: JWT with bcrypt
 - **File Storage**: AWS S3
