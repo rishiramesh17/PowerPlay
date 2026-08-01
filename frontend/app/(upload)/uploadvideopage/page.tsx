@@ -7,8 +7,56 @@ import { ArrowLeft, Target, Play, Download, Eye, Loader2, LinkIcon, Clock, Uploa
 import Link from "next/link"
 import { API_BASE } from "@/lib.gpu/api"
 
+type ProcessingStats = {
+  total_time: number
+  video_duration: number
+  segments_found: number
+}
+
+type JobResultPayload = {
+  highlight_url?: string
+  segments?: [number, number][]
+  processing_stats?: ProcessingStats
+}
+
+type JobStatusPayload = {
+  job_id?: string
+  status?: string
+  stage?: string
+  message?: string
+  progress?: number
+  download_percent?: number
+  output_url?: string
+  error?: string
+  result?: JobResultPayload
+}
+
+const POLL_INTERVAL_MS = 2000
+const POLL_TIMEOUT_MS = 3 * 60 * 60 * 1000
+
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
+const formatStage = (job: JobStatusPayload): string => {
+  const stage = (job.stage || "").toLowerCase()
+  const pct =
+    job.status === "downloading"
+      ? Math.round(job.download_percent ?? 0)
+      : Math.round(job.progress ?? 0)
+
+  if (stage === "queued" || job.status === "queued") return "📥 Job queued. Waiting for worker..."
+  if (stage === "preparing") return `⚙️ Preparing job... (${pct}%)`
+  if (stage === "downloading" || job.status === "downloading") return `🔄 Downloading source video... (${pct}%)`
+  if (stage === "detecting") return `🔍 Detecting player segments... (${pct}%)`
+  if (stage === "tracking") return `🎯 Refining player tracking... (${pct}%)`
+  if (stage === "scoring" || stage === "filtering") return `🧠 Scoring and selecting clips... (${pct}%)`
+  if (stage === "compiling" || job.status === "compiling") return `🎬 Compiling final highlight... (${pct}%)`
+  if (stage === "done" || job.status === "done") return "✅ Highlight is ready."
+  if (stage === "failed" || job.status === "failed") return "❌ Processing failed."
+  return `⏳ ${job.message || "Processing video..."} (${pct}%)`
+}
+
 export default function UploadPage() {
-    const [playerName, setPlayerName] = useState("")
+  const [playerName, setPlayerName] = useState("")
   const [jerseyNumber, setJerseyNumber] = useState("")
   const [videoFile, setVideoFile] = useState<File | null>(null)
   const [youtubeUrl, setYoutubeUrl] = useState("")
@@ -19,15 +67,13 @@ export default function UploadPage() {
   const [message, setMessage] = useState("")
   const [highlightUrl, setHighlightUrl] = useState("")
   const [processingStage, setProcessingStage] = useState("")
+  const [jobId, setJobId] = useState<string | null>(null)
   const [segments, setSegments] = useState<[number, number][]>([])
 
   // NEW: processing mode and stats from backend
   const [processingMode, setProcessingMode] = useState<"fast" | "balanced" | "high_quality">("balanced")
-  const [processingStats, setProcessingStats] = useState<{
-    total_time: number
-    video_duration: number
-    segments_found: number
-  } | null>(null)
+  const [processingStats, setProcessingStats] = useState<ProcessingStats | null>(null)
+  const [devTestMode, setDevTestMode] = useState(false)
 
   const handleVideoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -53,8 +99,10 @@ export default function UploadPage() {
     setSegments([])
     setMessage("")
     setProcessingStage("")
+    setJobId(null)
     setProcessingMode("balanced")
     setProcessingStats(null)
+    setDevTestMode(false)
   }
 
   const startAnalysis = async () => {
@@ -64,8 +112,16 @@ export default function UploadPage() {
     }
 
     setLoading(true)
-    setMessage("⏳ Starting video processing...")
-    setProcessingStage("Uploading video or fetching link...")
+    setMessage("⏳ Submitting job...")
+    setProcessingStage(
+      devTestMode
+        ? "📤 Uploading video or fetching stream metadata [DEV TEST MODE]..."
+        : "📤 Uploading video or fetching stream metadata..."
+    )
+    setHighlightUrl("")
+    setSegments([])
+    setProcessingStats(null)
+    setJobId(null)
 
     try {
       // Map processing mode to backend params
@@ -110,44 +166,83 @@ export default function UploadPage() {
       formData.append("frame_skip", String(frameSkip))
       formData.append("detect_every_n_frames", String(detectEvery))
       formData.append("resize_scale", String(resizeScale))
-
-      setProcessingStage("Detecting player segments...")
+      formData.append("prefer_deepsort", String(processingMode === "high_quality"))
+      formData.append("dev_test_mode", String(devTestMode))
 
       const res = await fetch(`${API_BASE}/process-video`, {
         method: "POST",
         body: formData,
       })
 
-      setProcessingStage("Compiling highlight video...")
-
       if (!res.ok) {
         const errorData = await res.json()
         throw new Error(errorData.message || `HTTP error! Status: ${res.status}`)
       }
 
-      const data = await res.json()
-      console.log("Backend response:", data)
+      const queued: JobStatusPayload = await res.json()
+      if (!queued.job_id) {
+        throw new Error("Backend did not return a job ID.")
+      }
 
-      if (data.status === "success") {
-        const fullUrl = `${API_BASE}${data.highlight_url}`
-        setHighlightUrl(fullUrl)
-        setSegments(data.segments || [])
-        setProcessingStats(data.processing_stats || null)
+      setJobId(queued.job_id)
+      setProcessingStage("📥 Job queued. Waiting for worker...")
+      setMessage(`📥 Job ${queued.job_id.slice(0, 8)} queued. Starting soon...`)
 
-        setMessage(
-          `✅ Processing complete! Found ${data.segments?.length || 0} highlight segments. Your video is ready.`
-        )
-        setProcessingStage("")
-      } else {
-        throw new Error(data.message || "Processing failed")
+      const pollStartTs = Date.now()
+      while (true) {
+        const statusRes = await fetch(`${API_BASE}/jobs/${queued.job_id}`, {
+          method: "GET",
+          cache: "no-store",
+        })
+        if (!statusRes.ok) {
+          throw new Error(`Failed to poll job status (${statusRes.status})`)
+        }
+
+        const job: JobStatusPayload = await statusRes.json()
+        const stageText = formatStage(job)
+        setProcessingStage(stageText)
+
+        const pct =
+          job.status === "downloading"
+            ? Math.round(job.download_percent ?? 0)
+            : Math.round(job.progress ?? 0)
+        setMessage(`⏳ ${job.message || "Processing video"} (${pct}%)`)
+
+        if (job.status === "done") {
+          const result = job.result || {}
+          const outputUrl = job.output_url || result.highlight_url
+          if (!outputUrl) {
+            throw new Error("Job finished but no highlight URL was returned.")
+          }
+
+          const fullUrl = outputUrl.startsWith("http") ? outputUrl : `${API_BASE}${outputUrl}`
+          const finalSegments = Array.isArray(result.segments) ? result.segments : []
+          setHighlightUrl(fullUrl)
+          setSegments(finalSegments)
+          setProcessingStats(result.processing_stats || null)
+          setMessage(`✅ Processing complete! Found ${finalSegments.length} highlight segments. Your video is ready.`)
+          setProcessingStage("")
+          break
+        }
+
+        if (job.status === "failed") {
+          throw new Error(job.error || job.message || "Processing failed")
+        }
+
+        if (Date.now() - pollStartTs > POLL_TIMEOUT_MS) {
+          throw new Error("Processing timed out. Please try a shorter time range.")
+        }
+
+        await sleep(POLL_INTERVAL_MS)
       }
     } catch (error) {
       console.error(error)
       setMessage(`❌ Error: ${error instanceof Error ? error.message : 'Processing failed'}`)
       setProcessingStage("")
+      setJobId(null)
+    } finally {
+      setLoading(false)
     }
-
-    setLoading(false)
   }
 
   return (
@@ -336,6 +431,27 @@ export default function UploadPage() {
                 <p className="text-xs text-white/50 mt-1">Format: hh:mm:ss</p>
               </div>
 
+              {/* ==================== DEV TEST MODE ==================== */}
+              <div className="rounded-lg border-2 border-amber-400/80 bg-amber-500/10 p-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-amber-300 font-semibold tracking-wide">DEV TEST MODE</p>
+                    <p className="text-xs text-amber-100/90 mt-1">
+                      Runs a short, fast validation pass (reduced scan + short window) for quick pipeline checks.
+                    </p>
+                  </div>
+                  <label className="inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={devTestMode}
+                      onChange={(e) => setDevTestMode(e.target.checked)}
+                      className="h-5 w-5 rounded border-amber-300 bg-transparent text-amber-400 focus:ring-amber-300"
+                    />
+                  </label>
+                </div>
+              </div>
+              {/* ======================================================= */}
+
               {/* Action Buttons */}
               <div className="flex justify-between pt-4">
                 {highlightUrl && (
@@ -373,6 +489,9 @@ export default function UploadPage() {
                     <Loader2 className="w-4 h-4 animate-spin text-amber-300" />
                     <p className="text-amber-300 text-sm">{processingStage}</p>
                   </div>
+                  {jobId && (
+                    <p className="text-xs text-amber-200 mt-2">Job ID: {jobId}</p>
+                  )}
                 </div>
               )}
 
