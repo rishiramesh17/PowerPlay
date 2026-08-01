@@ -146,6 +146,57 @@ def compute_color_histogram(image_bgr: np.ndarray, mask: Optional[np.ndarray] = 
     return hist
 
 
+# Relative contribution of each body region to a player's appearance descriptor.
+#
+# Torso dominates because it carries the jersey, which is the strongest identity
+# cue. Gloves are weighted lowest: they are small, frequently motion-blurred or
+# out of frame, and they are cut FROM the "lower" region, so they already
+# double-count that area.
+#
+# These replace an accidental weighting: the descriptor used to be folded
+# together with a running `(combined + next) / 2`, which is not an average. With
+# five regions that gave glove_right ~50% of the signature and the torso ~6%.
+REGION_DESCRIPTOR_WEIGHTS: Dict[str, float] = {
+    "helmet": 0.15,
+    "torso": 0.45,
+    "lower": 0.20,
+    "glove_left": 0.10,
+    "glove_right": 0.10,
+}
+
+
+def combine_region_histograms(regions: Dict[str, np.ndarray]) -> Optional[np.ndarray]:
+    """
+    Fold per-region colour histograms into a single normalised descriptor,
+    weighted by REGION_DESCRIPTOR_WEIGHTS.
+
+    Weights are renormalised over the regions actually present, so a partially
+    visible player still yields a comparable descriptor. Returns None when no
+    region has usable pixels.
+    """
+    accum: Optional[np.ndarray] = None
+    total_weight = 0.0
+    for name, region in regions.items():
+        if region is None or region.size == 0:
+            continue
+        weight = REGION_DESCRIPTOR_WEIGHTS.get(name, 0.0)
+        if weight <= 0.0:
+            continue
+        hist = compute_color_histogram(region)
+        contribution = hist.astype(np.float32) * weight
+        accum = contribution if accum is None else accum + contribution
+        total_weight += weight
+
+    if accum is None or total_weight <= 0.0:
+        return None
+
+    combined = accum / total_weight
+    norm = float(np.linalg.norm(combined))
+    if norm > 0.0:
+        combined = combined / norm
+    return combined.astype(np.float32)
+
+
 def compute_scene_signature(frame_bgr: np.ndarray) -> np.ndarray:
     if frame_bgr is None or frame_bgr.size == 0:
         return np.zeros((64,), dtype=np.float32)
@@ -1073,15 +1124,7 @@ def detect_player_in_video(
                 regions = extract_regions_from_bbox(original_frame, (x1_i, y1_i, x2_i, y2_i))
 
                 # Build combined hist
-                hist_combined = None
-                for _, region in regions.items():
-                    if region is None or region.size == 0:
-                        continue
-                    hst = compute_color_histogram(region)
-                    if hist_combined is None:
-                        hist_combined = hst.copy()
-                    else:
-                        hist_combined = (hist_combined + hst) / 2.0
+                hist_combined = combine_region_histograms(regions)
 
                 # ---------------- TEAM MODE ----------------
                 if team_mode:
