@@ -98,6 +98,37 @@ def cleanup_related_upload_files(output_path: Path):
 # ----------------------------------------------------
 # YouTube download (yt-dlp) with coarse progress
 # ----------------------------------------------------
+def _resolve_downloaded_video_path(output_path: Path) -> Optional[Path]:
+    """
+    Resolve the final downloaded media path for a given output stem.
+    yt-dlp may emit different container extensions depending on source/merge.
+    """
+    if output_path.exists() and output_path.is_file():
+        return output_path
+
+    candidates = []
+    for p in output_path.parent.glob(output_path.stem + ".*"):
+        if not p.is_file():
+            continue
+        suffix = p.suffix.lower()
+        if suffix in {".part", ".ytdl", ".tmp", ".temp", ".frag", ".json", ".txt"}:
+            continue
+        candidates.append(p)
+
+    if not candidates:
+        return None
+
+    def rank(path: Path):
+        try:
+            size = path.stat().st_size
+        except Exception:
+            size = 0
+        return (1 if path.suffix.lower() == ".mp4" else 0, size)
+
+    candidates.sort(key=rank, reverse=True)
+    return candidates[0]
+
+
 def download_youtube_video(
     url: str,
     output_path: Path,
@@ -105,7 +136,10 @@ def download_youtube_video(
     end_sec: Optional[float] = None,
     timeout: int = 7200,
     progress_callback: Optional[Callable[[int, str], None]] = None,
-) -> None:
+    max_height: Optional[int] = None,
+    allow_full_fallback: bool = True,
+    prefer_video_only: bool = False,
+) -> Path:
     """
     Download YouTube video.
     If start_sec/end_sec provided, tries yt-dlp download_sections first.
@@ -121,16 +155,23 @@ def download_youtube_video(
         s = int(sec % 60)
         return f"{h:02d}:{m:02d}:{s:02d}"
 
-    max_h = int(os.getenv("PP_YTDLP_MAX_HEIGHT", "720"))
+    max_h = int(max_height if (max_height and max_height > 0) else os.getenv("PP_YTDLP_MAX_HEIGHT", "720"))
     concurrent_frags = int(os.getenv("PP_YTDLP_CONCURRENT_FRAGS", "8"))
 
-    # Try multiple format selectors because some videos do NOT offer your preferred combo.
-    # Order: prefer <=max_h, then any best, then absolute fallback.
-    FORMAT_CANDIDATES = [
-        f"bv*[height<={max_h}]+ba/b[height<={max_h}]/b",
-        "bv*+ba/b",
-        "b",
-    ]
+    # Try multiple format selectors because some videos do NOT offer every combo.
+    # In analysis-only mode we can skip audio to reduce download size/time.
+    if prefer_video_only:
+        FORMAT_CANDIDATES = [
+            f"bv*[height<={max_h}]/bestvideo*[height<={max_h}]",
+            "bv*/bestvideo*",
+            "b",
+        ]
+    else:
+        FORMAT_CANDIDATES = [
+            f"bv*[height<={max_h}]+ba/b[height<={max_h}]/b",
+            "bv*+ba/b",
+            "b",
+        ]
 
     # progress hook
     def progress_hook(d):
@@ -165,6 +206,26 @@ def download_youtube_video(
         "concurrent_fragment_downloads": concurrent_frags,
         "http_chunk_size": 10 * 1024 * 1024,  # 10MB
     }
+    if prefer_video_only:
+        ydl_opts.pop("merge_output_format", None)
+
+    cookiefile = os.getenv("PP_YTDLP_COOKIES_FILE", "").strip()
+    if cookiefile:
+        cookie_path = Path(cookiefile)
+        if cookie_path.exists():
+            ydl_opts["cookiefile"] = str(cookie_path)
+        else:
+            logger.warning(f"⚠️ PP_YTDLP_COOKIES_FILE not found: {cookie_path}")
+
+    user_agent = os.getenv("PP_YTDLP_USER_AGENT", "").strip()
+    referer = os.getenv("PP_YTDLP_REFERER", "").strip()
+    if user_agent or referer:
+        headers = {}
+        if user_agent:
+            headers["User-Agent"] = user_agent
+        if referer:
+            headers["Referer"] = referer
+        ydl_opts["http_headers"] = headers
 
     # Define _attempt ONCE, at function scope (always available)
     def _attempt(opts: dict, label: str):
@@ -173,7 +234,10 @@ def download_youtube_video(
             try:
                 opts2 = dict(opts)
                 opts2["format"] = fmt
-                logger.info(f"▶️ yt-dlp attempt: {label} | format='{fmt}'")
+                logger.info(
+                    f"▶️ yt-dlp attempt: {label} | format='{fmt}' "
+                    f"| video_only={prefer_video_only}"
+                )
                 with yt_dlp.YoutubeDL(opts2) as ydl:
                     ydl.download([url])
                 return
@@ -216,20 +280,25 @@ def download_youtube_video(
             logger.warning(f"⚠️ ffmpeg segment downloader failed: {e2}")
 
             # ---- Attempt 3: FULL download fallback ----
-            fallback_opts = dict(ydl_opts)
-            fallback_opts.pop("download_sections", None)
-            try:
-                _attempt(fallback_opts, "FULL download fallback (slow)")
-            except Exception as e3:
-                logger.error(f"❌ YouTube download failed: {e3}")
-                raise RuntimeError(f"YouTube download failed: {e3}")
+            if allow_full_fallback:
+                fallback_opts = dict(ydl_opts)
+                fallback_opts.pop("download_sections", None)
+                try:
+                    _attempt(fallback_opts, "FULL download fallback (slow)")
+                except Exception as e3:
+                    logger.error(f"❌ YouTube download failed: {e3}")
+                    raise RuntimeError(f"YouTube download failed: {e3}")
+            else:
+                raise RuntimeError(
+                    f"YouTube section download failed without full fallback: {e2}"
+                )
 
-    # Final sanity check: output could be .mp4 or another ext before merge
-    produced = list(output_path.parent.glob(output_path.stem + ".*"))
-    if not produced:
+    final_path = _resolve_downloaded_video_path(output_path)
+    if final_path is None:
         raise RuntimeError("Downloaded file is missing or corrupted")
 
-    logger.info("✅ YouTube download completed successfully")
+    logger.info(f"✅ YouTube download completed successfully: {final_path.name}")
+    return final_path
 
 def trim_with_ffmpeg(input_path: Path, start_sec: Optional[float], end_sec: Optional[float]) -> Path:
     """
@@ -268,6 +337,8 @@ async def enqueue_processing_job(
     resize_scale: float = Form(DEFAULT_RESIZE_SCALE),
     yolo_model: str = Form(DEFAULT_YOLO_MODEL),
     save_dataset: bool = Form(False),
+    prefer_deepsort: bool = Form(False),
+    dev_test_mode: bool = Form(False),
 ):
     try:
         player_data = json.loads(playerData)
@@ -303,7 +374,15 @@ async def enqueue_processing_job(
         "resize_scale": resize_scale,
         "yolo_model": yolo_model,
         "save_dataset": bool(save_dataset),
+        "prefer_deepsort": bool(prefer_deepsort),
+        # ==================== DEV TEST MODE ====================
+        # Fast validation mode for short turnaround testing.
+        "dev_test_mode": bool(dev_test_mode),
+        # =======================================================
     }
+
+    if bool(dev_test_mode):
+        logger.info("🧪 DEV TEST MODE enabled for this job")
 
     if video:
         filename = f"upload_{uuid.uuid4()}_{video.filename}"
@@ -346,6 +425,8 @@ async def create_job_endpoint(
     resize_scale: float = Form(DEFAULT_RESIZE_SCALE),
     yolo_model: str = Form(DEFAULT_YOLO_MODEL),
     save_dataset: bool = Form(False),
+    prefer_deepsort: bool = Form(False),
+    dev_test_mode: bool = Form(False),
 ):
     return await enqueue_processing_job(
         video=video,
@@ -360,6 +441,8 @@ async def create_job_endpoint(
         resize_scale=resize_scale,
         yolo_model=yolo_model,
         save_dataset=save_dataset,
+        prefer_deepsort=prefer_deepsort,
+        dev_test_mode=dev_test_mode,
     )
 
 
@@ -377,6 +460,8 @@ async def process_video(
     resize_scale: float = Form(DEFAULT_RESIZE_SCALE),
     yolo_model: str = Form(DEFAULT_YOLO_MODEL),
     save_dataset: bool = Form(False),
+    prefer_deepsort: bool = Form(False),
+    dev_test_mode: bool = Form(False),
 ):
     """
     Backwards-compatible entrypoint that now enqueues a background job.
@@ -394,6 +479,8 @@ async def process_video(
         resize_scale=resize_scale,
         yolo_model=yolo_model,
         save_dataset=save_dataset,
+        prefer_deepsort=prefer_deepsort,
+        dev_test_mode=dev_test_mode,
     )
     resp["message"] = f"Job queued. Poll /jobs/{resp['job_id']} for status."
     return resp
@@ -429,7 +516,7 @@ async def practice_mode(
             save_upload_file(video, temp_path)
         elif youtube_url:
             temp_path = UPLOAD_DIR / f"practice_{uuid.uuid4()}.mp4"
-            download_youtube_video(youtube_url, temp_path)
+            temp_path = download_youtube_video(youtube_url, temp_path)
         else:
             return {"status": "error", "message": "No video source provided"}
 

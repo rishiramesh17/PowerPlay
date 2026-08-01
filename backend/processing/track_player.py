@@ -1,4 +1,5 @@
 # processing/track_player.py
+import os
 import logging
 from typing import List, Tuple, Dict, Any, Optional
 from pathlib import Path
@@ -175,19 +176,50 @@ def track_player(
     fps_override: Optional[float] = None,
 ) -> List[Tuple[float, float]]:
     """
-    TEMPORARY SIMPLE MODE (CPU-friendly):
-      - Ignore all tracking (DeepSORT / CSRT).
-      - Just return the detection-based initial_segments.
-
-    This removes the second heavy YOLO pass and long per-seed tracking.
+    Default behavior keeps runtime low by returning detection-derived segments.
+    Optional DeepSORT refinement can be enabled via `prefer_deepsort`.
     """
     if detection_payload is None:
         logger.warning("No detection payload provided")
         return []
 
     initial_segments = detection_payload.get("initial_segments", []) or []
-    logger.info(
-        f"[track_player] Tracking disabled; returning {len(initial_segments)} "
-        f"detection-based segments."
-    )
+    if not prefer_deepsort:
+        logger.info(
+            f"[track_player] DeepSORT disabled; returning {len(initial_segments)} "
+            f"detection-based segments."
+        )
+        return initial_segments
+
+    if track_player_with_deepsort is None:
+        logger.warning("[track_player] DeepSORT module unavailable; falling back to detection segments.")
+        return initial_segments
+
+    duration = float(detection_payload.get("duration") or 0.0)
+    max_duration_for_deepsort = float(os.getenv("PP_DEEPSORT_MAX_DURATION_SEC", "5400"))
+    if duration > max_duration_for_deepsort:
+        logger.warning(
+            "[track_player] DeepSORT skipped for long video "
+            f"({duration:.1f}s > {max_duration_for_deepsort:.1f}s)."
+        )
+        return initial_segments
+
+    try:
+        logger.info("[track_player] Running DeepSORT refinement pass.")
+        ds_segments = track_player_with_deepsort(
+            video_path=video_path,
+            detection_payload=detection_payload,
+            action=detection_payload.get("action", "batting"),
+            detection_frame_skip=max(6, int(frame_skip)),
+            resize_scale=max(0.5, min(1.0, float(resize_scale))),
+        )
+        if ds_segments:
+            logger.info(
+                f"[track_player] DeepSORT refinement produced {len(ds_segments)} segments "
+                f"(initial={len(initial_segments)})."
+            )
+            return ds_segments
+    except Exception as e:
+        logger.warning(f"[track_player] DeepSORT refinement failed; using initial segments. Error: {e}")
+
     return initial_segments

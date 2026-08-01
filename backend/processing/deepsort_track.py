@@ -119,9 +119,21 @@ def track_player_with_deepsort(
 
     # Step 2: walk the video, run YOLO + DeepSORT on sampled frames
     frame_idx = 0
+    processed_samples = 0
     last_logged_percent = -1
 
     while cap.isOpened():
+        if processed_samples > 0 and detection_frame_skip > 1:
+            to_skip = detection_frame_skip - 1
+            skipped = 0
+            for _ in range(to_skip):
+                if not cap.grab():
+                    break
+                skipped += 1
+                frame_idx += 1
+            if skipped < to_skip:
+                break
+
         ret, frame = cap.read()
         if not ret or frame is None:
             break
@@ -129,10 +141,9 @@ def track_player_with_deepsort(
         if frame_idx >= video_total_frames:
             break
 
-        # Sparse sampling for speed
-        if frame_idx % detection_frame_skip != 0:
-            frame_idx += 1
-            continue
+        current_frame_idx = frame_idx
+        frame_idx += 1
+        processed_samples += 1
 
         # Prepare frame
         original_frame = frame
@@ -147,9 +158,9 @@ def track_player_with_deepsort(
 
         # YOLO: detect persons only
         try:
-            results = yolo(proc_frame, classes=[0])  # 0 = person in COCO
+            results = yolo(proc_frame, classes=[0], verbose=False)  # 0 = person in COCO
         except Exception as e:
-            logger.warning(f"[DeepSORT] YOLO inference failed at frame {frame_idx}: {e}")
+            logger.warning(f"[DeepSORT] YOLO inference failed at frame {current_frame_idx}: {e}")
             results = []
 
         detections = []
@@ -199,17 +210,15 @@ def track_player_with_deepsort(
                     bx1, by1 = int(lx), int(ty)
                     bx2, by2 = int(lx + w), int(ty + h)
 
-                time_s = frame_idx / video_fps if video_fps > 0 else 0.0
+                time_s = current_frame_idx / video_fps if video_fps > 0 else 0.0
                 track_history[track_id].append((time_s, (bx1, by1, bx2, by2)))
 
         # progress logging
         if video_total_frames > 0:
-            percent_done = int(100 * frame_idx / video_total_frames)
+            percent_done = int(100 * current_frame_idx / video_total_frames)
             if percent_done >= last_logged_percent + 5:
                 logger.info(f"[DeepSORT] Progress: {percent_done}% frames processed")
                 last_logged_percent = percent_done
-
-        frame_idx += 1
 
     cap.release()
     logger.info(f"[DeepSORT] Tracking pass finished. Tracks found: {len(track_history)}")
