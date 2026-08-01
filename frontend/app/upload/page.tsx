@@ -6,9 +6,19 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { ArrowLeft, Upload, Youtube, LinkIcon, Clock, Target, Loader2, Eye, Download } from "lucide-react"
 
+// Emitted by the worker alongside the finished highlight. The backend sends a
+// larger object (compile_mode, runtime_class, scene_cuts, per-stage timings);
+// these are the three fields worth showing the user today.
+type ProcessingStats = {
+  total_time?: number
+  video_duration?: number
+  segments_found?: number
+}
+
 type JobResultPayload = {
   highlight_url?: string
   segments?: [number, number][]
+  processing_stats?: ProcessingStats
 }
 
 type JobStatusPayload = {
@@ -66,6 +76,7 @@ export default function UploadPage() {
   const [jobId, setJobId] = useState<string | null>(null)
   const [scope, setScope] = useState<"player" | "team">("player")
   const [segments, setSegments] = useState<[number, number][]>([])
+  const [processingStats, setProcessingStats] = useState<ProcessingStats | null>(null)
   const [devTestMode, setDevTestMode] = useState(false)
   const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:8000"
 
@@ -94,6 +105,7 @@ export default function UploadPage() {
     setEndTime("")
     setHighlightUrl("")
     setSegments([])
+    setProcessingStats(null)
     setMessage("")
     setProcessingStage("")
     setJobId(null)
@@ -115,6 +127,7 @@ export default function UploadPage() {
     setMessage("⏳ Submitting job...")
     setHighlightUrl("")
     setSegments([])
+    setProcessingStats(null)
     setJobId(null)
     
     if (youtubeUrl) {
@@ -202,6 +215,7 @@ export default function UploadPage() {
           const finalSegments = Array.isArray(result.segments) ? result.segments : []
           setHighlightUrl(fullUrl)
           setSegments(finalSegments)
+          setProcessingStats(result.processing_stats ?? null)
           setMessage(`✅ Processing complete! Found ${finalSegments.length} highlight segments. Your video is ready.`)
           setProcessingStage("")
           break
@@ -590,6 +604,29 @@ export default function UploadPage() {
                       Download
                     </Button>
                   </div>
+
+                  {/* Processing Stats */}
+                  {processingStats && (
+                    <div className="mt-4 p-4 bg-powerplay-card border border-powerplay rounded-lg text-sm text-powerplay-secondary space-y-1">
+                      <h4 className="text-powerplay-primary font-medium mb-2">Run Summary:</h4>
+                      {processingStats.total_time !== undefined && (
+                        <p>
+                          <span className="font-medium">Processing time:</span> {processingStats.total_time}s
+                        </p>
+                      )}
+                      {processingStats.video_duration !== undefined && (
+                        <p>
+                          <span className="font-medium">Video duration processed:</span>{" "}
+                          {processingStats.video_duration}s
+                        </p>
+                      )}
+                      {processingStats.segments_found !== undefined && (
+                        <p>
+                          <span className="font-medium">Segments found:</span> {processingStats.segments_found}
+                        </p>
+                      )}
+                    </div>
+                  )}
 
                   {/* Segments Info */}
                   {segments.length > 0 && (
