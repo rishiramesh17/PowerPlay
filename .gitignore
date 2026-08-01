@@ -20,6 +20,22 @@ dist/
 *.weights
 *.mp4
 *.avi
+.pytest_cache/
+
+# Job database (runtime state, never commit)
+*.db
+*.sqlite
+*.sqlite3
+
+# Pipeline runtime artifacts (source media, intermediates, rendered highlights)
+backend/uploads/
+backend/downloads/
+backend/outputs/
+backend/models/
+
+# Benchmark output — keep the manifests, drop the generated result files
+backend/reports/*.json
+backend/reports/results_*.jsonl
 
 # Env files (Crucial)
 .env
