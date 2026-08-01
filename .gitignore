@@ -12,6 +12,7 @@ out/
 build/
 dist/
 .vercel
+*.tsbuildinfo
 
 # Python & AI
 **/__pycache__/
