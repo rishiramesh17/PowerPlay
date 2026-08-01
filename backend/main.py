@@ -6,7 +6,7 @@ import uuid
 import logging
 import inspect
 from pathlib import Path
-from typing import Optional, Dict, Any, Callable
+from typing import Optional, Dict, Any, Callable, NamedTuple
 
 from fastapi import FastAPI, File, Form, UploadFile, HTTPException
 from fastapi.staticfiles import StaticFiles
@@ -129,6 +129,22 @@ def _resolve_downloaded_video_path(output_path: Path) -> Optional[Path]:
     return candidates[0]
 
 
+class YouTubeDownload(NamedTuple):
+    """
+    Result of a YouTube download.
+
+    `section_applied` is True when yt-dlp cut the requested [start, end] range
+    server-side, meaning the file on disk already begins at `start_sec`.
+    Callers MUST NOT trim again in that case — a second absolute-time trim
+    would cut the wrong window. It is False when the range was requested but
+    the download fell back to fetching the full video, which still needs a
+    local trim.
+    """
+
+    path: Path
+    section_applied: bool
+
+
 def download_youtube_video(
     url: str,
     output_path: Path,
@@ -139,7 +155,7 @@ def download_youtube_video(
     max_height: Optional[int] = None,
     allow_full_fallback: bool = True,
     prefer_video_only: bool = False,
-) -> Path:
+) -> YouTubeDownload:
     """
     Download YouTube video.
     If start_sec/end_sec provided, tries yt-dlp download_sections first.
@@ -247,10 +263,14 @@ def download_youtube_video(
         raise last_err
 
     # If start/end provided, attempt section download
-    if start_sec is not None or end_sec is not None:
+    section_requested = start_sec is not None or end_sec is not None
+    section_applied = False
+    if section_requested:
         try:
             start_str = _format_section(start_sec or 0.0)
-            end_str = _format_section(end_sec or 0.0)
+            # An open-ended range must be "inf", not 00:00:00 — the latter is an
+            # empty span that makes yt-dlp fail into the full-download fallback.
+            end_str = _format_section(end_sec) if end_sec is not None else "inf"
             ydl_opts["download_sections"] = [f"*{start_str}-{end_str}"]
             logger.info(f"🔖 Requesting yt-dlp to download section {start_str} → {end_str} (if supported)")
         except Exception:
@@ -259,6 +279,7 @@ def download_youtube_video(
     # ---- Attempt 1: download_sections (if set) ----
     try:
         _attempt(ydl_opts, "download_sections")
+        section_applied = section_requested
     except Exception as e:
         logger.warning(f"⚠️ yt-dlp section download failed: {e}")
 
@@ -276,6 +297,7 @@ def download_youtube_video(
             opts2["external_downloader"] = "ffmpeg"
             opts2["external_downloader_args"] = ["-nostdin"]
             _attempt(opts2, "external_downloader=ffmpeg segment")
+            section_applied = section_requested
         except Exception as e2:
             logger.warning(f"⚠️ ffmpeg segment downloader failed: {e2}")
 
@@ -285,6 +307,8 @@ def download_youtube_video(
                 fallback_opts.pop("download_sections", None)
                 try:
                     _attempt(fallback_opts, "FULL download fallback (slow)")
+                    # Full video on disk: the caller still owes us a local trim.
+                    section_applied = False
                 except Exception as e3:
                     logger.error(f"❌ YouTube download failed: {e3}")
                     raise RuntimeError(f"YouTube download failed: {e3}")
@@ -297,26 +321,42 @@ def download_youtube_video(
     if final_path is None:
         raise RuntimeError("Downloaded file is missing or corrupted")
 
-    logger.info(f"✅ YouTube download completed successfully: {final_path.name}")
-    return final_path
+    logger.info(
+        f"✅ YouTube download completed successfully: {final_path.name} "
+        f"(section_applied={section_applied})"
+    )
+    return YouTubeDownload(final_path, section_applied)
 
 def trim_with_ffmpeg(input_path: Path, start_sec: Optional[float], end_sec: Optional[float]) -> Path:
     """
     Trim video using ffmpeg and return trimmed path. If no trimming requested, returns original path.
+
+    start_sec/end_sec are absolute offsets into `input_path`. Either may be
+    omitted: start-only trims to the end of the video, end-only trims from 0.
     """
     if (start_sec is None and end_sec is None):
         return input_path
+    if end_sec is not None and end_sec <= (start_sec or 0.0):
+        raise RuntimeError(
+            f"Invalid trim range: end ({end_sec}) must be after start ({start_sec or 0.0})"
+        )
     out = input_path.parent / f"{input_path.stem}_trimmed.mp4"
-    cmd = ["ffmpeg", "-y", "-hide_banner", "-loglevel", "error", "-i", str(input_path)]
+    cmd = ["ffmpeg", "-y", "-hide_banner", "-loglevel", "error"]
     if start_sec is not None:
-        # seek before input to be faster
+        # -ss must come BEFORE -i to get input seeking: ffmpeg jumps straight to
+        # the nearest keyframe instead of decoding every frame from 0. On a
+        # multi-hour source that is the difference between seconds and minutes.
         cmd += ["-ss", str(start_sec)]
-    if end_sec is not None and start_sec is not None:
-        duration = end_sec - start_sec
-        if duration <= 0:
-            raise RuntimeError("Invalid trim range")
+    cmd += ["-i", str(input_path)]
+    if end_sec is not None:
+        # -t is measured from the seek point, so it is a span, not an endpoint.
+        # Previously this was skipped whenever start_sec was None, which meant
+        # an end time on its own silently produced an untrimmed video.
+        duration = end_sec - (start_sec or 0.0)
         cmd += ["-t", str(duration)]
-    cmd += ["-c", "copy", str(out)]
+    # Stream copy starts at a keyframe, which can leave negative leading
+    # timestamps; normalising them avoids a frozen first frame in the output.
+    cmd += ["-c", "copy", "-avoid_negative_ts", "make_zero", str(out)]
     logger.info(f"⏱️ Trimming video to range {start_sec} - {end_sec} seconds (ffmpeg copy mode)")
     subprocess.run(cmd, check=True)
     return out
@@ -516,7 +556,7 @@ async def practice_mode(
             save_upload_file(video, temp_path)
         elif youtube_url:
             temp_path = UPLOAD_DIR / f"practice_{uuid.uuid4()}.mp4"
-            temp_path = download_youtube_video(youtube_url, temp_path)
+            temp_path = download_youtube_video(youtube_url, temp_path).path
         else:
             return {"status": "error", "message": "No video source provided"}
 

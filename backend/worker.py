@@ -218,7 +218,7 @@ def _compile_youtube_sections(
                 max_height=section_max_height,
                 allow_full_fallback=False,
                 prefer_video_only=False,
-            )
+            ).path
             if clip_path and clip_path.exists():
                 return idx, clip_path
             return idx, None
@@ -408,6 +408,9 @@ def process_job(job: Dict[str, Any], store: JobStore):
 
         # 1) Acquire video
         t0 = time.perf_counter()
+        # True once the acquired file already covers only [start_sec, end_sec],
+        # so step 2 knows not to apply the same cut a second time.
+        range_already_cut = False
         if source == "upload":
             temp_path = Path(payload["video_path"])
             if not temp_path.exists():
@@ -456,7 +459,7 @@ def process_job(job: Dict[str, Any], store: JobStore):
                     progress=min(25.0, float(percent) * 0.25),
                 )
 
-            temp_path = download_youtube_video(
+            download = download_youtube_video(
                 youtube_url,
                 temp_path,
                 start_sec=start_sec,
@@ -465,6 +468,8 @@ def process_job(job: Dict[str, Any], store: JobStore):
                 max_height=analysis_max_height,
                 prefer_video_only=analysis_video_only,
             )
+            temp_path = download.path
+            range_already_cut = download.section_applied
             if analysis_max_height:
                 logger.info(f"⬇️ Analysis download max height forced to {analysis_max_height}p")
             if analysis_video_only:
@@ -474,9 +479,27 @@ def process_job(job: Dict[str, Any], store: JobStore):
             raise RuntimeError("Invalid job source")
         timings["acquire_sec"] = round(time.perf_counter() - t0, 2)
 
-        # 2) Trim if requested
+        # 2) Trim if requested.
+        #
+        # yt-dlp may already have cut the range server-side via download_sections,
+        # in which case the file on disk starts at start_sec. Trimming it again
+        # with the same absolute times would seek start_sec *into the already-cut
+        # clip* and return the wrong window entirely. Only trim when the acquired
+        # file is still full-length.
+        #
+        # Either way the analysed file begins at start_sec in source time, which
+        # is what source_offset_sec assumes when mapping segments back for
+        # section-based compilation.
         t0 = time.perf_counter()
-        trimmed_path = trim_with_ffmpeg(temp_path, start_sec, end_sec) if (start_sec or end_sec) else temp_path
+        needs_trim = (start_sec is not None or end_sec is not None) and not range_already_cut
+        if needs_trim:
+            trimmed_path = trim_with_ffmpeg(temp_path, start_sec, end_sec)
+        else:
+            if range_already_cut:
+                logger.info(
+                    f"⏱️ Source already cut to {start_sec}-{end_sec} at download time; skipping redundant trim."
+                )
+            trimmed_path = temp_path
         timings["trim_sec"] = round(time.perf_counter() - t0, 2)
 
         video_dur = get_video_duration(str(trimmed_path))
