@@ -710,7 +710,7 @@ def process_job(job: Dict[str, Any], store: JobStore):
                 scored_segments,
                 min_score=0.55,
                 max_segments=10,
-                max_total_duration=120.0,
+                max_total_duration=max_total_out,
             )
 
             if filtered_segments:
@@ -720,7 +720,7 @@ def process_job(job: Dict[str, Any], store: JobStore):
                     action=action,
                     duration=video_dur,
                     max_segments=max(6, min(max_segments_out, 12)),
-                    max_total_duration=min(max_total_out, 120.0),
+                    max_total_duration=max_total_out,
                 )
             if not filtered_segments:
                 filtered_segments = select_best_segments(
@@ -776,12 +776,16 @@ def process_job(job: Dict[str, Any], store: JobStore):
                     str(trimmed_path),
                     filtered_segments,
                     show_progress=False,
+                    max_total_duration=max_total_out,
+                    output_name=f"highlight_{job_id}",
                 )
         else:
             highlight_path = compile_highlight(
                 str(trimmed_path),
                 filtered_segments,
                 show_progress=False,
+                max_total_duration=max_total_out,
+                output_name=f"highlight_{job_id}",
             )
         timings["compile_sec"] = round(time.perf_counter() - t0, 2)
         timings["total_sec"] = round(time.perf_counter() - pipeline_start, 2)
