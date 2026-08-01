@@ -1,17 +1,3 @@
-"""
-Minimal training script for a highlight classifier using the clips captured via
-capture_segments_to_dataset. Expects a labels.jsonl file with labeled rows
-under data/highlight_dataset/, each row:
-  {"clip_path": ".../clip.mp4", "label": "boundary", "start": ..., "end": ..., "meta": {...}}
-
-Usage (example):
-  python backend/processing/ml/train_highlight_model.py \
-    --data-root data/highlight_dataset \
-    --epochs 5 \
-    --batch-size 8 \
-    --num-frames 8
-"""
-
 import argparse
 import json
 import logging

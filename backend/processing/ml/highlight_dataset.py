@@ -29,7 +29,7 @@ def _ffmpeg_extract_clip(video_path: str, start: float, end: float, out_path: Pa
         "-ss", f"{start:.3f}",
         "-i", video_path,
         "-t", f"{duration:.3f}",
-        "-vf", "scale=-2:360",      # keep it small (height 360)
+        "-vf", "scale=-2:360",      
         "-c:v", "libx264",
         "-preset", "veryfast",
         "-crf", "28",
