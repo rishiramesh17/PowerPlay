@@ -29,13 +29,31 @@ def get_video_duration(video_path: str) -> float:
         print(f"Could not get video duration for {video_path}: {e}")
         return 0.0
 
-def save_upload_file(upload_file, destination: Path) -> Path:
+def save_upload_file(upload_file, destination: Path, max_bytes: int = 0) -> Path:
     """
     Save UploadFile (from FastAPI) to disk at destination.
     Returns the saved file path.
+
+    `max_bytes` (when > 0) caps the write and raises ValueError once exceeded, so
+    an oversized upload cannot quietly fill the disk. The partial file is removed.
     """
-    with destination.open("wb") as buffer:
-        shutil.copyfileobj(upload_file.file, buffer)
+    written = 0
+    chunk_size = 1024 * 1024
+    try:
+        with destination.open("wb") as buffer:
+            while True:
+                chunk = upload_file.file.read(chunk_size)
+                if not chunk:
+                    break
+                written += len(chunk)
+                if max_bytes and written > max_bytes:
+                    raise ValueError(
+                        f"Upload exceeds the maximum allowed size of {max_bytes} bytes"
+                    )
+                buffer.write(chunk)
+    except Exception:
+        destination.unlink(missing_ok=True)
+        raise
     return destination
 
 def merge_times_to_segments(times: List[float], gap: float, pre: float, post: float) -> List[Tuple[float, float]]:

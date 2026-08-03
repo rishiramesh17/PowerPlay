@@ -4,7 +4,7 @@ import math
 import uuid
 import logging
 from pathlib import Path
-from typing import List, Tuple, Dict, Optional, Any
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
 import cv2
 import numpy as np
@@ -28,28 +28,65 @@ DEFAULT_PROGRESS_STEP = 1  # percent step for progress logging
 
 
 # -------------------- Utilities -------------------- #
+# Keys are stored normalized (see _normalize_color_name): lowercase, single
+# spaced, with "gray" folded to "grey".
 COLOR_NAME_MAP = {
     "white": (255, 255, 255),
+    "off white": (245, 245, 240),
+    "cream": (255, 253, 208),
+    "beige": (245, 245, 220),
+    "tan": (210, 180, 140),
     "black": (0, 0, 0),
     "red": (255, 0, 0),
+    "crimson": (220, 20, 60),
     "blue": (0, 0, 255),
+    "light blue": (137, 207, 240),
+    "sky blue": (135, 206, 235),
+    "royal blue": (65, 105, 225),
+    "dark blue": (0, 0, 139),
+    "navy": (0, 0, 128),
+    "navy blue": (0, 0, 128),
+    "teal": (0, 128, 128),
+    "cyan": (0, 255, 255),
+    "turquoise": (64, 224, 208),
     "green": (0, 255, 0),
+    "light green": (144, 238, 144),
+    "dark green": (0, 100, 0),
+    "lime": (50, 205, 50),
+    "olive": (128, 128, 0),
     "yellow": (255, 255, 0),
+    "gold": (255, 215, 0),
     "orange": (255, 165, 0),
     "pink": (255, 192, 203),
+    "magenta": (255, 0, 255),
     "purple": (128, 0, 128),
+    "violet": (138, 43, 226),
+    "indigo": (75, 0, 130),
     "grey": (128, 128, 128),
-    "gray": (128, 128, 128),
-    "navy": (0, 0, 128),
+    "light grey": (211, 211, 211),
+    "dark grey": (105, 105, 105),
+    "silver": (192, 192, 192),
     "maroon": (128, 0, 0),
     "brown": (165, 42, 42),
 }
 
 
+def _normalize_color_name(s: str) -> str:
+    """Fold separators and spelling variants so 'Sky-Blue' and 'sky blue' agree."""
+    s = s.strip().lower().replace("-", " ").replace("_", " ")
+    s = " ".join(s.split())
+    return s.replace("gray", "grey")
+
+
 def parse_color_input(s: Optional[str]) -> Optional[tuple]:
+    """
+    Parse a color into BGR. Returns None both when nothing was supplied and when
+    the value could not be understood; callers that need to tell those apart
+    should run `describe_color_hint_problems` first.
+    """
     if not s:
         return None
-    s = s.strip().lower()
+    s = _normalize_color_name(s)
     if s in COLOR_NAME_MAP:
         r, g, b = COLOR_NAME_MAP[s]
         # convert to BGR (OpenCV)
@@ -72,10 +109,36 @@ def parse_color_input(s: Optional[str]) -> Optional[tuple]:
         if len(parts) == 3:
             try:
                 r, g, b = map(int, parts)
-                return (b, g, r)
             except Exception:
                 return None
+            if all(0 <= c <= 255 for c in (r, g, b)):
+                return (b, g, r)
+            return None
     return None
+
+
+def describe_color_hint_problems(color_hints: Optional[Dict[str, str]]) -> List[str]:
+    """
+    Report color hints the caller supplied that we cannot parse.
+
+    A dropped hint is worse than a failed run: with no usable hints the detector
+    falls back to "most prominent person", which yields a confident-looking
+    highlight reel of the wrong player. Callers should refuse to run instead.
+    """
+    if not color_hints:
+        return []
+    problems = []
+    for slot in ("jersey", "helmet", "glove", "pad"):
+        raw = color_hints.get(slot)
+        if raw and parse_color_input(raw) is None:
+            problems.append(f"{slot} color {raw!r} was not recognized")
+    return problems
+
+
+def supported_color_formats() -> str:
+    """Human-readable summary of accepted color inputs, for error messages."""
+    names = ", ".join(sorted(COLOR_NAME_MAP))
+    return f"a hex code (#1E90FF), an 'R,G,B' triple, or one of: {names}"
 
 
 def bgr_to_hsv_tuple(bgr: tuple) -> tuple:
@@ -598,22 +661,6 @@ def merge_detections_to_segments(
     return merge_times_to_segments(detected_times, gap=gap, pre=pre, post=post)
 
 
-def merge_segments(segments: List[Tuple[float, float]], gap_tolerance: float = 1.0) -> List[Tuple[float, float]]:
-    if not segments:
-        return []
-    segs = sorted(segments, key=lambda x: x[0])
-    merged = []
-    cur_s, cur_e = segs[0]
-    for s, e in segs[1:]:
-        if s <= cur_e + gap_tolerance:
-            cur_e = max(cur_e, e)
-        else:
-            merged.append((cur_s, cur_e))
-            cur_s, cur_e = s, e
-    merged.append((cur_s, cur_e))
-    return merged
-
-
 # -------------------- Seed & regions -------------------- #
 class Seed:
     def __init__(
@@ -647,6 +694,58 @@ class Seed:
         self.identity_strength = float(identity_strength)
         self.replay_suspect = bool(replay_suspect)
         self.post_cut_reacquire = bool(post_cut_reacquire)
+
+
+#: Scalar Seed fields, with the default used when a record is missing one.
+#:
+#: `hist` is absent on purpose. It is a numpy array and nothing downstream of
+#: detection reads it — segment_selector only ever touches the scalars below —
+#: so a rehydrated seed can carry hist=None without changing selection results.
+SEED_RECORD_FIELDS: Dict[str, Any] = {
+    "time_s": 0.0,
+    "score": 0.0,
+    "ocr_match": False,
+    "bank_sim": 0.0,
+    "hist_sim": 0.0,
+    "center_bias": 0.0,
+    "temporal_iou": 0.0,
+    "scene_id": 0,
+    "identity_strength": 0.0,
+    "replay_suspect": False,
+    "post_cut_reacquire": False,
+}
+
+
+def seed_to_record(seed: "Seed") -> Dict[str, Any]:
+    """Flatten a Seed to JSON so a job can be resumed in a later worker process."""
+    record: Dict[str, Any] = {
+        key: getattr(seed, key, default) for key, default in SEED_RECORD_FIELDS.items()
+    }
+    bbox = getattr(seed, "bbox", None)
+    record["bbox"] = [int(v) for v in bbox] if bbox is not None else None
+    record["label"] = getattr(seed, "label", None)
+    return record
+
+
+def seed_from_record(record: Dict[str, Any]) -> "Seed":
+    """Rebuild a Seed from `seed_to_record` output, minus the histogram."""
+    bbox = record.get("bbox")
+    return Seed(
+        time_s=float(record.get("time_s", 0.0) or 0.0),
+        bbox=tuple(int(v) for v in bbox) if bbox else (0, 0, 0, 0),
+        hist=None,
+        label=record.get("label"),
+        score=float(record.get("score", 0.0) or 0.0),
+        ocr_match=bool(record.get("ocr_match", False)),
+        bank_sim=float(record.get("bank_sim", 0.0) or 0.0),
+        hist_sim=float(record.get("hist_sim", 0.0) or 0.0),
+        center_bias=float(record.get("center_bias", 0.0) or 0.0),
+        temporal_iou=float(record.get("temporal_iou", 0.0) or 0.0),
+        scene_id=int(record.get("scene_id", 0) or 0),
+        identity_strength=float(record.get("identity_strength", 0.0) or 0.0),
+        replay_suspect=bool(record.get("replay_suspect", False)),
+        post_cut_reacquire=bool(record.get("post_cut_reacquire", False)),
+    )
 
 
 def extract_regions_from_bbox(frame: np.ndarray, bbox: Tuple[int, int, int, int]) -> Dict[str, np.ndarray]:
@@ -756,6 +855,7 @@ def detect_player_in_video(
     team_mode: bool = False,
     resize_scale: float = 0.6,   # downscale for speed
     enable_activity_windowing: Optional[bool] = None,
+    progress_callback: Optional[Callable[[int], None]] = None,
 ) -> Any:
     """
     Scan video and detect candidate frames for a player.
@@ -809,6 +909,16 @@ def detect_player_in_video(
     jersey = str(player_data.get("jersey_number", "")).strip() or None
     if team_mode:
         jersey = None
+
+    # Refuse to start on hints we cannot parse. Dropping them silently would put
+    # us in demo mode below, which accepts whoever is largest in frame.
+    hint_problems = describe_color_hint_problems(color_hints)
+    if hint_problems:
+        raise ValueError(
+            f"Cannot identify the target: {'; '.join(hint_problems)}. "
+            f"Use {supported_color_formats()}."
+        )
+
     helmet_hint = parse_color_input(color_hints.get("helmet")) if color_hints else None
     glove_hint = parse_color_input(color_hints.get("glove")) if color_hints else None
     pad_hint = parse_color_input(color_hints.get("pad")) if color_hints else None
@@ -816,6 +926,13 @@ def detect_player_in_video(
     jersey_color_hint = None
     if color_hints and color_hints.get("jersey"):
         jersey_color_hint = parse_color_input(color_hints.get("jersey"))
+
+    has_identity_hints = bool(jersey or helmet_hint or glove_hint or pad_hint or jersey_color_hint)
+    if not (team_mode or has_identity_hints):
+        logger.warning(
+            "No jersey number or color hints supplied — running in demo mode: the "
+            "most prominent person in each frame is accepted as the target."
+        )
 
     # Load YOLO model
     try:
@@ -1419,8 +1536,11 @@ def detect_player_in_video(
                         accept = False
                         replay_reject_count += 1
 
-                    # If no identity hints at all, accept biggest person (demo mode)
-                    if (not jersey) and (not helmet_hint and not glove_hint and not pad_hint) and (not jersey_color_hint):
+                    # Demo mode: nothing was supplied to identify anyone by, so
+                    # fall back to the most prominent person. Unparseable hints
+                    # are rejected up front, so this only fires when the caller
+                    # genuinely asked for no target.
+                    if not has_identity_hints:
                         accept = True
 
                 if not accept:
@@ -1514,6 +1634,14 @@ def detect_player_in_video(
             if percent_done >= last_logged_percent + max(1, detection_progress_step):
                 logger.info(f"Detect progress: {percent_done}% frame {current_frame_idx} seeds={len(seeds)}")
                 last_logged_percent = percent_done
+                if progress_callback is not None:
+                    # Detection is most of the runtime; without this the UI shows
+                    # a frozen bar for hours. Never let a reporting failure kill
+                    # the run that is producing the result.
+                    try:
+                        progress_callback(percent_done)
+                    except Exception as e:
+                        logger.debug(f"progress_callback failed: {e}")
 
     cap.release()
     logger.info(
@@ -1549,6 +1677,9 @@ def detect_player_in_video(
         "replay_penalty_hits": replay_penalty_hits,
         "replay_reject_count": replay_reject_count,
         "identity_confirm_hits": identity_confirm_hits,
+        # True when nothing identified a target, so results are "whoever was most
+        # prominent" rather than a specific player. Callers should say so.
+        "demo_mode": bool(not team_mode and not has_identity_hints),
     }
 
     return payload if return_seeds else initial_segments 

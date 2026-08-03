@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -19,6 +19,9 @@ type JobResultPayload = {
   highlight_url?: string
   segments?: [number, number][]
   processing_stats?: ProcessingStats
+  // Degraded-run notices from the worker, e.g. selection fell back to unranked
+  // detections, or no identity hint was given so the target may be anyone.
+  warnings?: string[]
 }
 
 type JobStatusPayload = {
@@ -35,6 +38,12 @@ type JobStatusPayload = {
 
 const POLL_INTERVAL_MS = 2000
 const POLL_TIMEOUT_MS = 3 * 60 * 60 * 1000
+
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:8000"
+
+// Analyses run for hours. Without this the job id lives only in component state,
+// so a refresh or a closed tab orphans the run with no way back to it.
+const ACTIVE_JOB_STORAGE_KEY = "powerplay:activeJobId"
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
@@ -78,7 +87,94 @@ export default function UploadPage() {
   const [segments, setSegments] = useState<[number, number][]>([])
   const [processingStats, setProcessingStats] = useState<ProcessingStats | null>(null)
   const [devTestMode, setDevTestMode] = useState(false)
-  const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:8000"
+  const [warnings, setWarnings] = useState<string[]>([])
+
+  // Lets an in-flight poll be cancelled when the component unmounts, so we never
+  // call setState on a torn-down component.
+  const abortRef = useRef<AbortController | null>(null)
+
+  const trackJob = useCallback(async (id: string, startedAt: number = Date.now()) => {
+    abortRef.current?.abort()
+    const controller = new AbortController()
+    abortRef.current = controller
+
+    try {
+      while (!controller.signal.aborted) {
+        const statusRes = await fetch(`${API_BASE}/jobs/${id}`, {
+          method: "GET",
+          cache: "no-store",
+          signal: controller.signal,
+        })
+        if (statusRes.status === 404) {
+          throw new Error("That job is no longer available on the server.")
+        }
+        if (!statusRes.ok) {
+          throw new Error(`Failed to poll job status (${statusRes.status})`)
+        }
+
+        const job: JobStatusPayload = await statusRes.json()
+        setProcessingStage(formatStage(job))
+
+        const pct =
+          job.status === "downloading"
+            ? Math.round(job.download_percent ?? 0)
+            : Math.round(job.progress ?? 0)
+        setMessage(`⏳ ${job.message || "Processing video"} (${pct}%)`)
+
+        if (job.status === "done") {
+          const result = job.result || {}
+          const outputUrl = job.output_url || result.highlight_url
+          if (!outputUrl) {
+            throw new Error("Job finished but no highlight URL was returned.")
+          }
+          const fullUrl = outputUrl.startsWith("http") ? outputUrl : `${API_BASE}${outputUrl}`
+          const finalSegments = Array.isArray(result.segments) ? result.segments : []
+          setHighlightUrl(fullUrl)
+          setSegments(finalSegments)
+          setProcessingStats(result.processing_stats ?? null)
+          setWarnings(Array.isArray(result.warnings) ? result.warnings : [])
+          setMessage(
+            `✅ Processing complete! Found ${finalSegments.length} highlight segments. Your video is ready.`
+          )
+          setProcessingStage("")
+          window.localStorage.removeItem(ACTIVE_JOB_STORAGE_KEY)
+          return
+        }
+
+        if (job.status === "failed") {
+          throw new Error(job.error || job.message || "Processing failed")
+        }
+
+        if (Date.now() - startedAt > POLL_TIMEOUT_MS) {
+          throw new Error("Processing timed out. Please try a shorter time range.")
+        }
+
+        await sleep(POLL_INTERVAL_MS)
+      }
+    } catch (error) {
+      // An abort is us tearing down, not a failure the user should see.
+      if (controller.signal.aborted) return
+      console.error(error)
+      setMessage(`❌ Error: ${error instanceof Error ? error.message : "Processing failed"}`)
+      setProcessingStage("")
+      setJobId(null)
+      window.localStorage.removeItem(ACTIVE_JOB_STORAGE_KEY)
+    } finally {
+      if (!controller.signal.aborted) setLoading(false)
+    }
+  }, [])
+
+  // Reattach to a run that was still going when the page was last closed.
+  useEffect(() => {
+    const saved = window.localStorage.getItem(ACTIVE_JOB_STORAGE_KEY)
+    if (!saved) return
+    setJobId(saved)
+    setLoading(true)
+    setMessage(`🔄 Reconnecting to job ${saved.slice(0, 8)}...`)
+    void trackJob(saved)
+  }, [trackJob])
+
+  useEffect(() => () => abortRef.current?.abort(), [])
 
   const handleVideoSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -106,6 +202,7 @@ export default function UploadPage() {
     setHighlightUrl("")
     setSegments([])
     setProcessingStats(null)
+    setWarnings([])
     setMessage("")
     setProcessingStage("")
     setJobId(null)
@@ -128,6 +225,7 @@ export default function UploadPage() {
     setHighlightUrl("")
     setSegments([])
     setProcessingStats(null)
+    setWarnings([])
     setJobId(null)
     
     if (youtubeUrl) {
@@ -182,61 +280,18 @@ export default function UploadPage() {
       }
 
       setJobId(queued.job_id)
+      // Persist before polling: if the tab closes a second later, the run is
+      // still recoverable on next load.
+      window.localStorage.setItem(ACTIVE_JOB_STORAGE_KEY, queued.job_id)
       setProcessingStage("📥 Job queued. Waiting for worker...")
       setMessage(`📥 Job ${queued.job_id.slice(0, 8)} queued. Starting soon...`)
 
-      const pollStartTs = Date.now()
-      while (true) {
-        const statusRes = await fetch(`${API_BASE}/jobs/${queued.job_id}`, {
-          method: "GET",
-          cache: "no-store",
-        })
-        if (!statusRes.ok) {
-          throw new Error(`Failed to poll job status (${statusRes.status})`)
-        }
-
-        const job: JobStatusPayload = await statusRes.json()
-        const stageText = formatStage(job)
-        setProcessingStage(stageText)
-
-        const pct =
-          job.status === "downloading"
-            ? Math.round(job.download_percent ?? 0)
-            : Math.round(job.progress ?? 0)
-        setMessage(`⏳ ${job.message || "Processing video"} (${pct}%)`)
-
-        if (job.status === "done") {
-          const result = job.result || {}
-          const outputUrl = job.output_url || result.highlight_url
-          if (!outputUrl) {
-            throw new Error("Job finished but no highlight URL was returned.")
-          }
-          const fullUrl = outputUrl.startsWith("http") ? outputUrl : `${API_BASE}${outputUrl}`
-          const finalSegments = Array.isArray(result.segments) ? result.segments : []
-          setHighlightUrl(fullUrl)
-          setSegments(finalSegments)
-          setProcessingStats(result.processing_stats ?? null)
-          setMessage(`✅ Processing complete! Found ${finalSegments.length} highlight segments. Your video is ready.`)
-          setProcessingStage("")
-          break
-        }
-
-        if (job.status === "failed") {
-          throw new Error(job.error || job.message || "Processing failed")
-        }
-
-        if (Date.now() - pollStartTs > POLL_TIMEOUT_MS) {
-          throw new Error("Processing timed out. Please try a shorter time range.")
-        }
-
-        await sleep(POLL_INTERVAL_MS)
-      }
+      await trackJob(queued.job_id)
     } catch (error) {
       console.error(error)
       setMessage(`❌ Error: ${error instanceof Error ? error.message : 'Processing failed'}`)
       setProcessingStage("")
       setJobId(null)
-    } finally {
       setLoading(false)
     }
   }
@@ -604,6 +659,19 @@ export default function UploadPage() {
                       Download
                     </Button>
                   </div>
+
+                  {/* Degraded-run notices: the reel looks the same whether or not
+                      the pipeline fell back, so say when it did. */}
+                  {warnings.length > 0 && (
+                    <div className="mt-4 p-4 bg-amber-500/10 border border-amber-500/40 rounded-lg text-sm text-amber-200 space-y-1">
+                      <h4 className="font-medium mb-2">Worth knowing about this run:</h4>
+                      <ul className="list-disc list-inside space-y-1">
+                        {warnings.map((warning, i) => (
+                          <li key={i}>{warning}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
 
                   {/* Processing Stats */}
                   {processingStats && (
