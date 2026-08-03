@@ -20,8 +20,9 @@ from main import (
     DOWNLOADS_DIR,
     OUTPUT_DIR,
 )
-from processing.detect_player import detect_player_in_video
+from processing.detect_player import detect_player_in_video, seed_from_record, seed_to_record
 from processing.track_player import track_player
+from processing.verify_identity import build_identity_review
 from processing.utils import get_video_duration, limit_total_duration
 from processing.compile_clips import compile_highlight
 from processing.highlight_scorer import score_segments_with_ai, filter_segments_by_score
@@ -89,6 +90,34 @@ def _update(store: JobStore, job_id: str, **fields: Any):
         store.update_job(job_id, **{k: v for k, v in fields.items() if v is not None})
     except Exception as e:
         logger.warning(f"Failed to update job {job_id}: {e}")
+
+
+# Detection occupies this slice of the overall progress bar. It is by far the
+# longest phase, so its internal percentage is what the user actually watches.
+DETECT_PROGRESS_START = 40.0
+DETECT_PROGRESS_END = 60.0
+
+
+def _detection_progress_reporter(
+    store: JobStore,
+    job_id: str,
+    start: float = DETECT_PROGRESS_START,
+    end: float = DETECT_PROGRESS_END,
+    label: str = "Finding the player",
+):
+    """Map detection's own 0-100% onto the job's overall progress band."""
+
+    def report(percent_done: int) -> None:
+        pct = max(0, min(100, percent_done))
+        overall = start + (pct / 100.0) * (end - start)
+        _update(
+            store,
+            job_id,
+            progress=round(overall, 1),
+            message=f"{label} ({pct}% of footage scanned)",
+        )
+
+    return report
 
 
 def _merge_close_segments(
@@ -314,11 +343,88 @@ def _compile_youtube_sections(
     return str(out_path)
 
 
+def _build_resume_state(
+    trimmed_path: Path,
+    temp_path: Optional[Path],
+    tracked_segments: List[Tuple[float, float]],
+    det_payload: Dict[str, Any],
+    video_dur: float,
+    timings: Dict[str, float],
+    warnings: List[str],
+    elapsed_sec: float,
+    estimated_total_min: float,
+    runtime_class: str,
+    dev_test_overrides: Dict[str, Any],
+    max_total_out: float,
+) -> Dict[str, Any]:
+    """
+    Freeze everything phase two needs, so review can outlive this worker process.
+
+    Seeds are flattened to scalars (see seed_to_record); their histograms are the
+    only unserialisable part and nothing after detection reads them.
+    """
+    return {
+        "trimmed_path": str(trimmed_path),
+        "temp_path": str(temp_path) if temp_path else None,
+        "tracked_segments": [[float(s), float(e)] for s, e in tracked_segments],
+        "seeds": [seed_to_record(s) for s in (det_payload.get("seeds") or [])],
+        "video_dur": float(video_dur),
+        "timings": dict(timings),
+        "warnings": list(warnings),
+        "elapsed_sec": float(elapsed_sec),
+        "estimated_total_min": float(estimated_total_min),
+        "runtime_class": runtime_class,
+        "dev_test_overrides": dict(dev_test_overrides),
+        "max_total_out": float(max_total_out),
+        "det_meta": {
+            "scene_cut_count": int(det_payload.get("scene_cut_count", 0) or 0),
+            "replay_penalty_hits": int(det_payload.get("replay_penalty_hits", 0) or 0),
+            "replay_reject_count": int(det_payload.get("replay_reject_count", 0) or 0),
+            "identity_confirm_hits": int(det_payload.get("identity_confirm_hits", 0) or 0),
+            "demo_mode": bool(det_payload.get("demo_mode", False)),
+        },
+    }
+
+
+def _restore_resume_state(state: Dict[str, Any]) -> Dict[str, Any]:
+    """Rehydrate `_build_resume_state` output into the shapes phase two expects."""
+    restored = dict(state)
+    restored["trimmed_path"] = Path(state["trimmed_path"])
+    restored["temp_path"] = Path(state["temp_path"]) if state.get("temp_path") else None
+    restored["tracked_segments"] = [
+        (float(s), float(e)) for s, e in (state.get("tracked_segments") or [])
+    ]
+    restored["seeds"] = [seed_from_record(r) for r in (state.get("seeds") or [])]
+    return restored
+
+
 def process_job(job: Dict[str, Any], store: JobStore):
     job_id = job["id"]
     payload: Dict[str, Any] = job.get("request") or {}
     if not payload:
         _update(store, job_id, status=JobStatus.FAILED, stage="failed", message="Missing job payload")
+        return
+
+    # A job claimed out of REVIEW_APPROVED already paid for detection. Pick the
+    # pipeline back up at selection rather than re-scanning the whole video.
+    if job.get("claimed_from") == JobStatus.REVIEW_APPROVED:
+        state = store.get_resume_state(job_id)
+        if not state:
+            _update(
+                store,
+                job_id,
+                status=JobStatus.FAILED,
+                stage="failed",
+                message="This job's analysis was lost and cannot be resumed",
+                error="Resume state missing for an approved review",
+            )
+            return
+        ctx = _restore_resume_state(state)
+        rejected = set((store.get_review(job_id) or {}).get("rejected_ids") or [])
+        if rejected:
+            logger.info(f"Job {job_id}: user rejected {len(rejected)} candidate(s) at review")
+        logger.info(f"▶️ Resuming job {job_id} after identity review")
+        _finish_highlight(store, job_id, payload, ctx)
         return
 
     source = payload.get("source")
@@ -338,9 +444,21 @@ def process_job(job: Dict[str, Any], store: JobStore):
     start_sec = parse_timecode(start_time) if start_time else None
     end_sec = parse_timecode(end_time) if end_time else None
     dev_test_mode = _as_bool(payload.get("dev_test_mode", False))
+    # Ask the user to confirm we found the right player before compiling. Opt-in
+    # per request, with an env default so a deployment can turn it on globally.
+    require_review = _as_bool(
+        payload.get(
+            "require_review",
+            os.getenv("PP_REQUIRE_REVIEW", "false"),
+        )
+    )
+    if dev_test_mode:
+        # Dev test mode exists to run unattended; a human gate defeats that.
+        require_review = False
 
     temp_path: Optional[Path] = None
     trimmed_path: Optional[Path] = None
+    parked_for_review = False
 
     # allow debugging downloads/temps
     keep_downloads = os.getenv("KEEP_DOWNLOADS_FOR_DEBUG", "false").lower() in ("1", "true", "yes")
@@ -351,6 +469,9 @@ def process_job(job: Dict[str, Any], store: JobStore):
         dataset_max_clips = 150
 
     timings: Dict[str, float] = {}
+    # Degradations the user needs to know about: a reel that silently came from a
+    # fallback path looks identical to a good one.
+    warnings: List[str] = []
     pipeline_start = time.perf_counter()
     estimated_total_min = 0.0
     runtime_class = "standard"
@@ -574,6 +695,7 @@ def process_job(job: Dict[str, Any], store: JobStore):
             yolo_model=yolo_model,
             color_hints=color_hints,
             team_mode=team_mode,
+            progress_callback=_detection_progress_reporter(store, job_id),
         )
         detect_elapsed = time.perf_counter() - t0
 
@@ -582,7 +704,9 @@ def process_job(job: Dict[str, Any], store: JobStore):
             job_id,
             status=JobStatus.PROCESSING,
             stage="tracking",
-            message="Refining segments",
+            # Without DeepSORT this step passes segments straight through, so
+            # don't claim to be refining anything.
+            message="Refining segments" if prefer_deepsort else "Grouping detections",
             progress=60.0,
         )
 
@@ -631,6 +755,9 @@ def process_job(job: Dict[str, Any], store: JobStore):
                 color_hints=color_hints,
                 team_mode=team_mode,
                 enable_activity_windowing=False,
+                progress_callback=_detection_progress_reporter(
+                    store, job_id, start=52.0, end=64.0, label="Rescanning"
+                ),
             )
             detect_elapsed += time.perf_counter() - t_rescue
 
@@ -660,6 +787,119 @@ def process_job(job: Dict[str, Any], store: JobStore):
         if not tracked_segments:
             raise RuntimeError("No player segments found. Try adding Jersey/Helmet color hints or a tighter time range.")
 
+        ctx = _build_resume_state(
+            trimmed_path=trimmed_path,
+            temp_path=temp_path,
+            tracked_segments=tracked_segments,
+            det_payload=det_payload,
+            video_dur=video_dur,
+            timings=timings,
+            warnings=warnings,
+            elapsed_sec=time.perf_counter() - pipeline_start,
+            estimated_total_min=estimated_total_min,
+            runtime_class=runtime_class,
+            dev_test_overrides=dev_test_overrides,
+            max_total_out=float(os.getenv("PP_MAX_TOTAL_HIGHLIGHT_SEC", "130")),
+        )
+
+        if require_review:
+            review = build_identity_review(
+                video_path=str(trimmed_path),
+                seeds=det_payload.get("seeds") or [],
+                duration=video_dur,
+                job_id=job_id,
+                output_dir=OUTPUT_DIR,
+                max_candidates=int(os.getenv("PP_REVIEW_CANDIDATES", "6")),
+                demo_mode=bool(det_payload.get("demo_mode")),
+            )
+            if review.get("candidates"):
+                # Park here. The source files must survive: phase two re-reads
+                # the trimmed video to cut clips from it.
+                store.save_resume_state(job_id, ctx)
+                store.save_review(job_id, review)
+                parked_for_review = True
+                logger.info(
+                    f"⏸️ Job {job_id} awaiting identity review "
+                    f"({len(review['candidates'])} candidates)"
+                )
+                return
+            # No crops means nothing to show. Blocking on an empty review page
+            # would strand the job, so continue and say the check was skipped.
+            warnings.append(
+                "We could not build confirmation images for this run, so the "
+                "highlight was built without your identity check."
+            )
+            logger.warning(f"Job {job_id}: review requested but no candidate crops were produced")
+
+        _finish_highlight(store, job_id, payload, ctx)
+
+    except Exception as e:
+        logger.error(f"❌ Job {job_id} failed: {e}")
+        _update(
+            store,
+            job_id,
+            status=JobStatus.FAILED,
+            stage="failed",
+            message=str(e),
+            error=str(e),
+        )
+    finally:
+        # A parked job still needs its footage on disk for phase two.
+        if not parked_for_review:
+            _cleanup_job_files(temp_path, trimmed_path, keep_downloads)
+
+
+def _finish_highlight(
+    store: JobStore,
+    job_id: str,
+    payload: Dict[str, Any],
+    ctx: Dict[str, Any],
+) -> None:
+    """
+    Phase two: select segments, compile the reel, publish the result.
+
+    Runs either straight after detection (no review requested) or in a later
+    worker process once the user has confirmed the identity, which is why every
+    input arrives via `ctx` rather than closure state.
+    """
+    source = payload.get("source")
+    action = payload.get("action", "batting")
+    player_data = payload.get("player_data", {})
+    team_mode = bool(payload.get("team_mode"))
+    save_dataset = bool(payload.get("save_dataset", False))
+    dev_test_mode = _as_bool(payload.get("dev_test_mode", False))
+    start_time = payload.get("start_time")
+    start_sec = parse_timecode(start_time) if start_time else None
+
+    trimmed_path: Path = ctx["trimmed_path"]
+    temp_path: Optional[Path] = ctx["temp_path"]
+    tracked_segments: List[Tuple[float, float]] = ctx["tracked_segments"]
+    seeds = ctx["seeds"]
+    video_dur = float(ctx["video_dur"])
+    timings: Dict[str, float] = dict(ctx["timings"])
+    warnings: List[str] = list(ctx["warnings"])
+    det_meta: Dict[str, Any] = ctx.get("det_meta", {})
+    dev_test_overrides: Dict[str, Any] = dict(ctx.get("dev_test_overrides", {}))
+    estimated_total_min = float(ctx.get("estimated_total_min", 0.0))
+    runtime_class = str(ctx.get("runtime_class", "standard"))
+
+    keep_downloads = os.getenv("KEEP_DOWNLOADS_FOR_DEBUG", "false").lower() in ("1", "true", "yes")
+    dataset_max_clips_env = os.getenv("HIGHLIGHT_DATASET_MAX_CLIPS", "").strip()
+    dataset_max_clips = int(dataset_max_clips_env) if dataset_max_clips_env.isdigit() else 25
+    if team_mode and dataset_max_clips == 25:
+        dataset_max_clips = 150
+
+    # Time already spent in phase one, so total_sec stays honest across a pause.
+    phase_start = time.perf_counter()
+    prior_elapsed = float(ctx.get("elapsed_sec", 0.0))
+
+    try:
+        if not trimmed_path.exists():
+            raise RuntimeError(
+                "The analysed video is no longer on disk, so this highlight cannot "
+                "be built. Please run the job again."
+            )
+
         capture_flag = save_dataset or os.getenv("CAPTURE_HIGHLIGHT_DATASET", "false").lower() in ("1", "true", "yes")
         if capture_flag:
             info = capture_segments_to_dataset(
@@ -685,7 +925,11 @@ def process_job(job: Dict[str, Any], store: JobStore):
         )
 
         t0 = time.perf_counter()
-        seeds = det_payload.get("seeds", []) or []
+        if det_meta.get("demo_mode"):
+            warnings.append(
+                "No jersey number or color was supplied, so clips follow whoever was "
+                "most prominent on screen rather than a specific player."
+            )
         max_segments_out = int(os.getenv("PP_MAX_SEGMENTS_OUT", "12"))
         max_total_out = float(os.getenv("PP_MAX_TOTAL_HIGHLIGHT_SEC", "130"))
 
@@ -741,8 +985,28 @@ def process_job(job: Dict[str, Any], store: JobStore):
                 max_total_duration=max_total_out,
             )
 
-            if not filtered_segments:
-                filtered_segments = tracked_segments[:50]
+        # Both branches above can come back empty. Falling through to compile
+        # with nothing produces an empty video; falling back silently produces an
+        # unranked one. Do the fallback, but say that we did.
+        if not filtered_segments and tracked_segments:
+            filtered_segments = tracked_segments[:max_segments_out]
+            warnings.append(
+                "Highlight selection could not rank any segment above threshold, so "
+                "these clips are the raw detections in time order rather than the "
+                "best moments."
+            )
+            logger.warning(
+                f"Job {job_id}: selection returned nothing; falling back to "
+                f"{len(filtered_segments)} unranked detections."
+            )
+
+        if not filtered_segments:
+            raise RuntimeError(
+                "No highlight segments could be produced — the target was detected "
+                "but no clip survived selection. Try widening the time range or "
+                "loosening the identity hints."
+            )
+
         timings["score_select_sec"] = round(time.perf_counter() - t0, 2)
 
         _update(
@@ -788,17 +1052,19 @@ def process_job(job: Dict[str, Any], store: JobStore):
                 output_name=f"highlight_{job_id}",
             )
         timings["compile_sec"] = round(time.perf_counter() - t0, 2)
-        timings["total_sec"] = round(time.perf_counter() - pipeline_start, 2)
+        # Spans both phases, so a paused job does not report only its second half.
+        timings["total_sec"] = round(prior_elapsed + (time.perf_counter() - phase_start), 2)
 
         output_url = f"/outputs/{Path(highlight_path).name}"
-        scene_cut_count = int(det_payload.get("scene_cut_count", 0) or 0)
-        replay_penalty_hits = int(det_payload.get("replay_penalty_hits", 0) or 0)
-        replay_reject_count = int(det_payload.get("replay_reject_count", 0) or 0)
-        identity_confirm_hits = int(det_payload.get("identity_confirm_hits", 0) or 0)
+        scene_cut_count = int(det_meta.get("scene_cut_count", 0) or 0)
+        replay_penalty_hits = int(det_meta.get("replay_penalty_hits", 0) or 0)
+        replay_reject_count = int(det_meta.get("replay_reject_count", 0) or 0)
+        identity_confirm_hits = int(det_meta.get("identity_confirm_hits", 0) or 0)
         selected_seed_stats = _selected_segment_seed_stats(filtered_segments, seeds)
         result = {
             "highlight_url": output_url,
             "segments": filtered_segments,
+            "warnings": warnings,
             "processing_stats": {
                 "total_time": timings["total_sec"],
                 "video_duration": round(video_dur, 1),
@@ -842,32 +1108,66 @@ def process_job(job: Dict[str, Any], store: JobStore):
             error=str(e),
         )
     finally:
-        try:
-            if trimmed_path and trimmed_path.exists() and temp_path and trimmed_path != temp_path and not keep_downloads:
-                trimmed_path.unlink(missing_ok=True)
-        except Exception:
-            pass
-        try:
-            if temp_path and not keep_downloads:
-                cleanup_related_upload_files(temp_path)
-        except Exception:
-            pass
+        _cleanup_job_files(temp_path, trimmed_path, keep_downloads)
+
+
+def _cleanup_job_files(
+    temp_path: Optional[Path],
+    trimmed_path: Optional[Path],
+    keep_downloads: bool,
+) -> None:
+    """Drop the working copies of a finished job. Never called while one is parked."""
+    try:
+        if trimmed_path and trimmed_path.exists() and temp_path and trimmed_path != temp_path and not keep_downloads:
+            trimmed_path.unlink(missing_ok=True)
+    except Exception:
+        pass
+    try:
+        if temp_path and not keep_downloads:
+            cleanup_related_upload_files(temp_path)
+    except Exception:
+        pass
 
 
 def run_worker(poll_interval: float = 2.0):
     store = JobStore(Path("jobs.db"))
+
+    # A previous worker may have been killed mid-job. Those rows are still marked
+    # active and would otherwise be polled by the UI until it gives up hours later.
+    stale_after = float(os.getenv("PP_STALE_JOB_TIMEOUT_SEC", str(6 * 60 * 60)))
+    store.reap_stale_jobs(stale_after_sec=stale_after)
+
     logger.info("👷 Worker started. Waiting for jobs...")
     while True:
-        job = store.fetch_next_queued()
+        try:
+            # fetch_next_queued claims the job atomically and marks it processing.
+            job = store.fetch_next_queued()
+        except Exception as e:
+            # A transient DB error must not take the worker down with it.
+            logger.error(f"Failed to poll for jobs: {e}")
+            time.sleep(poll_interval)
+            continue
+
         if not job:
             time.sleep(poll_interval)
             continue
 
         job_id = job["id"]
         logger.info(f"🚀 Processing job {job_id}")
-        _update(store, job_id, status=JobStatus.PROCESSING, stage="preparing", message="Starting worker")
-
-        process_job(job, store)
+        try:
+            process_job(job, store)
+        except Exception as e:
+            # process_job handles its own failures; this is the last line of
+            # defence so one bad job cannot end the worker process.
+            logger.exception(f"Unhandled error processing job {job_id}: {e}")
+            _update(
+                store,
+                job_id,
+                status=JobStatus.FAILED,
+                stage="failed",
+                message=str(e),
+                error=str(e),
+            )
 
 
 if __name__ == "__main__":

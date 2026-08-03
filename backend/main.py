@@ -6,11 +6,13 @@ import uuid
 import logging
 import inspect
 from pathlib import Path
-from typing import Optional, Dict, Any, Callable, NamedTuple
+from typing import Optional, Dict, Any, Callable, List, NamedTuple
 
 from fastapi import FastAPI, File, Form, UploadFile, HTTPException
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.concurrency import run_in_threadpool
+from pydantic import BaseModel, Field
 
 from processing.utils import save_upload_file
 from processing.practice_mode import analyze_practice_session, analyze_cricket_practice_session
@@ -19,19 +21,49 @@ from job_store import JobStore, JobStatus
 # optional: yt-dlp
 import yt_dlp
 
+class ReviewDecision(BaseModel):
+    """The user's answer to 'is this the player you meant?'."""
+
+    approved: bool
+    #: Candidate ids the user marked as not-the-player. Kept even on approval:
+    #: a mostly-right run with two bad crops is the training signal we want.
+    rejected_ids: List[str] = Field(default_factory=list)
+    note: Optional[str] = None
+
+
 # ----------------------------------------------------
 # App setup
 # ----------------------------------------------------
 app = FastAPI()
-app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
+
+# Browsers reject allow_origins=["*"] together with allow_credentials=True, and a
+# wildcard would expose the API to any page the user has open. Set
+# PP_ALLOWED_ORIGINS (comma separated) when the frontend is not on localhost.
+ALLOWED_ORIGINS = [
+    origin.strip()
+    for origin in os.getenv(
+        "PP_ALLOWED_ORIGINS", "http://localhost:3000,http://127.0.0.1:3000"
+    ).split(",")
+    if origin.strip()
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=ALLOWED_ORIGINS,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 UPLOAD_DIR = Path("uploads"); UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 OUTPUT_DIR = Path("outputs"); OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 DOWNLOADS_DIR = Path("downloads"); DOWNLOADS_DIR.mkdir(parents=True, exist_ok=True)
 
+# Only rendered highlights are served. `uploads/` and `downloads/` hold the user's
+# source media; mounting them lets anyone who guesses a filename read it.
 app.mount("/outputs", StaticFiles(directory=str(OUTPUT_DIR)), name="outputs")
-app.mount("/uploads", StaticFiles(directory=str(UPLOAD_DIR)), name="uploads")
-app.mount("/downloads", StaticFiles(directory=str(DOWNLOADS_DIR)), name="downloads")
+
+# Reject oversized uploads before they fill the disk.
+MAX_UPLOAD_BYTES = int(os.getenv("PP_MAX_UPLOAD_BYTES", str(8 * 1024 * 1024 * 1024)))
 
 JOB_STORE = JobStore(Path("jobs.db"))
 
@@ -379,6 +411,7 @@ async def enqueue_processing_job(
     save_dataset: bool = Form(False),
     prefer_deepsort: bool = Form(False),
     dev_test_mode: bool = Form(False),
+    require_review: bool = Form(False),
 ):
     try:
         player_data = json.loads(playerData)
@@ -415,6 +448,9 @@ async def enqueue_processing_job(
         "yolo_model": yolo_model,
         "save_dataset": bool(save_dataset),
         "prefer_deepsort": bool(prefer_deepsort),
+        # Pause after detection and ask the user to confirm the identity before
+        # spending compile time on the wrong person.
+        "require_review": bool(require_review),
         # ==================== DEV TEST MODE ====================
         # Fast validation mode for short turnaround testing.
         "dev_test_mode": bool(dev_test_mode),
@@ -425,9 +461,14 @@ async def enqueue_processing_job(
         logger.info("🧪 DEV TEST MODE enabled for this job")
 
     if video:
-        filename = f"upload_{uuid.uuid4()}_{video.filename}"
-        temp_path = UPLOAD_DIR / filename
-        save_upload_file(video, temp_path)
+        # Path(...).name strips any directory component, so a filename like
+        # "../../etc/passwd" cannot write outside uploads/.
+        safe_name = Path(video.filename or "video.mp4").name
+        temp_path = UPLOAD_DIR / f"upload_{uuid.uuid4()}_{safe_name}"
+        try:
+            await run_in_threadpool(save_upload_file, video, temp_path, MAX_UPLOAD_BYTES)
+        except ValueError as e:
+            raise HTTPException(status_code=413, detail=str(e))
         payload["source"] = "upload"
         payload["video_path"] = str(temp_path)
         logger.info(f"✅ Uploaded video saved for job: {temp_path.name}")
@@ -467,6 +508,7 @@ async def create_job_endpoint(
     save_dataset: bool = Form(False),
     prefer_deepsort: bool = Form(False),
     dev_test_mode: bool = Form(False),
+    require_review: bool = Form(False),
 ):
     return await enqueue_processing_job(
         video=video,
@@ -483,6 +525,7 @@ async def create_job_endpoint(
         save_dataset=save_dataset,
         prefer_deepsort=prefer_deepsort,
         dev_test_mode=dev_test_mode,
+        require_review=require_review,
     )
 
 
@@ -502,6 +545,7 @@ async def process_video(
     save_dataset: bool = Form(False),
     prefer_deepsort: bool = Form(False),
     dev_test_mode: bool = Form(False),
+    require_review: bool = Form(False),
 ):
     """
     Backwards-compatible entrypoint that now enqueues a background job.
@@ -521,6 +565,7 @@ async def process_video(
         save_dataset=save_dataset,
         prefer_deepsort=prefer_deepsort,
         dev_test_mode=dev_test_mode,
+        require_review=require_review,
     )
     resp["message"] = f"Job queued. Poll /jobs/{resp['job_id']} for status."
     return resp
@@ -533,6 +578,74 @@ async def job_status(job_id: str):
         raise HTTPException(status_code=404, detail="Job not found")
     job["job_id"] = job_id
     return job
+
+@app.get("/jobs/{job_id}/review")
+async def get_job_review(job_id: str):
+    """The candidate crops the user is being asked to confirm."""
+    job = JOB_STORE.get_job(job_id)
+    if not job:
+        raise HTTPException(status_code=404, detail="Job not found")
+
+    review = job.get("review")
+    if not isinstance(review, dict):
+        raise HTTPException(status_code=404, detail="This job has no identity review")
+
+    return {
+        "job_id": job_id,
+        "status": job.get("status"),
+        # Only actionable while the job is parked; afterwards this is a record of
+        # what was decided, which the UI shows read-only.
+        "awaiting_decision": job.get("status") == JobStatus.AWAITING_REVIEW,
+        **review,
+    }
+
+
+@app.post("/jobs/{job_id}/review")
+async def submit_job_review(job_id: str, decision: ReviewDecision):
+    """
+    Record the user's verdict: resume the job, or stop it as a wrong match.
+
+    Returns 409 rather than 404 when the job exists but is not awaiting a
+    decision, so a double-submit from two tabs is distinguishable from a bad id.
+    """
+    job = JOB_STORE.get_job(job_id)
+    if not job:
+        raise HTTPException(status_code=404, detail="Job not found")
+
+    accepted = JOB_STORE.record_review_decision(
+        job_id,
+        approved=bool(decision.approved),
+        rejected_ids=decision.rejected_ids,
+        note=decision.note,
+    )
+    if not accepted:
+        raise HTTPException(
+            status_code=409,
+            detail=f"Job is not awaiting review (status: {job.get('status')})",
+        )
+
+    updated = JOB_STORE.get_job(job_id)
+    return {
+        "job_id": job_id,
+        "status": updated.get("status"),
+        "stage": updated.get("stage"),
+        "message": updated.get("message"),
+    }
+
+
+@app.get("/jobs")
+async def list_jobs(limit: int = 50):
+    """
+    Recent jobs, newest first, so a run survives the tab being closed.
+
+    Without this a job id exists only in the browser's memory, and a multi-hour
+    analysis becomes unreachable the moment the page is refreshed.
+    """
+    limit = max(1, min(int(limit), 200))
+    jobs = JOB_STORE.list_jobs(limit=limit)
+    for job in jobs:
+        job["job_id"] = job.get("id")
+    return {"jobs": jobs}
 
 @app.post("/practice-mode")
 async def practice_mode(
@@ -552,11 +665,15 @@ async def practice_mode(
     temp_path = None
     try:
         if video:
-            temp_path = UPLOAD_DIR / video.filename
-            save_upload_file(video, temp_path)
+            # Never build a path from the client's filename directly: "../" in it
+            # would write outside uploads/, and a repeated name would clobber
+            # another user's in-flight file.
+            temp_path = UPLOAD_DIR / f"practice_{uuid.uuid4()}{Path(video.filename or '').suffix}"
+            await run_in_threadpool(save_upload_file, video, temp_path, MAX_UPLOAD_BYTES)
         elif youtube_url:
             temp_path = UPLOAD_DIR / f"practice_{uuid.uuid4()}.mp4"
-            temp_path = download_youtube_video(youtube_url, temp_path).path
+            result = await run_in_threadpool(download_youtube_video, youtube_url, temp_path)
+            temp_path = result.path
         else:
             return {"status": "error", "message": "No video source provided"}
 
@@ -578,7 +695,9 @@ async def practice_mode(
         sig = inspect.signature(analyze_cricket_practice_session)
         filtered_args = {k: v for k, v in all_args.items() if k in sig.parameters}
 
-        data = analyze_cricket_practice_session(**filtered_args)
+        # This is minutes of OpenCV work. Running it inline on the event loop
+        # freezes every other request, including job-status polling.
+        data = await run_in_threadpool(analyze_cricket_practice_session, **filtered_args)
         return data
 
     except Exception as e:
@@ -591,7 +710,14 @@ async def practice_mode(
         except Exception:
             pass
 
-# Practice route left unchanged (not shown for brevity)
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
+
+    # reload= is ignored when an app object is passed rather than an import
+    # string, so name the module explicitly and let PP_RELOAD opt in.
+    uvicorn.run(
+        "main:app",
+        host=os.getenv("PP_HOST", "127.0.0.1"),
+        port=int(os.getenv("PP_PORT", "8000")),
+        reload=os.getenv("PP_RELOAD", "false").lower() in ("1", "true", "yes"),
+    )
