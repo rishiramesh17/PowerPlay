@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { ArrowLeft, Upload, Youtube, LinkIcon, Clock, Target, Loader2, Eye, Download } from "lucide-react"
+import { ArrowLeft, Upload, Youtube, LinkIcon, Clock, Target, Loader2, Eye, Download, Check, X } from "lucide-react"
 
 // Emitted by the worker alongside the finished highlight. The backend sends a
 // larger object (compile_mode, runtime_class, scene_cuts, per-stage timings);
@@ -22,6 +22,31 @@ type JobResultPayload = {
   // Degraded-run notices from the worker, e.g. selection fell back to unranked
   // detections, or no identity hint was given so the target may be anyone.
   warnings?: string[]
+}
+
+// One cropped thumbnail the user is asked to judge. `url` is server-relative
+// and served by the /outputs static mount.
+type ReviewCandidate = {
+  id: string
+  time_s: number
+  score?: number
+  identity_strength?: number
+  scene_id?: number
+  ocr_match?: boolean
+  url: string
+}
+
+type ReviewPayload = {
+  job_id: string
+  status?: string
+  // False once a decision has been recorded, so a stale tab shows the record
+  // instead of buttons that would be rejected with a 409.
+  awaiting_decision: boolean
+  candidates: ReviewCandidate[]
+  seed_count?: number
+  demo_mode?: boolean
+  prompt?: string
+  decision?: string | null
 }
 
 type JobStatusPayload = {
@@ -60,6 +85,8 @@ const formatStage = (job: JobStatusPayload): string => {
   if (stage === "detecting") return `🔍 Detecting player segments... (${pct}%)`
   if (stage === "tracking") return `🎯 Refining player tracking... (${pct}%)`
   if (stage === "scoring" || stage === "filtering") return `🧠 Scoring and selecting clips... (${pct}%)`
+  if (job.status === "awaiting_review") return "🙋 Waiting for you to confirm the player."
+  if (job.status === "review_approved") return "▶️ Confirmed. Picking the job back up..."
   if (stage === "compiling" || job.status === "compiling") return `🎬 Compiling final highlight... (${pct}%)`
   if (stage === "done" || job.status === "done") return "✅ Highlight is ready."
   if (stage === "failed" || job.status === "failed") return "❌ Processing failed."
@@ -88,6 +115,11 @@ export default function UploadPage() {
   const [processingStats, setProcessingStats] = useState<ProcessingStats | null>(null)
   const [devTestMode, setDevTestMode] = useState(false)
   const [warnings, setWarnings] = useState<string[]>([])
+  const [requireReview, setRequireReview] = useState(true)
+  const [review, setReview] = useState<ReviewPayload | null>(null)
+  const [rejectedIds, setRejectedIds] = useState<string[]>([])
+  const [reviewNote, setReviewNote] = useState("")
+  const [submittingReview, setSubmittingReview] = useState(false)
 
   // Lets an in-flight poll be cancelled when the component unmounts, so we never
   // call setState on a torn-down component.
@@ -121,6 +153,24 @@ export default function UploadPage() {
             : Math.round(job.progress ?? 0)
         setMessage(`⏳ ${job.message || "Processing video"} (${pct}%)`)
 
+        // The job has parked itself and nothing is running. Stop polling and
+        // hand over to the user; submitReview restarts this loop.
+        if (job.status === "awaiting_review") {
+          const reviewRes = await fetch(`${API_BASE}/jobs/${id}/review`, {
+            cache: "no-store",
+            signal: controller.signal,
+          })
+          if (!reviewRes.ok) {
+            throw new Error(`Could not load the crops to confirm (${reviewRes.status})`)
+          }
+          setReview(await reviewRes.json())
+          setRejectedIds([])
+          setReviewNote("")
+          setMessage("🙋 Detection finished — confirm we found the right player before we compile.")
+          setProcessingStage("")
+          return
+        }
+
         if (job.status === "done") {
           const result = job.result || {}
           const outputUrl = job.output_url || result.highlight_url
@@ -133,6 +183,7 @@ export default function UploadPage() {
           setSegments(finalSegments)
           setProcessingStats(result.processing_stats ?? null)
           setWarnings(Array.isArray(result.warnings) ? result.warnings : [])
+          setReview(null)
           setMessage(
             `✅ Processing complete! Found ${finalSegments.length} highlight segments. Your video is ready.`
           )
@@ -158,11 +209,69 @@ export default function UploadPage() {
       setMessage(`❌ Error: ${error instanceof Error ? error.message : "Processing failed"}`)
       setProcessingStage("")
       setJobId(null)
+      setReview(null)
       window.localStorage.removeItem(ACTIVE_JOB_STORAGE_KEY)
     } finally {
       if (!controller.signal.aborted) setLoading(false)
     }
   }, [])
+
+  const toggleCandidate = (id: string) =>
+    setRejectedIds((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]))
+
+  const submitReview = useCallback(
+    async (approved: boolean) => {
+      if (!jobId) return
+      setSubmittingReview(true)
+      try {
+        const res = await fetch(`${API_BASE}/jobs/${jobId}/review`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            approved,
+            // Sent even when approving: a mostly-right run with two bad crops is
+            // the most useful signal we can collect.
+            rejected_ids: rejectedIds,
+            note: reviewNote.trim() || null,
+          }),
+        })
+
+        // Another tab already answered. Its verdict stands; just follow the job.
+        if (res.status === 409) {
+          setReview(null)
+          setLoading(true)
+          void trackJob(jobId)
+          return
+        }
+        if (!res.ok) {
+          throw new Error(`Could not record your answer (${res.status})`)
+        }
+
+        setReview(null)
+        if (approved) {
+          setLoading(true)
+          setProcessingStage("▶️ Confirmed. Compiling your highlight...")
+          setMessage("▶️ Thanks — picking the job back up.")
+          void trackJob(jobId)
+        } else {
+          setMessage(
+            "❌ Stopped — you told us this was not the right player. Add a jersey number or kit colours and run it again."
+          )
+          setProcessingStage("")
+          setJobId(null)
+          window.localStorage.removeItem(ACTIVE_JOB_STORAGE_KEY)
+        }
+      } catch (error) {
+        console.error(error)
+        setMessage(
+          `❌ Error: ${error instanceof Error ? error.message : "Could not submit your answer"}`
+        )
+      } finally {
+        setSubmittingReview(false)
+      }
+    },
+    [jobId, rejectedIds, reviewNote, trackJob]
+  )
 
   // Reattach to a run that was still going when the page was last closed.
   useEffect(() => {
@@ -207,6 +316,9 @@ export default function UploadPage() {
     setProcessingStage("")
     setJobId(null)
     setDevTestMode(false)
+    setReview(null)
+    setRejectedIds([])
+    setReviewNote("")
   }
 
   const startAnalysis = async () => {
@@ -227,7 +339,10 @@ export default function UploadPage() {
     setProcessingStats(null)
     setWarnings([])
     setJobId(null)
-    
+    setReview(null)
+    setRejectedIds([])
+    setReviewNote("")
+
     if (youtubeUrl) {
       setProcessingStage(
         devTestMode
@@ -263,6 +378,8 @@ export default function UploadPage() {
       if (startTime) formData.append("start_time", startTime)
       if (endTime) formData.append("end_time", endTime)
       formData.append("dev_test_mode", String(devTestMode))
+      // Dev test mode runs unattended, so the backend ignores this when both are set.
+      formData.append("require_review", String(requireReview))
 
       const res = await fetch(`${API_BASE}/process-video`, {
         method: "POST",
@@ -535,6 +652,34 @@ export default function UploadPage() {
                 </p>
               </div>
 
+              {/* Identity confirmation opt-out. On by default: compiling a reel of
+                  the wrong player costs far more than a ten-second check. */}
+              <div className="rounded-lg border border-powerplay bg-powerplay-card p-4">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <p className="text-powerplay-primary font-semibold">Confirm the player before compiling</p>
+                    <p className="text-xs text-powerplay-secondary mt-1">
+                      We pause after detection and show you a few frames. If we picked the
+                      wrong person you stop the run there instead of finding out from the
+                      finished reel.
+                    </p>
+                  </div>
+                  <label className="inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={requireReview}
+                      onChange={(e) => setRequireReview(e.target.checked)}
+                      className="h-5 w-5 rounded border-powerplay bg-transparent text-amber-400 focus:ring-amber-300"
+                    />
+                  </label>
+                </div>
+                {devTestMode && requireReview && (
+                  <p className="text-xs text-amber-300 mt-2">
+                    Dev test mode runs unattended, so this check is skipped for that run.
+                  </p>
+                )}
+              </div>
+
               {/* ==================== DEV TEST MODE ==================== */}
               <div className="rounded-lg border-2 border-amber-400/80 bg-amber-500/10 p-4">
                 <div className="flex items-start justify-between gap-3">
@@ -569,7 +714,10 @@ export default function UploadPage() {
                 )}
                 <Button 
                   onClick={startAnalysis}
-                  disabled={loading || (!videoFile && !youtubeUrl) || !jerseyNumber} 
+                  // Polling stops while a review is on screen, so `loading` is
+                  // false — but starting a second job here would abandon the
+                  // parked one with no way back to it.
+                  disabled={loading || review !== null || (!videoFile && !youtubeUrl) || !jerseyNumber}
                   className="bg-powerplay-button hover:bg-powerplay-button-hover disabled:opacity-50 disabled:cursor-not-allowed flex-1 ml-2"
                 >
                   {loading ? (
@@ -617,6 +765,114 @@ export default function UploadPage() {
                     : 'bg-blue-500/20 border border-blue-500/30 text-blue-300'
                 }`}>
                   {message}
+                </div>
+              )}
+
+              {/* Identity confirmation. The job is parked server-side while this
+                  is on screen, so there is no timer and nothing is running. */}
+              {review && review.candidates.length > 0 && (
+                <div className="mt-6 rounded-lg border-2 border-amber-400/60 bg-amber-500/5 p-5 space-y-4">
+                  <div>
+                    <h3 className="text-xl font-semibold text-powerplay-primary">
+                      {review.prompt || "Is this the player you meant?"}
+                    </h3>
+                    <p className="text-sm text-powerplay-secondary mt-1">
+                      Frames sampled across the whole video from{" "}
+                      {review.seed_count ?? review.candidates.length} detections. Tap any
+                      frame that is <span className="text-amber-300">not</span> your player —
+                      that tells us where we went wrong.
+                    </p>
+                    {review.demo_mode && (
+                      <p className="text-sm text-amber-300 mt-2">
+                        ⚠️ No jersey number or kit colour was given, so we tracked whoever was
+                        most prominent on screen.
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                    {review.candidates.map((candidate) => {
+                      const rejected = rejectedIds.includes(candidate.id)
+                      return (
+                        <button
+                          key={candidate.id}
+                          type="button"
+                          onClick={() => toggleCandidate(candidate.id)}
+                          aria-pressed={rejected}
+                          className={`relative rounded-lg overflow-hidden border-2 transition-colors focus:outline-none focus:ring-2 focus:ring-amber-300 ${
+                            rejected
+                              ? "border-red-500 opacity-60"
+                              : "border-powerplay hover:border-amber-400"
+                          }`}
+                        >
+                          {/* Plain <img>: these are served from the API origin, which
+                              next/image would need configured as a remote pattern. */}
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={`${API_BASE}${candidate.url}`}
+                            alt={`Detection at ${candidate.time_s.toFixed(1)} seconds`}
+                            className="w-full h-40 object-cover bg-black"
+                          />
+                          <span className="absolute top-1 left-1 px-2 py-0.5 rounded bg-black/70 text-xs text-white">
+                            {candidate.time_s.toFixed(1)}s
+                          </span>
+                          {rejected && (
+                            <span className="absolute inset-x-0 bottom-0 bg-red-600/90 text-white text-xs py-1">
+                              Not this player
+                            </span>
+                          )}
+                        </button>
+                      )
+                    })}
+                  </div>
+
+                  <div>
+                    <label className="block text-powerplay-secondary text-sm mb-1">
+                      Anything we should know? <span className="text-xs">(optional)</span>
+                    </label>
+                    <input
+                      type="text"
+                      value={reviewNote}
+                      onChange={(e) => setReviewNote(e.target.value)}
+                      className="w-full p-2 rounded-lg bg-powerplay-card border border-powerplay text-powerplay-primary placeholder-powerplay-secondary focus:border-amber-400 focus:outline-none transition-colors"
+                      placeholder="ex: that's the other opener, mine is at the non-striker's end"
+                    />
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row gap-3">
+                    <Button
+                      onClick={() => submitReview(true)}
+                      disabled={submittingReview}
+                      className="bg-powerplay-button hover:bg-powerplay-button-hover disabled:opacity-50 flex-1"
+                    >
+                      {submittingReview ? (
+                        <>
+                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                          Sending...
+                        </>
+                      ) : (
+                        <>
+                          <Check className="w-4 h-4 mr-2" />
+                          {rejectedIds.length > 0
+                            ? `That's them (${rejectedIds.length} frame${rejectedIds.length > 1 ? "s" : ""} wrong)`
+                            : "Yes — that's them, continue"}
+                        </>
+                      )}
+                    </Button>
+                    <Button
+                      onClick={() => submitReview(false)}
+                      disabled={submittingReview}
+                      variant="outline"
+                      className="border-red-500/60 text-red-300 hover:bg-red-500/10 disabled:opacity-50"
+                    >
+                      <X className="w-4 h-4 mr-2" />
+                      Wrong player — stop
+                    </Button>
+                  </div>
+                  <p className="text-xs text-powerplay-secondary">
+                    Nothing is running while you decide. This page can be closed and
+                    reopened; the job will still be waiting.
+                  </p>
                 </div>
               )}
 
