@@ -38,7 +38,7 @@ backend/models/
 backend/reports/*.json
 backend/reports/results_*.jsonl
 
-# Env files (Crucial)
+# Env files 
 .env
 .env.*
 !.env.example
