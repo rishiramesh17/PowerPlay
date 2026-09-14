@@ -47,8 +47,11 @@ powerplay/
 │   │   ├── highlight_scorer.py  Optional GPT-4o-mini segment scoring
 │   │   ├── compile_clips.py     ffmpeg cutting and concatenation
 │   │   ├── practice_mode.py     Motion-based clipping for practice footage
-│   │   └── ml/                  Frame-pool classifier (trained, not yet wired in)
+│   │   └── ml/
+│   │       ├── identity_labels.py   Banks every review verdict as re-ID training data
+│   │       └── ...                  Frame-pool classifier (trained, not yet wired in)
 │   ├── tools/benchmark_pipeline.py   Segment-IoU precision/recall/F1 harness
+│   ├── tools/reid_dataset.py         Inspect and split the review-derived dataset
 │   └── tests/                   pytest unit tests
 ├── frontend/                    Next.js 15 App Router + React 19 + Tailwind
 └── docs/                        Product requirements, technical design, test plan
@@ -129,6 +132,35 @@ Roughly 80 `PP_*` environment variables tune detection, selection, and compilati
 
 Grep for `PP_` in `backend/` for the full set.
 
+## Training data
+
+When a run pauses for identity review, the answer is the only human-labelled
+identity signal this product ever produces — so it is kept. On every verdict,
+`processing/ml/identity_labels.py` copies the candidate crops out of the
+disposable `outputs/` directory into `backend/datasets/reid/` and appends one
+JSONL row per crop:
+
+- **positive** — an approved run's crops the user did *not* strike out
+- **negative** — crops struck out on an approval (a lookalike in the same kit,
+  which is the failure mode worth training against), and every crop of a run the
+  user rejected outright
+
+Each row carries the player cues that were asked for, the pipeline's own scores,
+and a relative path to the crop, so a learned embedding can be compared against
+the heuristic it replaces on exactly the same images.
+
+```bash
+cd backend
+python tools/reid_dataset.py stats                       # counts, coverage, gaps
+python tools/reid_dataset.py split --val-fraction 0.2    # train.jsonl / val.jsonl
+```
+
+The split groups by job: six crops from one match are near-duplicates, and
+splitting them row-wise would score a model on footage it trained on.
+
+`PP_REID_DATASET_DIR` moves the dataset elsewhere. It holds cropped frames of
+real people from users' footage, so it is gitignored — treat it accordingly.
+
 ## Benchmarking
 
 `backend/tools/benchmark_pipeline.py` scores pipeline output against a JSONL ground-truth manifest (`backend/reports/sample_manifest.jsonl`), reporting segment-IoU precision, recall, F1, realtime factor, and an identity-drift proxy. See `backend/BENCHMARK_README.md`.
@@ -141,7 +173,7 @@ These are real and worth knowing before you build on this:
 
 - **No authentication, rate limiting, or upload size caps.** Run it locally only.
 - **Jobs are lost on refresh.** The job id lives in React state, so closing the tab orphans a running analysis — there is no job list UI to recover it.
-- **Identity matching is heuristic.** Jersey OCR plus colour histograms with hand-tuned weights, not a learned re-ID embedding. It drifts onto other players in similar kit, and there is no labelled data to fit against yet.
+- **Identity matching is heuristic.** Jersey OCR plus colour histograms with hand-tuned weights, not a learned re-ID embedding. It drifts onto other players in similar kit. Every identity review now banks a labelled example toward fixing this (see [Training data](#training-data)), but no model has been trained on it yet.
 - **Cricket-specific in places.** Pitch-ROI estimation, `batting`/`bowling` actions, and the GPT scoring prompt all assume cricket.
 - **`/practice-mode` blocks the API.** It runs its analysis inline in an async handler, which stalls every other request — including job polling — for the duration.
 - **Progress is coarse.** It jumps between fixed stage percentages and sits at 40% through the multi-hour detection phase.

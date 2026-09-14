@@ -16,6 +16,7 @@ from pydantic import BaseModel, Field
 
 from processing.utils import save_upload_file
 from processing.practice_mode import analyze_practice_session, analyze_cricket_practice_session
+from processing.ml.identity_labels import record_review_labels
 from job_store import JobStore, JobStatus
 
 # optional: yt-dlp
@@ -625,6 +626,19 @@ async def submit_job_review(job_id: str, decision: ReviewDecision):
         )
 
     updated = JOB_STORE.get_job(job_id)
+
+    # The verdict is the only human-labelled identity signal this product ever
+    # gets, and it exists for a few seconds before the crops become scratch.
+    # Capture it off the event loop: copying six JPEGs is short but not free,
+    # and label capture must never be why a review submit feels slow.
+    await run_in_threadpool(
+        record_review_labels,
+        job_id,
+        updated.get("review") or {},
+        updated.get("request") or {},
+        OUTPUT_DIR,
+    )
+
     return {
         "job_id": job_id,
         "status": updated.get("status"),

@@ -38,6 +38,10 @@ backend/models/
 backend/reports/*.json
 backend/reports/results_*.jsonl
 
+# Review-derived training data: cropped frames of real people from users' own
+# footage. It is the point of the label store, and it must never be committed.
+backend/datasets/
+
 # Env files 
 .env
 .env.*
