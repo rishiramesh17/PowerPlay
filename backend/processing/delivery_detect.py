@@ -66,6 +66,25 @@ RUNUP_PROMINENCE = 2.5
 #: ratio out of rounding noise.
 RUNUP_SPEED_FLOOR = 0.4
 
+#: Smallest background motion the prominence ratio is allowed to divide by.
+#: Without it the ratio is unbounded: on the second broadcast, tracks break often
+#: enough that most steps measure exactly zero, the median background is zero,
+#: and prominence ran to 258 where the first broadcast produced 2-7. A filter
+#: that every candidate passes is not a filter.
+BACKGROUND_FLOOR = 0.10
+
+#: How many steps must carry real motion before a background is meaningful at
+#: all. Below this the region is mostly broken tracking, not a quiet pitch, and
+#: no ratio computed from it can be trusted.
+MIN_BACKGROUND_STEPS = 5
+
+#: Minimum spacing between two deliveries, in seconds. Measured median gaps are
+#: 39-42s on the first broadcast and 32s on the second, and the 10th percentile
+#: is 21s and 24s respectively -- so this sits below anything either match
+#: actually produced. Closer than this is the same ball proposed twice by
+#: overlapping regions, not a genuinely quick over.
+MIN_DELIVERY_GAP_SEC = 15.0
+
 #: A run-up is sustained, not a single frame of detector jitter.
 RUNUP_MIN_SEC = 0.6
 
@@ -319,12 +338,12 @@ def _link_tracks(
     return tracks
 
 
-def localize_release(
+def localize_releases(
     video_path: str,
     region: Region,
     model,
     imgsz: int = 480,
-) -> Tuple[Optional[float], float]:
+) -> List[ReleaseEstimate]:
     """
     Find the moment of release inside a proposed region.
 
@@ -339,8 +358,13 @@ def localize_release(
     in frame -- when the camera pans everyone moves together, and only genuine
     relative motion survives.
 
-    Release is reported at the peak of the sustained run-up, which is the
-    delivery stride.
+    Every qualifying run-up in the region is returned, not just the strongest.
+    A region is a camera shot, and a camera shot is not a delivery: the broadcast
+    holds one framing while the bowler walks back, so a single shot routinely
+    spans two balls, and a 48-second one can span three. Reporting only the
+    argmax silently dropped the other deliveries -- three of seven misses on the
+    second broadcast were balls whose region had already been credited to a
+    neighbour.
     """
     cap = cv2.VideoCapture(video_path)
     if not cap.isOpened():
@@ -373,7 +397,7 @@ def localize_release(
     cap.release()
 
     if len(times) < 4:
-        return ReleaseEstimate(None, 0.0, 0.0, 0.0)
+        return []   # too few frames sampled to measure anything
 
     dt = skip / src_fps
 
@@ -422,28 +446,64 @@ def localize_release(
     usable = on_pitch[:-1] & on_pitch[1:]
     speed_at = np.where(usable, speed_at, 0.0)
     if usable.sum() < 4:
-        return ReleaseEstimate(None, 0.0, 0.0, away_sec)
+        return []   # camera never settled on the pitch in this region
 
     # Require the speed to be *sustained*: a single fast frame is detector
     # jitter, or one box swapping between two overlapping players.
     win = max(1, int(round(RUNUP_MIN_SEC / dt)))
     sustained = np.convolve(speed_at, np.ones(win) / win, mode="same") if win > 1 else speed_at
 
-    peak_idx = int(np.argmax(np.where(usable, sustained, 0.0)))
-    peak = float(sustained[peak_idx])
     # Background is the typical motion of this same region, so a busy wide shot
     # and a tight one are judged on their own terms.
-    background = float(np.median(sustained[usable])) or 1e-3
-    prominence = peak / background
-    if peak < RUNUP_SPEED_FLOOR or prominence < RUNUP_PROMINENCE:
-        return ReleaseEstimate(None, peak, prominence, away_sec)
+    #
+    # Only steps that actually measured motion count. A step reads exactly zero
+    # when the tracker lost every person across it, which says nothing about how
+    # still the pitch was -- and on the second broadcast those zeros were the
+    # majority, dragging the median to 0 and sending prominence to 258.
+    moving = sustained[usable & (sustained > 0.0)]
+    if len(moving) < MIN_BACKGROUND_STEPS:
+        # Too little tracking to establish a background. Refuse rather than
+        # invent a ratio out of it.
+        return []
+    background = max(float(np.median(moving)), BACKGROUND_FLOOR)
 
-    runner = int(np.argmax(per_track_speed[:, peak_idx])) if len(tracks) else -1
-    trend, end = _bowling_end(tracks[runner], peak_idx, win) if runner >= 0 else (0.0, None)
-    return ReleaseEstimate(
-        times[peak_idx] + dt / 2.0, peak, prominence, away_sec,
-        height_trend=trend, bowling_end=end,
-    )
+    # Take peaks greedily, blanking a delivery's worth of time around each one
+    # so the next pick has to be a different ball rather than the same run-up's
+    # shoulder.
+    remaining = np.where(usable, sustained, 0.0).copy()
+    guard = max(1, int(round(MIN_DELIVERY_GAP_SEC / dt)))
+    found: List[ReleaseEstimate] = []
+    while True:
+        idx = int(np.argmax(remaining))
+        peak = float(remaining[idx])
+        prominence = peak / background
+        if peak < RUNUP_SPEED_FLOOR or prominence < RUNUP_PROMINENCE:
+            break
+        runner = int(np.argmax(per_track_speed[:, idx])) if len(tracks) else -1
+        trend, end = _bowling_end(tracks[runner], idx, win) if runner >= 0 else (0.0, None)
+        found.append(
+            ReleaseEstimate(
+                times[idx] + dt / 2.0, peak, prominence, away_sec,
+                height_trend=trend, bowling_end=end,
+            )
+        )
+        remaining[max(0, idx - guard):idx + guard + 1] = 0.0
+        if not remaining.any():
+            break
+    return found
+
+
+def localize_release(
+    video_path: str,
+    region: Region,
+    model,
+    imgsz: int = 480,
+) -> ReleaseEstimate:
+    """The strongest run-up in a region, or an empty estimate if there is none."""
+    found = localize_releases(video_path, region, model, imgsz)
+    if not found:
+        return ReleaseEstimate(None, 0.0, 0.0, 0.0)
+    return max(found, key=lambda e: e.prominence)
 
 
 def _bowling_end(
@@ -495,7 +555,42 @@ def detect_deliveries(
         from ultralytics import YOLO
 
         model = YOLO("yolov8n.pt")
-    return [
-        Delivery(region=region, release=localize_release(video_path, region, model))
-        for region in regions
-    ]
+    found: List[Delivery] = []
+    for region in regions:
+        estimates = localize_releases(video_path, region, model)
+        if estimates:
+            found.extend(Delivery(region=region, release=e) for e in estimates)
+        else:
+            found.append(Delivery(region=region, release=ReleaseEstimate(None, 0.0, 0.0, 0.0)))
+    return suppress_duplicates(found)
+
+
+def suppress_duplicates(deliveries: List[Delivery]) -> List[Delivery]:
+    """
+    Collapse releases that are too close together to be different balls.
+
+    Region proposal deliberately errs toward over-proposing, because dropping the
+    delivery that produced a boundary is unrecoverable while an extra candidate
+    is merely wasted compute. The cost is that one ball spanning two adjacent
+    camera shots gets localized twice, a second or two apart.
+
+    Cricket sets the threshold for us: an over is six balls with a bowler walking
+    back between each, so measured gaps run 39-52 seconds. Anything inside
+    `MIN_DELIVERY_GAP_SEC` is the same ball seen twice, and the more prominent
+    run-up is the better-evidenced view of it.
+
+    Unlocalized regions are kept as-is -- they carry no release to collide with,
+    and Stage 2 may still want the span.
+    """
+    localized = sorted(
+        (d for d in deliveries if d.localized),
+        key=lambda d: d.release.prominence,
+        reverse=True,
+    )
+    kept: List[Delivery] = []
+    for cand in localized:
+        if any(abs(cand.release_t - k.release_t) < MIN_DELIVERY_GAP_SEC for k in kept):
+            continue
+        kept.append(cand)
+    kept.extend(d for d in deliveries if not d.localized)
+    return sorted(kept, key=lambda d: d.region.start)

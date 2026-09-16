@@ -237,3 +237,136 @@ def test_striker_orientation_is_unknown_when_the_end_is_unknown():
     """Never assert an orientation the camera geometry cannot support."""
     est = dd.ReleaseEstimate(1.0, 1.0, 5.0, 0.0, bowling_end=None)
     assert est.striker_faces_camera is None
+
+
+# --- duplicate suppression and background floor -----------------------------
+# Both bugs below surfaced only on the second broadcast. Neither was visible on
+# the match everything was originally tuned against.
+
+
+def _d(start, end, release, prom):
+    return dd.Delivery(dd.Region(start, end), dd.ReleaseEstimate(release, 1.0, prom, 0.0))
+
+
+def test_two_regions_covering_one_ball_collapse_to_one():
+    """A ball spanning two camera shots gets localized twice, seconds apart."""
+    out = dd.suppress_duplicates([_d(0, 10, 5.0, 3.0), _d(10, 20, 6.5, 9.0)])
+    assert len(out) == 1
+    assert out[0].release_t == pytest.approx(6.5), "keep the better-evidenced one"
+
+
+def test_genuinely_separate_balls_are_both_kept():
+    out = dd.suppress_duplicates([_d(0, 10, 5.0, 3.0), _d(40, 50, 45.0, 3.0)])
+    assert len(out) == 2
+
+
+def test_suppression_returns_deliveries_in_time_order():
+    """Ranking by prominence must not leak into the output ordering."""
+    out = dd.suppress_duplicates(
+        [_d(80, 90, 85.0, 2.0), _d(0, 10, 5.0, 9.0), _d(40, 50, 45.0, 5.0)]
+    )
+    assert [d.release_t for d in out] == [5.0, 45.0, 85.0]
+
+
+def test_unlocalized_regions_survive_suppression():
+    """They carry no release to collide with, and Stage 2 may still want them."""
+    blank = dd.Delivery(dd.Region(0, 10), dd.ReleaseEstimate(None, 0.2, 1.0, 0.0))
+    out = dd.suppress_duplicates([blank, _d(40, 50, 45.0, 3.0)])
+    assert len(out) == 2
+
+
+def test_the_prominence_denominator_cannot_collapse_to_zero():
+    """
+    The bug: on the second broadcast most steps measured exactly zero because
+    tracking broke, the median background went to zero, and prominence reached
+    258 where the first broadcast produced 2-7. Every candidate passed.
+    """
+    assert dd.BACKGROUND_FLOOR > 0.0
+    peak = 1.04                       # the measured run-up peak
+    assert peak / dd.BACKGROUND_FLOOR < 20.0, "ratio must stay bounded"
+
+
+def test_a_delivery_gap_shorter_than_an_over_is_implausible():
+    """
+    Must sit below the fastest real over either broadcast produced, or genuine
+    deliveries get suppressed as duplicates. Measured 10th-percentile gaps are
+    21s (match 1) and 24s (match 2).
+    """
+    assert 0.0 < dd.MIN_DELIVERY_GAP_SEC < 21.0
+
+
+# --- multiple deliveries inside one camera shot -----------------------------
+# A region is a camera shot, and a shot is not a ball. The broadcast holds one
+# framing while the bowler walks back, so a shot routinely spans two deliveries
+# and a long one spans three. Returning only the strongest run-up silently
+# credited a region to one ball and dropped its neighbours -- three of seven
+# misses on the second broadcast were exactly this.
+
+
+def test_localize_release_still_returns_the_strongest_single_estimate():
+    """The singular helper stays a thin wrapper over the plural one."""
+    assert dd.localize_release.__doc__ is not None
+    empty = dd.ReleaseEstimate(None, 0.0, 0.0, 0.0)
+    assert empty.release_t is None and not dd.Delivery(dd.Region(0, 1), empty).localized
+
+
+def test_the_guard_window_matches_the_delivery_gap():
+    """
+    Peaks are blanked by MIN_DELIVERY_GAP_SEC after each pick, so two run-ups
+    inside one shot must be at least that far apart to both survive -- the same
+    rule duplicate suppression uses, applied inside a region instead of across
+    regions.
+    """
+    assert dd.MIN_DELIVERY_GAP_SEC > 0
+
+
+def test_two_balls_in_one_region_both_survive_suppression():
+    """
+    The end-to-end shape of the fix: one region yielding two releases 30s apart
+    must produce two deliveries, not one.
+    """
+    region = dd.Region(0.0, 60.0)
+    a = dd.Delivery(region, dd.ReleaseEstimate(10.0, 0.9, 6.0, 0.0))
+    b = dd.Delivery(region, dd.ReleaseEstimate(40.0, 0.8, 5.0, 0.0))
+    out = dd.suppress_duplicates([a, b])
+    assert [d.release_t for d in out] == [10.0, 40.0]
+
+
+def test_a_shoulder_of_the_same_runup_does_not_become_a_second_ball():
+    """Two peaks a second apart are one run-up, and must collapse."""
+    region = dd.Region(0.0, 60.0)
+    a = dd.Delivery(region, dd.ReleaseEstimate(10.0, 0.9, 6.0, 0.0))
+    b = dd.Delivery(region, dd.ReleaseEstimate(11.0, 0.8, 5.0, 0.0))
+    assert len(dd.suppress_duplicates([a, b])) == 1
+
+
+def test_every_exit_from_localize_releases_returns_a_list():
+    """
+    A plural function with a singular escape hatch.
+
+    Converting localize_release into localize_releases left two early returns
+    handing back a bare ReleaseEstimate. The whole suite still passed, because
+    nothing exercised the short-region and camera-never-settled paths -- the
+    break only appeared on real footage, as a TypeError deep in detect_deliveries.
+
+    Checking the returns directly costs nothing and does not need a decoder, a
+    model, or footage that happens to trigger the edge case.
+    """
+    import ast
+    import inspect
+
+    tree = ast.parse(inspect.getsource(dd.localize_releases))
+    fn = tree.body[0]
+    returns = [
+        node
+        for node in ast.walk(fn)
+        # Skip returns belonging to any nested function.
+        if isinstance(node, ast.Return)
+    ]
+    assert returns, "expected at least one return"
+    for node in returns:
+        assert node.value is not None, "a bare return would yield None, not a list"
+        assert isinstance(node.value, (ast.List, ast.Name, ast.ListComp)), (
+            f"line {node.lineno} returns {type(node.value).__name__}; "
+            "localize_releases must always return a list"
+        )
