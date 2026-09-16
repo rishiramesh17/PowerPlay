@@ -14,13 +14,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.concurrency import run_in_threadpool
 from pydantic import BaseModel, Field
 
-from processing.utils import save_upload_file
+from processing.utils import save_upload_file, get_video_duration
 from processing.practice_mode import analyze_practice_session, analyze_cricket_practice_session
 from processing.ml.identity_labels import record_review_labels
 from job_store import JobStore, JobStatus
 
 # optional: yt-dlp
 import yt_dlp
+from yt_dlp.utils import download_range_func
 
 class ReviewDecision(BaseModel):
     """The user's answer to 'is this the player you meant?'."""
@@ -304,7 +305,19 @@ def download_youtube_video(
             # An open-ended range must be "inf", not 00:00:00 — the latter is an
             # empty span that makes yt-dlp fail into the full-download fallback.
             end_str = _format_section(end_sec) if end_sec is not None else "inf"
-            ydl_opts["download_sections"] = [f"*{start_str}-{end_str}"]
+            # `download_sections` is the *command line* spelling. The Python API
+            # reads `download_ranges`, and silently ignores any key it does not
+            # know — so passing the CLI name downloaded the entire video while
+            # every log line still said "section". Range ends are absolute
+            # seconds; `inf` means "to the end of the video".
+            range_end = float(end_sec) if end_sec is not None else float("inf")
+            ydl_opts["download_ranges"] = download_range_func(
+                None, [(float(start_sec or 0.0), range_end)]
+            )
+            # Without this the cut lands on the preceding keyframe, which can be
+            # seconds earlier and puts the window out of step with the caller's
+            # absolute timestamps.
+            ydl_opts["force_keyframes_at_cuts"] = True
             logger.info(f"🔖 Requesting yt-dlp to download section {start_str} → {end_str} (if supported)")
         except Exception:
             pass
@@ -353,6 +366,26 @@ def download_youtube_video(
     final_path = _resolve_downloaded_video_path(output_path)
     if final_path is None:
         raise RuntimeError("Downloaded file is missing or corrupted")
+
+    # Trust the file on disk, not the fact that yt-dlp exited cleanly.
+    #
+    # A section download that is quietly ignored still "succeeds": it returns a
+    # perfectly valid file that happens to be the whole video. Claiming
+    # section_applied there is the expensive kind of wrong — the worker skips its
+    # local trim and analyses hours of footage believing it is the requested
+    # window, so every timestamp it reports is against the wrong origin.
+    if section_applied and end_sec is not None:
+        expected_sec = float(end_sec) - float(start_sec or 0.0)
+        actual_sec = get_video_duration(str(final_path))
+        # Generous tolerance: keyframe alignment and container padding legitimately
+        # stretch the cut by a second or two. Only a gross mismatch means uncut.
+        if expected_sec > 0 and actual_sec > max(expected_sec * 1.5, expected_sec + 30.0):
+            logger.warning(
+                f"⚠️ Section download was requested but the file is {actual_sec:.0f}s, "
+                f"not ~{expected_sec:.0f}s — treating it as a full download so the "
+                "caller trims locally."
+            )
+            section_applied = False
 
     logger.info(
         f"✅ YouTube download completed successfully: {final_path.name} "

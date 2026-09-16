@@ -81,6 +81,94 @@ def test_download_result_reports_whether_range_was_already_cut():
     assert cut.path == Path("/tmp/clip.mp4")
 
 
+class _FakeYDL:
+    """Stands in for YoutubeDL: records the options it was built with."""
+
+    captured: dict = {}
+
+    def __init__(self, opts):
+        type(self).captured = dict(opts)
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *exc):
+        return False
+
+    def download(self, urls):
+        return None
+
+
+@pytest.fixture
+def fake_ydl(monkeypatch):
+    _FakeYDL.captured = {}
+    monkeypatch.setattr(main.yt_dlp, "YoutubeDL", _FakeYDL)
+    return _FakeYDL
+
+
+def test_section_range_uses_the_option_name_the_python_api_reads(fake_ydl, tmp_path):
+    """
+    `download_sections` is the command line spelling. YoutubeDL reads
+    `download_ranges` and ignores keys it does not recognise, so the CLI name
+    downloaded the whole video while every log line claimed a section.
+    """
+    target = tmp_path / "clip.mp4"
+    target.write_bytes(b"not really video")
+
+    main.download_youtube_video(
+        "https://example.invalid/watch?v=x",
+        target,
+        start_sec=4500.0,
+        end_sec=6000.0,
+        allow_full_fallback=False,
+    )
+
+    assert "download_sections" not in fake_ydl.captured, "CLI spelling is silently ignored"
+    assert callable(fake_ydl.captured.get("download_ranges"))
+    assert fake_ydl.captured.get("force_keyframes_at_cuts") is True
+
+
+def test_a_full_length_file_is_not_reported_as_a_cut_section(fake_ydl, monkeypatch, tmp_path):
+    """
+    The failure this guards: yt-dlp exits cleanly having downloaded the entire
+    video, so "it succeeded" proves nothing. Reporting section_applied there
+    makes the worker skip its local trim and analyse hours of footage against
+    the wrong time origin.
+    """
+    full = tmp_path / "full.mp4"
+    full.write_bytes(b"not really video")
+    # 25 minutes requested; the file on disk is the whole four hour match.
+    monkeypatch.setattr(main, "get_video_duration", lambda p: 14262.0)
+
+    result = main.download_youtube_video(
+        "https://example.invalid/watch?v=x",
+        full,
+        start_sec=4500.0,
+        end_sec=6000.0,
+        allow_full_fallback=False,
+    )
+
+    assert result.section_applied is False, "a full-length file must fall back to a local trim"
+
+
+def test_a_correctly_cut_section_is_still_reported_as_cut(fake_ydl, monkeypatch, tmp_path):
+    """The duration guard must not force a redundant second trim on a good cut."""
+    clip = tmp_path / "clip.mp4"
+    clip.write_bytes(b"not really video")
+    # 1500s requested, 1502s delivered: keyframe alignment, not a failed cut.
+    monkeypatch.setattr(main, "get_video_duration", lambda p: 1502.0)
+
+    result = main.download_youtube_video(
+        "https://example.invalid/watch?v=x",
+        clip,
+        start_sec=4500.0,
+        end_sec=6000.0,
+        allow_full_fallback=False,
+    )
+
+    assert result.section_applied is True
+
+
 # --- appearance descriptor -------------------------------------------------
 # detect_player pulls in torch/ultralytics/easyocr. Skip cleanly when that stack
 # is unavailable — including when it is installed but broken, which importorskip
