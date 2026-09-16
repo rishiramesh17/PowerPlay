@@ -1,0 +1,194 @@
+{
+ "source": "https://www.youtube.com/live/LeWhJo3vgO8",
+ "window": {
+  "start": "01:15:00",
+  "end": "01:40:00",
+  "offset_sec": 4500
+ },
+ "derivation": "over-counter OCR @3s (457/500 parsed); batsman block OCR @5s",
+ "caveats": [
+  "extras do not increment the over counter, so deliveries are undercounted",
+  "timestamps are the first sample AFTER the ball completed; true release is earlier",
+  "single broadcast, single 25-minute window - unvalidated on other footage"
+ ],
+ "target_player": {
+  "name": "RISHI",
+  "jersey": "17"
+ },
+ "deliveries": [
+  {
+   "clip_t": 15,
+   "match_t": 4515,
+   "balls_bowled": 74
+  },
+  {
+   "clip_t": 39,
+   "match_t": 4539,
+   "balls_bowled": 75
+  },
+  {
+   "clip_t": 78,
+   "match_t": 4578,
+   "balls_bowled": 76
+  },
+  {
+   "clip_t": 132,
+   "match_t": 4632,
+   "balls_bowled": 77
+  },
+  {
+   "clip_t": 204,
+   "match_t": 4704,
+   "balls_bowled": 78
+  },
+  {
+   "clip_t": 240,
+   "match_t": 4740,
+   "balls_bowled": 79
+  },
+  {
+   "clip_t": 270,
+   "match_t": 4770,
+   "balls_bowled": 80
+  },
+  {
+   "clip_t": 345,
+   "match_t": 4845,
+   "balls_bowled": 81
+  },
+  {
+   "clip_t": 432,
+   "match_t": 4932,
+   "balls_bowled": 82
+  },
+  {
+   "clip_t": 465,
+   "match_t": 4965,
+   "balls_bowled": 83
+  },
+  {
+   "clip_t": 504,
+   "match_t": 5004,
+   "balls_bowled": 84
+  },
+  {
+   "clip_t": 600,
+   "match_t": 5100,
+   "balls_bowled": 85
+  },
+  {
+   "clip_t": 744,
+   "match_t": 5244,
+   "balls_bowled": 86
+  },
+  {
+   "clip_t": 783,
+   "match_t": 5283,
+   "balls_bowled": 87
+  },
+  {
+   "clip_t": 801,
+   "match_t": 5301,
+   "balls_bowled": 88
+  },
+  {
+   "clip_t": 822,
+   "match_t": 5322,
+   "balls_bowled": 89
+  },
+  {
+   "clip_t": 852,
+   "match_t": 5352,
+   "balls_bowled": 90
+  },
+  {
+   "clip_t": 936,
+   "match_t": 5436,
+   "balls_bowled": 91
+  },
+  {
+   "clip_t": 981,
+   "match_t": 5481,
+   "balls_bowled": 92
+  },
+  {
+   "clip_t": 1017,
+   "match_t": 5517,
+   "balls_bowled": 93
+  },
+  {
+   "clip_t": 1053,
+   "match_t": 5553,
+   "balls_bowled": 94
+  },
+  {
+   "clip_t": 1098,
+   "match_t": 5598,
+   "balls_bowled": 95
+  },
+  {
+   "clip_t": 1176,
+   "match_t": 5676,
+   "balls_bowled": 96
+  },
+  {
+   "clip_t": 1221,
+   "match_t": 5721,
+   "balls_bowled": 97
+  },
+  {
+   "clip_t": 1245,
+   "match_t": 5745,
+   "balls_bowled": 98
+  },
+  {
+   "clip_t": 1278,
+   "match_t": 5778,
+   "balls_bowled": 99
+  }
+ ],
+ "scoring_events": [
+  {
+   "t": 40,
+   "delta": 6,
+   "runs": 51,
+   "type": "SIX"
+  },
+  {
+   "t": 130,
+   "delta": 1,
+   "runs": 52,
+   "type": "+1"
+  },
+  {
+   "t": 270,
+   "delta": 1,
+   "runs": 53,
+   "type": "+1"
+  },
+  {
+   "t": 855,
+   "delta": 1,
+   "runs": 54,
+   "type": "+1"
+  },
+  {
+   "t": 935,
+   "delta": 4,
+   "runs": 58,
+   "type": "FOUR"
+  },
+  {
+   "t": 1020,
+   "delta": 1,
+   "runs": 59,
+   "type": "+1"
+  },
+  {
+   "t": 1280,
+   "delta": 6,
+   "runs": 65,
+   "type": "SIX"
+  }
+ ]
+}

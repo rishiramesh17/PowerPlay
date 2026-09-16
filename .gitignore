@@ -37,6 +37,10 @@ backend/models/
 # Benchmark output — keep the manifests, drop the generated result files
 backend/reports/*.json
 backend/reports/results_*.jsonl
+# ...but ground truth is an input, not an output. Each gt_*.json costs a full
+# OCR scan of a match to regenerate and is the benchmark every detector change
+# is scored against, so it has to be versioned alongside the code it grades.
+!backend/reports/gt_*.json
 
 # Review-derived training data: cropped frames of real people from users' own
 # footage. It is the point of the label store, and it must never be committed.
