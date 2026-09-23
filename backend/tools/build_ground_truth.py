@@ -33,110 +33,31 @@ from typing import List, Optional, Tuple
 
 import cv2
 
+BACKEND_ROOT = Path(__file__).resolve().parents[1]
+if str(BACKEND_ROOT) not in sys.path:
+    sys.path.insert(0, str(BACKEND_ROOT))
+
 # Where the score block sits in a 1280x720 broadcast frame. This is the one
 # genuinely broadcaster-specific constant in here; a different producer means a
 # different crop, which is why it is exposed as a flag rather than buried.
 DEFAULT_ROI = (430, 610, 880, 670)  # x1, y1, x2, y2
 
-# Broadcasters do not share a scoreboard layout, so the parser carries one entry
-# per vendor and tries each in turn. Two are confirmed from real footage:
-#
-#   CricCenter (MLC U21, college cricket):  "SLA V BRO 91 - 3  12.1 OVERS"
-#   CricClubs  (Minor League Cricket):      "MPT 80/0 RR 16.55 OVERS 4.5"
-#
-# The hypothesis that one template would cover the market was wrong: three
-# broadcasts, two vendors, and the senior league uses the one the original
-# pattern cannot read at all.
-
-
-def _parse_overs(whole: str, frac: Optional[str]) -> Optional[int]:
-    """
-    Turn an over reading into a count of legal deliveries.
-
-    The decimal point is the first thing OCR loses at this size -- "3.1" comes
-    back as "31" and "4.0" as "4" -- so when it is missing the last digit is
-    treated as balls-within-the-over, which is only valid for 0-5. A reading
-    that cannot be interpreted that way is rejected rather than guessed at.
-    """
-    if frac is not None:
-        balls = int(frac)
-        return int(whole) * 6 + balls if balls <= 5 else None
-    digits = whole
-    if len(digits) == 1:
-        return int(digits) * 6
-    over, balls = int(digits[:-1]), int(digits[-1])
-    if balls <= 5 and over <= MAX_OVERS:
-        return over * 6 + balls
-    return None
-
-
-#: No limited-overs innings runs longer than this, so a larger "over number" is
-#: a misread rather than a match.
-MAX_OVERS = 50
-
-
-@dataclass(frozen=True)
-class ScoreboardLayout:
-    """One broadcaster's way of writing the score."""
-
-    name: str
-    pattern: "re.Pattern[str]"
-    #: Group indices for runs, wickets, whole overs, fractional overs.
-    groups: Tuple[int, int, int, int]
-
-
-LAYOUTS: Tuple[ScoreboardLayout, ...] = (
-    # "91 - 3  12.1 OVERS". The separator is one glyph and OCR renders it as
-    # -, I, ~, O, C, F and sometimes a digit, so it is matched as a single
-    # throwaway token and the match is anchored on the rigid "N.N OVERS" tail.
-    # Making it optional once let "66 2 2 10.0 OVERS" match at the second 2 and
-    # report a score of 2, alternating with the correct parse.
-    ScoreboardLayout(
-        "criccenter",
-        re.compile(r"(\d{1,3})\s*\S?\s*(\d)\s+(\d{1,2})\s*[.,]\s*(\d)\s*OVERS", re.I),
-        (1, 2, 3, 4),
-    ),
-    # "MPT 80/0 RR 16.55 OVERS 4.5". Runs and overs sit on separate rows with a
-    # run rate between them, so the gap is matched permissively -- it contains
-    # digits, which a \D run cannot cross.
-    ScoreboardLayout(
-        "cricclubs",
-        re.compile(r"(\d{1,3})\s*/\s*(\d).{0,40}?OVERS\s*(\d{1,3})(?:\s*[.,]\s*(\d))?", re.I),
-        (1, 2, 3, 4),
-    ),
+# Parsing, cleaning and the occlusion/staleness guard live in
+# processing.scoreboard so the pipeline can use them too -- this tool is only
+# one caller, and the rules there are load-bearing for both.
+from processing.scoreboard import (  # noqa: E402
+    MAX_RUNS_PER_BALL,
+    RESET_BALL_CEILING,
+    RESET_BALL_DROP,
+    RESET_CONFIRM_SAMPLES,
+    build_timeline,
+    is_innings_reset as _is_innings_reset,
+    parse_scoreboard,
 )
 
 
-def parse_scoreboard(flat: str) -> Optional[Tuple[int, int, int, str]]:
-    """First layout that reads this text: (runs, wickets, balls, layout name)."""
-    for layout in LAYOUTS:
-        m = layout.pattern.search(flat)
-        if not m:
-            continue
-        gr, gw, go, gf = layout.groups
-        balls = _parse_overs(m.group(go), m.group(gf))
-        if balls is None:
-            continue
-        return int(m.group(gr)), int(m.group(gw)), balls, layout.name
-    return None
 
 
-#: A batting side's score never falls, and no single delivery yields more than 7
-#: (six plus an overthrow). Anything outside that is an OCR misread, not cricket.
-MAX_RUNS_PER_BALL = 7
-
-#: How far the ball counter must fall to count as an innings change rather than
-#: a misread digit. Comfortably above OCR jitter, far below an innings length.
-RESET_BALL_DROP = 12
-
-#: ...and where it must land. A new innings starts near zero; a garbled reading
-#: of "11.4 OVERS" does not.
-RESET_BALL_CEILING = 12
-
-#: Consecutive low readings required before believing an innings actually
-#: changed. A real break lasts minutes -- dozens of samples; a misread lasts one.
-#: Without this, a single bad frame at ball 60 split one innings into two.
-RESET_CONFIRM_SAMPLES = 5
 
 
 def extract_crops(
@@ -217,74 +138,9 @@ def scan(
     return samples
 
 
-def _is_innings_reset(last: dict, cur: dict) -> bool:
-    """
-    A genuine innings change, as opposed to a one-off OCR misread.
-
-    Both counters must fall together and land near zero. Requiring *both* is
-    what separates a reset from a transposed digit, which moves one field only.
-    """
-    return (
-        cur["balls"] < last["balls"] - RESET_BALL_DROP
-        and cur["runs"] < last["runs"]
-        and cur["balls"] <= RESET_BALL_CEILING
-    )
-
-
-def _reset_is_confirmed(samples: List[dict], at: dict) -> bool:
-    """
-    Does the low reading persist, or was it one bad frame?
-
-    An innings break is minutes long, so the next several parsed samples must
-    also read low. A transposed digit is gone by the next sample.
-    """
-    seen = 0
-    for s in samples:
-        if s["t"] <= at["t"] or s["balls"] is None:
-            continue
-        if s["balls"] > RESET_BALL_CEILING:
-            return False
-        seen += 1
-        if seen >= RESET_CONFIRM_SAMPLES:
-            return True
-    return seen > 0
-
-
 def clean(samples: List[dict]) -> List[dict]:
-    """
-    Drop physically impossible readings, and tag each with its innings.
-
-    A single transposed digit (116 read as 16) would otherwise register as a
-    hundred-run swing and manufacture dozens of phantom boundaries, so the
-    monotonicity check matters more than the raw parse rate.
-
-    The exception that has to be handled explicitly is the innings break, where
-    both counters legitimately reset to zero. Treating that as a backwards
-    scoreboard does not merely lose the break -- it strands the baseline at the
-    first innings' closing score, so every later sample also reads as backwards
-    and the whole second innings silently disappears. That is exactly what the
-    first full-match scan did: 110 deliveries, every one of them from innings
-    one, with no error anywhere to suggest half the match was missing.
-    """
-    out: List[dict] = []
-    last: Optional[dict] = None
-    innings = 0
-    for s in samples:
-        if s["runs"] is None or s["balls"] is None:
-            continue
-        if last is not None:
-            balls_advanced = s["balls"] - last["balls"]
-            runs_advanced = s["runs"] - last["runs"]
-            if _is_innings_reset(last, s) and _reset_is_confirmed(samples, s):
-                innings += 1
-            elif balls_advanced < 0 or runs_advanced < 0:
-                continue  # the scoreboard never goes backwards mid-innings
-            # Innings are ~120 balls; a jump that large is a misread, not a gap.
-            elif balls_advanced > 6 or runs_advanced > MAX_RUNS_PER_BALL * max(balls_advanced, 1):
-                continue
-        out.append({**s, "innings": innings})
-        last = s
-    return out
+    """Cleaned rows from the shared timeline builder, tagged with innings."""
+    return build_timeline(samples, step=3.0).rows
 
 
 def derive(rows: List[dict]) -> Tuple[List[dict], List[dict]]:
