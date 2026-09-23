@@ -50,6 +50,22 @@ AGREEMENT_WINDOW_SEC = 8.0
 #: is not.
 MIN_FUSED_CONFIDENCE = 0.45
 
+#: What an uncalibrated detector's signals are worth.
+#:
+#: Measured, not chosen: the run-up localizer's confidence scores an AUC of
+#: 0.384 (p=0.89) at predicting whether its own detection is real -- correct
+#: detections averaged 4.67 and false ones 4.69. None of its other features
+#: reached significance either. Passing that through noisy-OR would let noise
+#: argue as loudly as evidence, and fusion's respectable machinery would make
+#: the failure very hard to see.
+#:
+#: So an uncalibrated detector contributes *presence*, not certainty. Its
+#: signals say "I saw something here" at a fixed weight, and corroboration
+#: between independent detectors does the discriminating instead. Set just below
+#: the reporting threshold so one such detector alone cannot carry an event, but
+#: two agreeing can.
+UNCALIBRATED_CONFIDENCE = 0.40
+
 
 @dataclass(frozen=True)
 class Signal:
@@ -108,6 +124,13 @@ class Detector:
     run: Callable[[], Optional[Sequence[Signal]]]
     requires: Tuple[str, ...] = ()
 
+    #: Whether this detector's confidence has been shown to predict correctness.
+    #: Defaults to False because that is the honest prior: a score is not a
+    #: probability until something measured it against ground truth. An
+    #: uncalibrated detector's signals are flattened to UNCALIBRATED_CONFIDENCE
+    #: so its self-assessment cannot outvote a detector that earned its number.
+    calibrated: bool = False
+
 
 @dataclass
 class FusionReport:
@@ -119,6 +142,10 @@ class FusionReport:
     skipped: Dict[str, str]
     #: Detectors that ran and declined to judge.
     abstained: List[str]
+    #: Detectors whose confidence was flattened because it has not been shown to
+    #: predict correctness. Their original score is kept in each signal's
+    #: evidence as `raw_confidence` so nothing is hidden, only distrusted.
+    uncalibrated: List[str]
     #: Per-detector share of its signals that landed on a reported event. The
     #: raw material for calibrating weights once enough streams exist; recorded
     #: rather than acted on.
@@ -131,6 +158,8 @@ class FusionReport:
                 f"{n} ({why})" for n, why in self.skipped.items()))
         if self.abstained:
             bits.append("abstained: " + ", ".join(self.abstained))
+        if self.uncalibrated:
+            bits.append("uncalibrated (flattened): " + ", ".join(self.uncalibrated))
         return " · ".join(bits)
 
 
@@ -216,6 +245,7 @@ def fuse(
 
     collected: List[Signal] = []
     abstained: List[str] = []
+    uncalibrated: List[str] = []
     emitted: Dict[str, int] = {}
     for d in eligible:
         produced = d.run()
@@ -224,7 +254,15 @@ def fuse(
             logger.info("detector %s abstained", d.name)
             continue
         emitted[d.name] = len(produced)
-        collected.extend(produced)
+        if d.calibrated:
+            collected.extend(produced)
+        else:
+            uncalibrated.append(d.name)
+            collected.extend(
+                Signal(s.detector, s.t, UNCALIBRATED_CONFIDENCE,
+                       {**s.evidence, "raw_confidence": s.confidence})
+                for s in produced
+            )
 
     events = [
         ev for ev in (_fuse_cluster(c) for c in _cluster(collected, window))
@@ -248,5 +286,6 @@ def fuse(
         eligible=[d.name for d in eligible],
         skipped=skipped,
         abstained=abstained,
+        uncalibrated=uncalibrated,
         agreement_rate=agreement,
     )

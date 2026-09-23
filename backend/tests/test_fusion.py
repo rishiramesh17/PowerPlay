@@ -23,8 +23,14 @@ def _profile(**kw):
     return StreamProfile(**base)
 
 
-def _det(name, signals, requires=()):
-    return fz.Detector(name=name, run=lambda: signals, requires=requires)
+def _det(name, signals, requires=(), calibrated=True):
+    """
+    Calibrated by default HERE because these tests exercise merge arithmetic.
+    In production the default is the opposite: a detector is untrusted until its
+    confidence has been shown to predict correctness.
+    """
+    return fz.Detector(name=name, run=lambda: signals,
+                       requires=requires, calibrated=calibrated)
 
 
 def _sig(name, t, conf=0.8):
@@ -189,3 +195,78 @@ def test_summary_reports_what_was_skipped_and_why():
 def test_no_detectors_at_all_is_an_empty_report_not_a_crash():
     report = fz.fuse([], _profile())
     assert report.events == [] and report.eligible == []
+
+
+# --- the calibration contract -----------------------------------------------
+# Measured: the run-up localizer's confidence predicts its own correctness at
+# AUC 0.384 (p=0.89) -- correct detections averaged 4.67, false ones 4.69. None
+# of its other features reached significance. Passing that through noisy-OR
+# would let noise argue as loudly as evidence, and fusion's respectable
+# machinery would make that failure very hard to see.
+
+
+def test_a_detector_is_untrusted_until_measured():
+    """The honest default: a score is not a probability until something checked."""
+    assert fz.Detector("d", lambda: []).calibrated is False
+
+
+def test_an_uncalibrated_detectors_confidence_is_flattened():
+    loud = fz.Detector("brash", lambda: [_sig("brash", 50.0, 0.99)], calibrated=False)
+    report = fz.fuse([loud], _profile())
+    assert report.uncalibrated == ["brash"]
+    # 0.99 would have cleared the bar alone; flattened, it cannot.
+    assert report.events == []
+
+
+def test_flattening_preserves_the_original_score_as_evidence():
+    """Distrusted, not hidden -- the raw number stays available for debugging."""
+    d = fz.Detector("brash", lambda: [_sig("brash", 50.0, 0.99)], calibrated=False)
+    other = _det("solid", [_sig("solid", 51.0, 0.5)])
+    report = fz.fuse([d, other], _profile())
+    assert len(report.events) == 1
+    raw = [s.evidence.get("raw_confidence") for s in report.events[0].signals
+           if s.detector == "brash"]
+    assert raw == [0.99]
+
+
+def test_two_uncalibrated_detectors_agreeing_still_count():
+    """
+    Corroboration does the discriminating when self-assessment cannot. One
+    uncalibrated detector is not evidence; two independent ones agreeing is.
+    """
+    a = fz.Detector("a", lambda: [_sig("a", 50.0, 0.9)], calibrated=False)
+    b = fz.Detector("b", lambda: [_sig("b", 52.0, 0.9)], calibrated=False)
+    assert fz.fuse([a], _profile()).events == []
+    both = fz.fuse([a, b], _profile())
+    assert len(both.events) == 1 and both.events[0].corroborated
+
+
+def test_an_uncalibrated_detector_cannot_outvote_a_calibrated_one():
+    """
+    A detector that earned its number must not be dragged off the ball by one
+    that merely asserts a big one.
+    """
+    brash = fz.Detector("brash", lambda: [_sig("brash", 60.0, 0.99)], calibrated=False)
+    solid = _det("solid", [_sig("solid", 54.0, 0.95)])
+    report = fz.fuse([brash, solid], _profile())
+    assert len(report.events) == 1
+    assert report.events[0].t < 57.0, "pulled toward the calibrated detector"
+
+
+def test_the_flat_value_sits_below_the_reporting_threshold():
+    """
+    One unmeasured detector must not carry an event by itself, while two
+    agreeing must clear the bar. That is what makes the constant a contract
+    rather than a number.
+    """
+    assert fz.UNCALIBRATED_CONFIDENCE < fz.MIN_FUSED_CONFIDENCE
+    pair = 1.0 - (1.0 - fz.UNCALIBRATED_CONFIDENCE) ** 2
+    assert pair >= fz.MIN_FUSED_CONFIDENCE
+
+
+def test_summary_names_detectors_whose_confidence_was_distrusted():
+    report = fz.fuse(
+        [fz.Detector("brash", lambda: [_sig("brash", 50.0, 0.9)], calibrated=False)],
+        _profile(),
+    )
+    assert "uncalibrated" in report.summary() and "brash" in report.summary()

@@ -94,3 +94,53 @@ Eval 5 is judged on the fused numbers against the frozen baselines above.
 Ship criterion: fused precision on the tuning stream materially above 0.36 with
 recall not below 0.58, and the held-out stream reported untouched -- whatever it
 says.
+
+---
+
+## Measured deficiency: detector confidence is uninformative
+
+Recorded here rather than fixed, per the held-out discipline above.
+
+The gap-filler rested on a claim: a scoreboard counter jump says how many
+deliveries a gap hides, so ranking candidates by confidence and keeping the top
+N should beat open-ended search. Measured on the Minor League stream by
+simulating gaps over spans where the board *was* visible (real gaps cannot be
+used -- their ground truth comes from the occluded scoreboard, so measuring
+timing against it would be measuring the blind spot itself):
+
+| span | mode | precision | recall |
+|---|---|---|---|
+| 90s | unconstrained | 0.42 | 0.62 |
+| 90s | constrained to N | 0.48 | **0.41** |
+| 150s | unconstrained | 0.38 | 0.62 |
+| 150s | constrained to N | 0.41 | **0.38** |
+
+Recall collapsed 21-24 points to buy 3-6 points of precision. That small gain is
+the mechanical effect of truncating a list, not selection working.
+
+The cause, measured directly:
+
+    correct detections   prominence 4.67 +/- 3.97   (n=18)
+    false detections     prominence 4.69 +/- 2.11   (n=24)
+    AUC 0.384, permutation p = 0.893
+
+**Prominence carries no information about whether a detection is real.** The
+means are identical and the ranking is indistinguishable from shuffling.
+
+Two consequences, both structural:
+
+1. It explains precision stuck near 0.40 across all three broadcasts regardless
+   of production quality. There is no internal signal separating good detections
+   from bad, so no threshold can help.
+2. **The fusion layer's confidence contract is unsatisfied by its own first
+   detector.** Noisy-OR combination and MIN_FUSED_CONFIDENCE both assume
+   calibrated input. Feeding prominence in would weight noise equally with
+   signal. Until a detector reports a confidence that predicts correctness, its
+   signals should carry a flat value and fusion should rely on agreement between
+   independent detectors rather than on any one of them being sure.
+
+This does not invalidate inverting the pipeline. The scoreboard identifies every
+delivery it can see, and inside a known event window the question is "when,
+within these 25 seconds" rather than "which N of K" -- a different task that this
+result does not speak to. What it rules out is using the current detector to
+*choose* among candidates.
