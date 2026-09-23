@@ -1,0 +1,4691 @@
+{
+ "source": "https://www.youtube.com/live/y7L8tkw4aQI (Minor League Cricket, Metroplex Tracers v All Stars, 18-45min)",
+ "window": {
+  "start_sec": 0.0,
+  "end_sec": 1620.0,
+  "step_sec": 3.0
+ },
+ "roi": [
+  520,
+  625,
+  770,
+  705
+ ],
+ "layouts_matched": {
+  "cricclubs": 388
+ },
+ "derivation": "scoreboard OCR @3.0s (388/540 parsed, 363 survived cleaning)",
+ "timing_caveat": "Timestamps are when the scoreboard was UPDATED, not when the ball was bowled. Measured lag on this broadcast ranges from ~2s on a dot to ~11s on a six, because the graphics follow ball-tracking and the umpire signal. Valid for counting and outcome labels; invalid as a release-time benchmark.",
+ "caveats": [
+  "extras (wides, no-balls) do not increment the over counter, so legal deliveries are counted but total balls faced is undercounted",
+  "sampling is 3.0s, so every timestamp carries at least that much quantisation error on top of the update lag",
+  "the ROI is broadcaster-specific and hardcoded per source"
+ ],
+ "totals": {
+  "deliveries": 29,
+  "scoring_events": 27,
+  "boundaries": 10,
+  "wickets": 1,
+  "innings": 1
+ },
+ "samples": [
+  {
+   "t": 0.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 18/0 RR 18.00 OVERS |"
+  },
+  {
+   "t": 3.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 18/0 RR 18.00 OVERS I"
+  },
+  {
+   "t": 6.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 18/0 RR 18.00 OVERS I"
+  },
+  {
+   "t": 9.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 18/0 RR 18.00 OVERS |"
+  },
+  {
+   "t": 12.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 18/0 RR 18.00 OVERS |"
+  },
+  {
+   "t": 15.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 18/0 RR I8.00 OVERS |"
+  },
+  {
+   "t": 18.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 18/0 RR 18.00 OVERS |"
+  },
+  {
+   "t": 21.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 24.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 27.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 30.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 33.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 2210 RPE8.86 OVERS"
+  },
+  {
+   "t": 36.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 22/0 RR 18.86 OVERS L.I"
+  },
+  {
+   "t": 39.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 22/0 RR 18.86 OVERSL."
+  },
+  {
+   "t": 42.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 22/0 RR18.86 OVERSL."
+  },
+  {
+   "t": 45.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 22/0 RR 18.86 OVERS L.I"
+  },
+  {
+   "t": 48.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 22/0 RR 18.86 OVERSL."
+  },
+  {
+   "t": 51.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 22/0 RR 18.86 OVERS L."
+  },
+  {
+   "t": 54.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 22/0 RR 18.86 OVERSL."
+  },
+  {
+   "t": 57.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 22/0 RR 18.86 OVERS H."
+  },
+  {
+   "t": 60.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 22/0 RR 18.86 OVERS L.I"
+  },
+  {
+   "t": 63.0,
+   "runs": 22,
+   "wickets": 0,
+   "balls": 8,
+   "layout": "cricclubs",
+   "raw": "MPT 22/0 RR /6.50 OVERS 1.2"
+  },
+  {
+   "t": 66.0,
+   "runs": 22,
+   "wickets": 0,
+   "balls": 8,
+   "layout": "cricclubs",
+   "raw": "MPT 22/0 RR 16.50 OVERS 1.2"
+  },
+  {
+   "t": 69.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 22/0 RR 16.50 OVERSL.2"
+  },
+  {
+   "t": 72.0,
+   "runs": 22,
+   "wickets": 0,
+   "balls": 8,
+   "layout": "cricclubs",
+   "raw": "MPT 22/0 RR 16.50 OVERS 1.2"
+  },
+  {
+   "t": 75.0,
+   "runs": 22,
+   "wickets": 0,
+   "balls": 8,
+   "layout": "cricclubs",
+   "raw": "MPT 22/0 RR 16.50 OVERS 1.2"
+  },
+  {
+   "t": 78.0,
+   "runs": 22,
+   "wickets": 0,
+   "balls": 8,
+   "layout": "cricclubs",
+   "raw": "MPT 22/0 RR 16.50 OVERS 1.2"
+  },
+  {
+   "t": 81.0,
+   "runs": 22,
+   "wickets": 0,
+   "balls": 8,
+   "layout": "cricclubs",
+   "raw": "MPT 22/0 RR 16.50 OVERS 1.2"
+  },
+  {
+   "t": 84.0,
+   "runs": 22,
+   "wickets": 0,
+   "balls": 8,
+   "layout": "cricclubs",
+   "raw": "MPT 22/0 RR /6.50 OVERS 1.2"
+  },
+  {
+   "t": 87.0,
+   "runs": 22,
+   "wickets": 0,
+   "balls": 8,
+   "layout": "cricclubs",
+   "raw": "MPT 22/0 RR 16.50 OVERS1.2"
+  },
+  {
+   "t": 90.0,
+   "runs": 23,
+   "wickets": 0,
+   "balls": 9,
+   "layout": "cricclubs",
+   "raw": "MPT 23/0 RR 15.33 OVERS 1.3"
+  },
+  {
+   "t": 93.0,
+   "runs": 23,
+   "wickets": 0,
+   "balls": 9,
+   "layout": "cricclubs",
+   "raw": "MPT 23/0 RR 15.33 OVERS 1.3"
+  },
+  {
+   "t": 96.0,
+   "runs": 23,
+   "wickets": 0,
+   "balls": 9,
+   "layout": "cricclubs",
+   "raw": "MPT 23/0 RR 15.33 OVERS1.3"
+  },
+  {
+   "t": 99.0,
+   "runs": 23,
+   "wickets": 0,
+   "balls": 9,
+   "layout": "cricclubs",
+   "raw": "MPT 23/0 RRI5.33 OVERS 1.3"
+  },
+  {
+   "t": 102.0,
+   "runs": 23,
+   "wickets": 0,
+   "balls": 9,
+   "layout": "cricclubs",
+   "raw": "MPT 23/0 RR 15.33 OVERS 1.3"
+  },
+  {
+   "t": 105.0,
+   "runs": 23,
+   "wickets": 0,
+   "balls": 9,
+   "layout": "cricclubs",
+   "raw": "MPT 23/0 RR 15.33 OVERS 1.3"
+  },
+  {
+   "t": 108.0,
+   "runs": 23,
+   "wickets": 0,
+   "balls": 9,
+   "layout": "cricclubs",
+   "raw": "MPT 23/0 RR 15.33 OVERS1.3"
+  },
+  {
+   "t": 111.0,
+   "runs": 23,
+   "wickets": 0,
+   "balls": 9,
+   "layout": "cricclubs",
+   "raw": "MPT 23/0 RR 15.33 OVERS1.3"
+  },
+  {
+   "t": 114.0,
+   "runs": 23,
+   "wickets": 0,
+   "balls": 9,
+   "layout": "cricclubs",
+   "raw": "MPT 23/0 RR 5.33 OVERS 1.3"
+  },
+  {
+   "t": 117.0,
+   "runs": 23,
+   "wickets": 0,
+   "balls": 9,
+   "layout": "cricclubs",
+   "raw": "MPT 23/0 RR 15.33 OVERS 1.3"
+  },
+  {
+   "t": 120.0,
+   "runs": 23,
+   "wickets": 0,
+   "balls": 9,
+   "layout": "cricclubs",
+   "raw": "MPT 23/0 RR 15.33 OVERS 1.3"
+  },
+  {
+   "t": 123.0,
+   "runs": 24,
+   "wickets": 0,
+   "balls": 10,
+   "layout": "cricclubs",
+   "raw": "MPT 24/0 RR 14.40 OVERS 1.4"
+  },
+  {
+   "t": 126.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 24/0 RR 14,40 OVERSIA4"
+  },
+  {
+   "t": 129.0,
+   "runs": 24,
+   "wickets": 0,
+   "balls": 10,
+   "layout": "cricclubs",
+   "raw": "MPT 24/0 RR14.40 OVERS14"
+  },
+  {
+   "t": 132.0,
+   "runs": 24,
+   "wickets": 0,
+   "balls": 10,
+   "layout": "cricclubs",
+   "raw": "MPT 24/0 RR 14.40 OVERS1.4"
+  },
+  {
+   "t": 135.0,
+   "runs": 24,
+   "wickets": 0,
+   "balls": 10,
+   "layout": "cricclubs",
+   "raw": "MPT 24/0 RR 14.40 OVERS 1.4"
+  },
+  {
+   "t": 138.0,
+   "runs": 24,
+   "wickets": 0,
+   "balls": 10,
+   "layout": "cricclubs",
+   "raw": "MPT 24/0 RR 14.40 OVERS1.4"
+  },
+  {
+   "t": 141.0,
+   "runs": 24,
+   "wickets": 0,
+   "balls": 10,
+   "layout": "cricclubs",
+   "raw": "MPT 24/0 RR 14.40 OVERS1.4"
+  },
+  {
+   "t": 144.0,
+   "runs": 24,
+   "wickets": 0,
+   "balls": 10,
+   "layout": "cricclubs",
+   "raw": "MPT 24/0 RR 14.40 OVERS 14"
+  },
+  {
+   "t": 147.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "JULL E"
+  },
+  {
+   "t": 150.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 153.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 156.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 159.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 162.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 11,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR 15.27 OVERS 1.5"
+  },
+  {
+   "t": 165.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 28/0 RR 15.27 OVERS L.5"
+  },
+  {
+   "t": 168.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 11,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR 15.27 OVERS 1.5"
+  },
+  {
+   "t": 171.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 11,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR 15.27 OVERS 1.5"
+  },
+  {
+   "t": 174.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 28/0 RR 15.27 OVERS L.5"
+  },
+  {
+   "t": 177.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 11,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR 15.27 OVERS 1.5"
+  },
+  {
+   "t": 180.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 11,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR 15.27 OVERS 1.5"
+  },
+  {
+   "t": 183.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 11,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR 15.27 OVERS 1.5"
+  },
+  {
+   "t": 186.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 12,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR 14.00 OVERS 2"
+  },
+  {
+   "t": 189.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 12,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR 14.00 OVERS 2"
+  },
+  {
+   "t": 192.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 12,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR 14.00 OVERS 2"
+  },
+  {
+   "t": 195.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 12,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR 14.00 OVERS 2"
+  },
+  {
+   "t": 198.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 12,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR14.00 OVERS 2"
+  },
+  {
+   "t": 201.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 12,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR 14.00 OVERS 2"
+  },
+  {
+   "t": 204.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 12,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR 14.00 OVERS 2"
+  },
+  {
+   "t": 207.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 12,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR 14.00 OVERS 2"
+  },
+  {
+   "t": 210.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 12,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR 14.00 OVERS 2"
+  },
+  {
+   "t": 213.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 12,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR 14.00 OVERS 2"
+  },
+  {
+   "t": 216.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 12,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR14.00 OVERS 2"
+  },
+  {
+   "t": 219.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 12,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR14.00 OVERS 2"
+  },
+  {
+   "t": 222.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 12,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR 14.00 OVERS 2"
+  },
+  {
+   "t": 225.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 12,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR 14.00 OVERS 2"
+  },
+  {
+   "t": 228.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 12,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR 14.00 OVERS 2"
+  },
+  {
+   "t": 231.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 12,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR 14.00 OVERS 2"
+  },
+  {
+   "t": 234.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 12,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR 14.00 OVERS 2"
+  },
+  {
+   "t": 237.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 12,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR 14.00 OVERS 2"
+  },
+  {
+   "t": 240.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 12,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR 14.00 OVERS 2"
+  },
+  {
+   "t": 243.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 12,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR 14.00 OVERS 2"
+  },
+  {
+   "t": 246.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 12,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR 14.00 OVERS 2"
+  },
+  {
+   "t": 249.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 12,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR 14.00 OVERS 2"
+  },
+  {
+   "t": 252.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 12,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR 14.00 OVERS 2"
+  },
+  {
+   "t": 255.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 12,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR 14.00 OVERS 2"
+  },
+  {
+   "t": 258.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 12,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR 14.00 OVERS 2"
+  },
+  {
+   "t": 261.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 12,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR 14.00 OVERS 2"
+  },
+  {
+   "t": 264.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 12,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR 14.00 OVERS 2"
+  },
+  {
+   "t": 267.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 12,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR 14.00 OVERS 2"
+  },
+  {
+   "t": 270.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 12,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR 14.00 OVERS 2"
+  },
+  {
+   "t": 273.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 12,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR14.00 OVERS 2"
+  },
+  {
+   "t": 276.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 12,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR 14.00 OVERS 2"
+  },
+  {
+   "t": 279.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 12,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR4.OO OVERS 2"
+  },
+  {
+   "t": 282.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 12,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RRI4.O0 OVERS 2"
+  },
+  {
+   "t": 285.0,
+   "runs": 28,
+   "wickets": 0,
+   "balls": 12,
+   "layout": "cricclubs",
+   "raw": "MPT 28/0 RR14.00 OVERS 2"
+  },
+  {
+   "t": 288.0,
+   "runs": 32,
+   "wickets": 0,
+   "balls": 13,
+   "layout": "cricclubs",
+   "raw": "MPT 32/0 RR 14.77 OVERS 2.1"
+  },
+  {
+   "t": 291.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 294.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 297.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 300.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 303.0,
+   "runs": 32,
+   "wickets": 0,
+   "balls": 13,
+   "layout": "cricclubs",
+   "raw": "MPT 32/0 RR14.77 OVERS 2.1"
+  },
+  {
+   "t": 306.0,
+   "runs": 32,
+   "wickets": 0,
+   "balls": 13,
+   "layout": "cricclubs",
+   "raw": "MPT 32/0 RR 14.77 OVERS 2.1"
+  },
+  {
+   "t": 309.0,
+   "runs": 32,
+   "wickets": 0,
+   "balls": 13,
+   "layout": "cricclubs",
+   "raw": "MPT 32/0 RR 14.77 OVERS 2.1"
+  },
+  {
+   "t": 312.0,
+   "runs": 32,
+   "wickets": 0,
+   "balls": 13,
+   "layout": "cricclubs",
+   "raw": "MPT 32/0 RR14.77 OVERS 2.1"
+  },
+  {
+   "t": 315.0,
+   "runs": 32,
+   "wickets": 0,
+   "balls": 13,
+   "layout": "cricclubs",
+   "raw": "MPT 32/0 RR 14.77 OVERS 2.1"
+  },
+  {
+   "t": 318.0,
+   "runs": 32,
+   "wickets": 0,
+   "balls": 13,
+   "layout": "cricclubs",
+   "raw": "MPT 32/0 RR 14.77 OVERS 2.1"
+  },
+  {
+   "t": 321.0,
+   "runs": 32,
+   "wickets": 0,
+   "balls": 13,
+   "layout": "cricclubs",
+   "raw": "MPT 32/0 RR 14.77 OVERS 2.1"
+  },
+  {
+   "t": 324.0,
+   "runs": 32,
+   "wickets": 0,
+   "balls": 13,
+   "layout": "cricclubs",
+   "raw": "MPT 32/0 RR 14.77 OVERS 2.1"
+  },
+  {
+   "t": 327.0,
+   "runs": 32,
+   "wickets": 0,
+   "balls": 13,
+   "layout": "cricclubs",
+   "raw": "MPT 32/0 RR14.77 OVERS 2.1"
+  },
+  {
+   "t": 330.0,
+   "runs": 36,
+   "wickets": 0,
+   "balls": 14,
+   "layout": "cricclubs",
+   "raw": "MPT 36/0 RR 15.43 OVERS 2.2"
+  },
+  {
+   "t": 333.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 336.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 339.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 342.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 345.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 348.0,
+   "runs": 36,
+   "wickets": 0,
+   "balls": 14,
+   "layout": "cricclubs",
+   "raw": "MPT 36/0 RR 15.43 OVERS 2.2"
+  },
+  {
+   "t": 351.0,
+   "runs": 36,
+   "wickets": 0,
+   "balls": 14,
+   "layout": "cricclubs",
+   "raw": "MPT 36/0 RR 15.43 OVERS 2.2"
+  },
+  {
+   "t": 354.0,
+   "runs": 36,
+   "wickets": 0,
+   "balls": 14,
+   "layout": "cricclubs",
+   "raw": "MPT 36/0 RR 15.43 OVERS 2.2"
+  },
+  {
+   "t": 357.0,
+   "runs": 36,
+   "wickets": 0,
+   "balls": 14,
+   "layout": "cricclubs",
+   "raw": "MPT 36/0 RR 15.43 OVERS 2.2"
+  },
+  {
+   "t": 360.0,
+   "runs": 36,
+   "wickets": 0,
+   "balls": 14,
+   "layout": "cricclubs",
+   "raw": "MPT 36/0 RR 15.43 OVERS 2.2"
+  },
+  {
+   "t": 363.0,
+   "runs": 36,
+   "wickets": 0,
+   "balls": 14,
+   "layout": "cricclubs",
+   "raw": "MPT 36/0 RR 15.43 OVERS 2.2"
+  },
+  {
+   "t": 366.0,
+   "runs": 36,
+   "wickets": 0,
+   "balls": 14,
+   "layout": "cricclubs",
+   "raw": "MPT 36/0 RR 15.43 OVERS 2.2"
+  },
+  {
+   "t": 369.0,
+   "runs": 37,
+   "wickets": 0,
+   "balls": 15,
+   "layout": "cricclubs",
+   "raw": "MPT 37/0 RR 14.80 OVERS 2.3"
+  },
+  {
+   "t": 372.0,
+   "runs": 37,
+   "wickets": 0,
+   "balls": 15,
+   "layout": "cricclubs",
+   "raw": "MPT 37/0 RR 14.80 OVERS 2.3"
+  },
+  {
+   "t": 375.0,
+   "runs": 37,
+   "wickets": 0,
+   "balls": 15,
+   "layout": "cricclubs",
+   "raw": "MPT 37/0 RR 14.80 OVERS 2.3"
+  },
+  {
+   "t": 378.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LUGM E"
+  },
+  {
+   "t": 381.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 384.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 387.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 390.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 393.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 396.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 399.0,
+   "runs": 37,
+   "wickets": 0,
+   "balls": 15,
+   "layout": "cricclubs",
+   "raw": "MPT 37/0 RR 14.80 OVERS 2.3"
+  },
+  {
+   "t": 402.0,
+   "runs": 37,
+   "wickets": 0,
+   "balls": 15,
+   "layout": "cricclubs",
+   "raw": "MPT 37/0 RR 14.80 OVERS 2.3"
+  },
+  {
+   "t": 405.0,
+   "runs": 37,
+   "wickets": 0,
+   "balls": 16,
+   "layout": "cricclubs",
+   "raw": "MPT 37/0 RR 13.88 OVERS 2.4"
+  },
+  {
+   "t": 408.0,
+   "runs": 37,
+   "wickets": 0,
+   "balls": 16,
+   "layout": "cricclubs",
+   "raw": "MPT 37/0 RR13.88 OVERS 2.4"
+  },
+  {
+   "t": 411.0,
+   "runs": 37,
+   "wickets": 0,
+   "balls": 16,
+   "layout": "cricclubs",
+   "raw": "MPT 37/0 RR 13.88 OVERS 2.4"
+  },
+  {
+   "t": 414.0,
+   "runs": 37,
+   "wickets": 0,
+   "balls": 16,
+   "layout": "cricclubs",
+   "raw": "MPT 37/0 RR 13.88 OVERS 2.4"
+  },
+  {
+   "t": 417.0,
+   "runs": 37,
+   "wickets": 0,
+   "balls": 16,
+   "layout": "cricclubs",
+   "raw": "MPT 37/0 RR13.88 OVERS 2.4"
+  },
+  {
+   "t": 420.0,
+   "runs": 37,
+   "wickets": 0,
+   "balls": 16,
+   "layout": "cricclubs",
+   "raw": "MPT 37/0 RR 13.88 OVERS 2.4"
+  },
+  {
+   "t": 423.0,
+   "runs": 37,
+   "wickets": 0,
+   "balls": 16,
+   "layout": "cricclubs",
+   "raw": "MPT 37/0 RR 13.88 OVERS 2.4"
+  },
+  {
+   "t": 426.0,
+   "runs": 37,
+   "wickets": 0,
+   "balls": 16,
+   "layout": "cricclubs",
+   "raw": "MPT 37/0 RR 13.88 OVERS 2.4"
+  },
+  {
+   "t": 429.0,
+   "runs": 37,
+   "wickets": 0,
+   "balls": 16,
+   "layout": "cricclubs",
+   "raw": "MPT 37/0 RR /3.88 OVERS 2.4"
+  },
+  {
+   "t": 432.0,
+   "runs": 37,
+   "wickets": 0,
+   "balls": 16,
+   "layout": "cricclubs",
+   "raw": "MPT 37/0 RR3.88 OVERS 24"
+  },
+  {
+   "t": 435.0,
+   "runs": 37,
+   "wickets": 0,
+   "balls": 16,
+   "layout": "cricclubs",
+   "raw": "MPT 37/0 RR 13.88 OVERS 2.4"
+  },
+  {
+   "t": 438.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 441.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 444.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 447.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 450.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 453.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 4L/0 RR 14.47 OVERS 2.5"
+  },
+  {
+   "t": 456.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 4L/0 RR14.47 OVERS2.5"
+  },
+  {
+   "t": 459.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 4L/0 RR 14.47 OVERS 2.5"
+  },
+  {
+   "t": 462.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 4L/0 RR 14.47 OVERS 2.5"
+  },
+  {
+   "t": 465.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 4L/0 RR 14.47 OVERS 2.5"
+  },
+  {
+   "t": 468.0,
+   "runs": 41,
+   "wickets": 0,
+   "balls": 17,
+   "layout": "cricclubs",
+   "raw": "MPT 41/0 RR 14.47 OVERS 2.5"
+  },
+  {
+   "t": 471.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 4L/0 RR 14.47 OVERS 2.5"
+  },
+  {
+   "t": 474.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 4L/0 RR 14.47 OVERS 2.5"
+  },
+  {
+   "t": 477.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 4L/0 RR14.47 OVERS 2.5"
+  },
+  {
+   "t": 480.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 4L/0 RR14.47 OVERS 2.5"
+  },
+  {
+   "t": 483.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 4L/0 RR 14.47 OVERS 2.5"
+  },
+  {
+   "t": 486.0,
+   "runs": 41,
+   "wickets": 0,
+   "balls": 17,
+   "layout": "cricclubs",
+   "raw": "MPT 41/0 RR 14.47 OVERS 2.5"
+  },
+  {
+   "t": 489.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 4L/0 RR 14.47 OVERS 2.5"
+  },
+  {
+   "t": 492.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 4L/0 RR14.47 OVERS 2.5"
+  },
+  {
+   "t": 495.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 4L/0 RR14.47 OVERS2.5"
+  },
+  {
+   "t": 498.0,
+   "runs": 41,
+   "wickets": 0,
+   "balls": 17,
+   "layout": "cricclubs",
+   "raw": "MPT 41/0 RR14.47 OVERS 2.5"
+  },
+  {
+   "t": 501.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 504.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 507.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 510.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 513.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 45/0 RRI5.00 OVERS }"
+  },
+  {
+   "t": 516.0,
+   "runs": 45,
+   "wickets": 0,
+   "balls": 18,
+   "layout": "cricclubs",
+   "raw": "MPT 45/0 RR I5.00 OVERS 3"
+  },
+  {
+   "t": 519.0,
+   "runs": 45,
+   "wickets": 0,
+   "balls": 18,
+   "layout": "cricclubs",
+   "raw": "MPT 45/0 RR I5.00 OVERS 3"
+  },
+  {
+   "t": 522.0,
+   "runs": 45,
+   "wickets": 0,
+   "balls": 18,
+   "layout": "cricclubs",
+   "raw": "MPT 45/0 RR I5.00 OVERS 3"
+  },
+  {
+   "t": 525.0,
+   "runs": 45,
+   "wickets": 0,
+   "balls": 18,
+   "layout": "cricclubs",
+   "raw": "MPT 45/0 RR I5.00 OVERS 3"
+  },
+  {
+   "t": 528.0,
+   "runs": 45,
+   "wickets": 0,
+   "balls": 18,
+   "layout": "cricclubs",
+   "raw": "MPT 45/0 RRI5.00 OVERS 3"
+  },
+  {
+   "t": 531.0,
+   "runs": 45,
+   "wickets": 0,
+   "balls": 18,
+   "layout": "cricclubs",
+   "raw": "MPT 45/0 RR I5.00 OVERS 3"
+  },
+  {
+   "t": 534.0,
+   "runs": 45,
+   "wickets": 0,
+   "balls": 18,
+   "layout": "cricclubs",
+   "raw": "MPT 45/0 RR I5.00 OVERS 3"
+  },
+  {
+   "t": 537.0,
+   "runs": 45,
+   "wickets": 0,
+   "balls": 18,
+   "layout": "cricclubs",
+   "raw": "MPT 45/0 RR/5.00 OVERS 3"
+  },
+  {
+   "t": 540.0,
+   "runs": 45,
+   "wickets": 0,
+   "balls": 18,
+   "layout": "cricclubs",
+   "raw": "MPT 45/0 RR /5.00 OVERS 3"
+  },
+  {
+   "t": 543.0,
+   "runs": 45,
+   "wickets": 0,
+   "balls": 18,
+   "layout": "cricclubs",
+   "raw": "MPT 45/0 RR I5.00 OVERS 3"
+  },
+  {
+   "t": 546.0,
+   "runs": 45,
+   "wickets": 0,
+   "balls": 18,
+   "layout": "cricclubs",
+   "raw": "MPT 45/0 RR I5.00 OVERS 3"
+  },
+  {
+   "t": 549.0,
+   "runs": 45,
+   "wickets": 0,
+   "balls": 18,
+   "layout": "cricclubs",
+   "raw": "MPT 45/0 RR I5.00 OVERS 3"
+  },
+  {
+   "t": 552.0,
+   "runs": 45,
+   "wickets": 0,
+   "balls": 18,
+   "layout": "cricclubs",
+   "raw": "MPT 45/0 RR I5.00 OVERS 3"
+  },
+  {
+   "t": 555.0,
+   "runs": 45,
+   "wickets": 0,
+   "balls": 18,
+   "layout": "cricclubs",
+   "raw": "MPT 45/0 RR I5.00 OVERS 3"
+  },
+  {
+   "t": 558.0,
+   "runs": 45,
+   "wickets": 0,
+   "balls": 18,
+   "layout": "cricclubs",
+   "raw": "MPT 45/0 RR I5.00 OVERS 3"
+  },
+  {
+   "t": 561.0,
+   "runs": 45,
+   "wickets": 0,
+   "balls": 18,
+   "layout": "cricclubs",
+   "raw": "MPT 45/0 RR I5.00 OVERS 3"
+  },
+  {
+   "t": 564.0,
+   "runs": 45,
+   "wickets": 0,
+   "balls": 18,
+   "layout": "cricclubs",
+   "raw": "MPT 45/0 RR I5.00 OVERS 3"
+  },
+  {
+   "t": 567.0,
+   "runs": 45,
+   "wickets": 0,
+   "balls": 18,
+   "layout": "cricclubs",
+   "raw": "MPT 45/0 RR I5.00 OVERS 3"
+  },
+  {
+   "t": 570.0,
+   "runs": 45,
+   "wickets": 0,
+   "balls": 18,
+   "layout": "cricclubs",
+   "raw": "MPT 45/0 RR I5.00 OVERS 3"
+  },
+  {
+   "t": 573.0,
+   "runs": 46,
+   "wickets": 0,
+   "balls": 19,
+   "layout": "cricclubs",
+   "raw": "MPT 46/0 RR 14.53 OVERS 3.1"
+  },
+  {
+   "t": 576.0,
+   "runs": 46,
+   "wickets": 0,
+   "balls": 18,
+   "layout": "cricclubs",
+   "raw": "MPT 46/0 RR 14.53 OVERS 3."
+  },
+  {
+   "t": 579.0,
+   "runs": 46,
+   "wickets": 0,
+   "balls": 18,
+   "layout": "cricclubs",
+   "raw": "MPT 46/0 RR 14.53 OVERS 3."
+  },
+  {
+   "t": 582.0,
+   "runs": 46,
+   "wickets": 0,
+   "balls": 18,
+   "layout": "cricclubs",
+   "raw": "MPT 46/0 RR14.53 OVERS 3."
+  },
+  {
+   "t": 585.0,
+   "runs": 46,
+   "wickets": 0,
+   "balls": 19,
+   "layout": "cricclubs",
+   "raw": "MPT 46/0 RR 14.53 OVERS 31"
+  },
+  {
+   "t": 588.0,
+   "runs": 46,
+   "wickets": 0,
+   "balls": 18,
+   "layout": "cricclubs",
+   "raw": "MPT 46/0 RR 14.53 OVERS 3."
+  },
+  {
+   "t": 591.0,
+   "runs": 46,
+   "wickets": 0,
+   "balls": 18,
+   "layout": "cricclubs",
+   "raw": "MPT 46/0 RR 14.53 OVERS 3"
+  },
+  {
+   "t": 594.0,
+   "runs": 46,
+   "wickets": 0,
+   "balls": 19,
+   "layout": "cricclubs",
+   "raw": "MPT 46/0 RR 14.53 OVERS 3.1"
+  },
+  {
+   "t": 597.0,
+   "runs": 46,
+   "wickets": 0,
+   "balls": 18,
+   "layout": "cricclubs",
+   "raw": "MPT 46/0 RR 14.53 OVERS 3."
+  },
+  {
+   "t": 600.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 46L0 RR 14.53 OVERS 3."
+  },
+  {
+   "t": 603.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 606.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 609.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "9"
+  },
+  {
+   "t": 612.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 615.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "JUGM E"
+  },
+  {
+   "t": 618.0,
+   "runs": 52,
+   "wickets": 0,
+   "balls": 20,
+   "layout": "cricclubs",
+   "raw": "MPT 52/0 RR 15.60 OVERS 3.2"
+  },
+  {
+   "t": 621.0,
+   "runs": 52,
+   "wickets": 0,
+   "balls": 18,
+   "layout": "cricclubs",
+   "raw": "MPT 52/0 RR 15.60 OVERS 3."
+  },
+  {
+   "t": 624.0,
+   "runs": 52,
+   "wickets": 0,
+   "balls": 18,
+   "layout": "cricclubs",
+   "raw": "MPT 52/0 RR 15.60 OVERS 3."
+  },
+  {
+   "t": 627.0,
+   "runs": 52,
+   "wickets": 0,
+   "balls": 20,
+   "layout": "cricclubs",
+   "raw": "MPT 52/0 RR 15.60 OVERS 3.2"
+  },
+  {
+   "t": 630.0,
+   "runs": 52,
+   "wickets": 0,
+   "balls": 20,
+   "layout": "cricclubs",
+   "raw": "MPT 52/0 RR /5.60 OVERS 3.2"
+  },
+  {
+   "t": 633.0,
+   "runs": 52,
+   "wickets": 0,
+   "balls": 20,
+   "layout": "cricclubs",
+   "raw": "MPT 52/0 RR 15.60 OVERS 3.2"
+  },
+  {
+   "t": 636.0,
+   "runs": 52,
+   "wickets": 0,
+   "balls": 20,
+   "layout": "cricclubs",
+   "raw": "MPT 52/0 RR 15.60 OVERS 3.2"
+  },
+  {
+   "t": 639.0,
+   "runs": 52,
+   "wickets": 0,
+   "balls": 18,
+   "layout": "cricclubs",
+   "raw": "MPT 52/0 RR 15.60 OVERS 3."
+  },
+  {
+   "t": 642.0,
+   "runs": 52,
+   "wickets": 0,
+   "balls": 20,
+   "layout": "cricclubs",
+   "raw": "MPT 52/0 RR 15.60 OVERS 3.2"
+  },
+  {
+   "t": 645.0,
+   "runs": 52,
+   "wickets": 0,
+   "balls": 20,
+   "layout": "cricclubs",
+   "raw": "MPT 52/0 RR 15.60 OVERS 3.2"
+  },
+  {
+   "t": 648.0,
+   "runs": 46,
+   "wickets": 0,
+   "balls": 19,
+   "layout": "cricclubs",
+   "raw": "MPT 46/0 RR 14.53 OVERS 31"
+  },
+  {
+   "t": 651.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 654.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 657.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 660.0,
+   "runs": 52,
+   "wickets": 0,
+   "balls": 20,
+   "layout": "cricclubs",
+   "raw": "MPT 52/0 RR 15.60 OVERS 3.2"
+  },
+  {
+   "t": 663.0,
+   "runs": 52,
+   "wickets": 0,
+   "balls": 18,
+   "layout": "cricclubs",
+   "raw": "MPT 52/0 RR 15.60 OVERS 3."
+  },
+  {
+   "t": 666.0,
+   "runs": 52,
+   "wickets": 0,
+   "balls": 20,
+   "layout": "cricclubs",
+   "raw": "MPT 52/0 RR 15.60 OVERS 3.2"
+  },
+  {
+   "t": 669.0,
+   "runs": 52,
+   "wickets": 0,
+   "balls": 20,
+   "layout": "cricclubs",
+   "raw": "MPT 52/0 RR 15.60 OVERS 3.2"
+  },
+  {
+   "t": 672.0,
+   "runs": 52,
+   "wickets": 0,
+   "balls": 20,
+   "layout": "cricclubs",
+   "raw": "MPT 52/0 RR 15.60 OVERS 3.2"
+  },
+  {
+   "t": 675.0,
+   "runs": 52,
+   "wickets": 0,
+   "balls": 20,
+   "layout": "cricclubs",
+   "raw": "MPT 52/0 RR 15,60 OVERS 3.2"
+  },
+  {
+   "t": 678.0,
+   "runs": 52,
+   "wickets": 0,
+   "balls": 20,
+   "layout": "cricclubs",
+   "raw": "MPT 52/0 RR /5,60 OVERS 3.2"
+  },
+  {
+   "t": 681.0,
+   "runs": 52,
+   "wickets": 0,
+   "balls": 20,
+   "layout": "cricclubs",
+   "raw": "MPT 52/0 RR 15,60 OVERS 3.2"
+  },
+  {
+   "t": 684.0,
+   "runs": 52,
+   "wickets": 0,
+   "balls": 20,
+   "layout": "cricclubs",
+   "raw": "MPT 52/0 RR 15.60 OVERS 3.2"
+  },
+  {
+   "t": 687.0,
+   "runs": 52,
+   "wickets": 0,
+   "balls": 18,
+   "layout": "cricclubs",
+   "raw": "MPT 52/0 RR 15,60 OVERS 3."
+  },
+  {
+   "t": 690.0,
+   "runs": 52,
+   "wickets": 0,
+   "balls": 20,
+   "layout": "cricclubs",
+   "raw": "MPT 52/0 RR 15.60 OVERS 3.2"
+  },
+  {
+   "t": 693.0,
+   "runs": 52,
+   "wickets": 0,
+   "balls": 18,
+   "layout": "cricclubs",
+   "raw": "MPT 52/0 RR/5.60 OVERS 3."
+  },
+  {
+   "t": 696.0,
+   "runs": 52,
+   "wickets": 0,
+   "balls": 20,
+   "layout": "cricclubs",
+   "raw": "MPT 52/0 RR 15.60 OVERS 3.2"
+  },
+  {
+   "t": 699.0,
+   "runs": 52,
+   "wickets": 0,
+   "balls": 20,
+   "layout": "cricclubs",
+   "raw": "MPT 52/0 RR /5,60 OVERS 32"
+  },
+  {
+   "t": 702.0,
+   "runs": 52,
+   "wickets": 0,
+   "balls": 20,
+   "layout": "cricclubs",
+   "raw": "MPT 52/0 RR 15,60 OVERS 32"
+  },
+  {
+   "t": 705.0,
+   "runs": 52,
+   "wickets": 0,
+   "balls": 20,
+   "layout": "cricclubs",
+   "raw": "MPT 52/0 RR 15,60 OVERS 32"
+  },
+  {
+   "t": 708.0,
+   "runs": 52,
+   "wickets": 0,
+   "balls": 18,
+   "layout": "cricclubs",
+   "raw": "MPT 52/0 RR 15.60 OVERS 3."
+  },
+  {
+   "t": 711.0,
+   "runs": 52,
+   "wickets": 0,
+   "balls": 18,
+   "layout": "cricclubs",
+   "raw": "MPT 52/0 RR 15.60 OVERS 3."
+  },
+  {
+   "t": 714.0,
+   "runs": 52,
+   "wickets": 0,
+   "balls": 18,
+   "layout": "cricclubs",
+   "raw": "MPT 52/0 RR 15.60 OVERS 3."
+  },
+  {
+   "t": 717.0,
+   "runs": 52,
+   "wickets": 0,
+   "balls": 20,
+   "layout": "cricclubs",
+   "raw": "MPT 52/0 RR 15.60 OVERS 3.2"
+  },
+  {
+   "t": 720.0,
+   "runs": 52,
+   "wickets": 0,
+   "balls": 18,
+   "layout": "cricclubs",
+   "raw": "MPT 52/0 RR 15.60 OVERS 3."
+  },
+  {
+   "t": 723.0,
+   "runs": 52,
+   "wickets": 0,
+   "balls": 20,
+   "layout": "cricclubs",
+   "raw": "MPT 52/0 RR 15.60 OVERS 3.2"
+  },
+  {
+   "t": 726.0,
+   "runs": 52,
+   "wickets": 0,
+   "balls": 20,
+   "layout": "cricclubs",
+   "raw": "MPT 52/0 RR75.60 OVERS 3.2"
+  },
+  {
+   "t": 729.0,
+   "runs": 52,
+   "wickets": 0,
+   "balls": 18,
+   "layout": "cricclubs",
+   "raw": "MPT 52/0 RR 15.60 OVERS 3."
+  },
+  {
+   "t": 732.0,
+   "runs": 52,
+   "wickets": 0,
+   "balls": 20,
+   "layout": "cricclubs",
+   "raw": "MPT 52/0 RR 15.60 OVERS 3.2"
+  },
+  {
+   "t": 735.0,
+   "runs": 53,
+   "wickets": 0,
+   "balls": 21,
+   "layout": "cricclubs",
+   "raw": "MPT 53/0 RR 5.14 OVERS 3.3"
+  },
+  {
+   "t": 738.0,
+   "runs": 53,
+   "wickets": 0,
+   "balls": 21,
+   "layout": "cricclubs",
+   "raw": "MPT 53/0 RR 15.14 OVERS 3.3"
+  },
+  {
+   "t": 741.0,
+   "runs": 53,
+   "wickets": 0,
+   "balls": 21,
+   "layout": "cricclubs",
+   "raw": "MPT 53/0 RR 15.14 OVERS 3.3"
+  },
+  {
+   "t": 744.0,
+   "runs": 53,
+   "wickets": 0,
+   "balls": 21,
+   "layout": "cricclubs",
+   "raw": "MPT 53/0 RR /5.14 OVERS 3.3"
+  },
+  {
+   "t": 747.0,
+   "runs": 53,
+   "wickets": 0,
+   "balls": 21,
+   "layout": "cricclubs",
+   "raw": "MPT 53/0 RR /5.14 OVERS 3.3"
+  },
+  {
+   "t": 750.0,
+   "runs": 53,
+   "wickets": 0,
+   "balls": 21,
+   "layout": "cricclubs",
+   "raw": "MPT 53/0 RR 15.14 OVERS 3.3"
+  },
+  {
+   "t": 753.0,
+   "runs": 53,
+   "wickets": 0,
+   "balls": 21,
+   "layout": "cricclubs",
+   "raw": "MPT 53/0 RR 15.14 OVERS 3.3"
+  },
+  {
+   "t": 756.0,
+   "runs": 53,
+   "wickets": 0,
+   "balls": 21,
+   "layout": "cricclubs",
+   "raw": "MPT 53/0 RR 15.14 OVERS 3.3"
+  },
+  {
+   "t": 759.0,
+   "runs": 53,
+   "wickets": 0,
+   "balls": 21,
+   "layout": "cricclubs",
+   "raw": "MPT 53/0 RR 15.14 OVERS 3.3"
+  },
+  {
+   "t": 762.0,
+   "runs": 53,
+   "wickets": 0,
+   "balls": 21,
+   "layout": "cricclubs",
+   "raw": "MPT 53/0 RR 15.14 OVERS 3.3"
+  },
+  {
+   "t": 765.0,
+   "runs": 54,
+   "wickets": 0,
+   "balls": 22,
+   "layout": "cricclubs",
+   "raw": "MPT 54/0 RR 14.73 OVERS 3.4"
+  },
+  {
+   "t": 768.0,
+   "runs": 54,
+   "wickets": 0,
+   "balls": 22,
+   "layout": "cricclubs",
+   "raw": "MPT 54/0 RR 14.73 OVERS 3.4"
+  },
+  {
+   "t": 771.0,
+   "runs": 54,
+   "wickets": 0,
+   "balls": 22,
+   "layout": "cricclubs",
+   "raw": "MPT 54/0 RR 14.73 OVERS 3.4"
+  },
+  {
+   "t": 774.0,
+   "runs": 54,
+   "wickets": 0,
+   "balls": 22,
+   "layout": "cricclubs",
+   "raw": "MPT 54/0 RR 14.73 OVERS 3.4"
+  },
+  {
+   "t": 777.0,
+   "runs": 54,
+   "wickets": 0,
+   "balls": 22,
+   "layout": "cricclubs",
+   "raw": "MPT 54/0 RR 14.73 OVERS 3.4"
+  },
+  {
+   "t": 780.0,
+   "runs": 54,
+   "wickets": 0,
+   "balls": 22,
+   "layout": "cricclubs",
+   "raw": "MPT 54/0 RR 14.73 OVERS 34"
+  },
+  {
+   "t": 783.0,
+   "runs": 54,
+   "wickets": 0,
+   "balls": 22,
+   "layout": "cricclubs",
+   "raw": "MPT 54/0 RR 14.73 OVERS 3.4"
+  },
+  {
+   "t": 786.0,
+   "runs": 54,
+   "wickets": 0,
+   "balls": 22,
+   "layout": "cricclubs",
+   "raw": "MPT 54/0 RR 14.73 OVERS 3.4"
+  },
+  {
+   "t": 789.0,
+   "runs": 54,
+   "wickets": 0,
+   "balls": 22,
+   "layout": "cricclubs",
+   "raw": "MPT 54/0 RR 14.73 OVERS 3.4"
+  },
+  {
+   "t": 792.0,
+   "runs": 54,
+   "wickets": 0,
+   "balls": 22,
+   "layout": "cricclubs",
+   "raw": "MPT 54/0 RR 14.73 OVERS 34"
+  },
+  {
+   "t": 795.0,
+   "runs": 54,
+   "wickets": 0,
+   "balls": 23,
+   "layout": "cricclubs",
+   "raw": "MPT 54/0 RR 14.09 OVERS 3.5"
+  },
+  {
+   "t": 798.0,
+   "runs": 54,
+   "wickets": 0,
+   "balls": 23,
+   "layout": "cricclubs",
+   "raw": "MPT 54/0 RR 14.09 OVERS 3.5"
+  },
+  {
+   "t": 801.0,
+   "runs": 54,
+   "wickets": 0,
+   "balls": 23,
+   "layout": "cricclubs",
+   "raw": "MPT 54/0 RR 14.09 OVERS 3.5"
+  },
+  {
+   "t": 804.0,
+   "runs": 54,
+   "wickets": 0,
+   "balls": 23,
+   "layout": "cricclubs",
+   "raw": "MPT 54/0 RR 14.09 OVERS 3.5"
+  },
+  {
+   "t": 807.0,
+   "runs": 54,
+   "wickets": 0,
+   "balls": 23,
+   "layout": "cricclubs",
+   "raw": "MPT 54/0 RR 14.09 OVERS 3.5"
+  },
+  {
+   "t": 810.0,
+   "runs": 54,
+   "wickets": 0,
+   "balls": 23,
+   "layout": "cricclubs",
+   "raw": "MPT 54/0 RR 14.09 OVERS 3.5"
+  },
+  {
+   "t": 813.0,
+   "runs": 54,
+   "wickets": 0,
+   "balls": 23,
+   "layout": "cricclubs",
+   "raw": "MPT 54/0 RR 14.09 OVERS 3.5"
+  },
+  {
+   "t": 816.0,
+   "runs": 54,
+   "wickets": 0,
+   "balls": 23,
+   "layout": "cricclubs",
+   "raw": "MPT 54/0 RR 14.09 OVERS 3.5"
+  },
+  {
+   "t": 819.0,
+   "runs": 54,
+   "wickets": 0,
+   "balls": 23,
+   "layout": "cricclubs",
+   "raw": "MPT 54/0 RR 14.09 OVERS 3.5"
+  },
+  {
+   "t": 822.0,
+   "runs": 54,
+   "wickets": 0,
+   "balls": 23,
+   "layout": "cricclubs",
+   "raw": "MPT 54/0 RR 14,09 OVERS 3.5"
+  },
+  {
+   "t": 825.0,
+   "runs": 54,
+   "wickets": 0,
+   "balls": 23,
+   "layout": "cricclubs",
+   "raw": "MPT 54/0 RR 14.09 OVERS 3.5"
+  },
+  {
+   "t": 828.0,
+   "runs": 54,
+   "wickets": 0,
+   "balls": 23,
+   "layout": "cricclubs",
+   "raw": "MPT 54/0 RR 14,09 OVERS 3.5"
+  },
+  {
+   "t": 831.0,
+   "runs": 54,
+   "wickets": 0,
+   "balls": 23,
+   "layout": "cricclubs",
+   "raw": "MPT 54/0 RR 14.09 OVERS 3.5"
+  },
+  {
+   "t": 834.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 837.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 840.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 843.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 846.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 849.0,
+   "runs": 60,
+   "wickets": 0,
+   "balls": 24,
+   "layout": "cricclubs",
+   "raw": "MPT 60/0 RR I5.00 OVERS 4"
+  },
+  {
+   "t": 852.0,
+   "runs": 60,
+   "wickets": 0,
+   "balls": 24,
+   "layout": "cricclubs",
+   "raw": "MPT 60/0 RR I5.00 OVERS 4"
+  },
+  {
+   "t": 855.0,
+   "runs": 60,
+   "wickets": 0,
+   "balls": 24,
+   "layout": "cricclubs",
+   "raw": "MPT 60/0 RR I5.00 OVERS 4"
+  },
+  {
+   "t": 858.0,
+   "runs": 60,
+   "wickets": 0,
+   "balls": 24,
+   "layout": "cricclubs",
+   "raw": "MPT 60/0 RR I5.00 OVERS 4"
+  },
+  {
+   "t": 861.0,
+   "runs": 60,
+   "wickets": 0,
+   "balls": 24,
+   "layout": "cricclubs",
+   "raw": "MPT 60/0 RR I5.00 OVERS 4"
+  },
+  {
+   "t": 864.0,
+   "runs": 60,
+   "wickets": 0,
+   "balls": 24,
+   "layout": "cricclubs",
+   "raw": "MPT 60/0 RR I5.00 OVERS 4"
+  },
+  {
+   "t": 867.0,
+   "runs": 60,
+   "wickets": 0,
+   "balls": 24,
+   "layout": "cricclubs",
+   "raw": "MPT 60/0 RR I5.00 OVERS 4"
+  },
+  {
+   "t": 870.0,
+   "runs": 60,
+   "wickets": 0,
+   "balls": 24,
+   "layout": "cricclubs",
+   "raw": "MPT 60/0 RR I5.00 OVERS 4"
+  },
+  {
+   "t": 873.0,
+   "runs": 60,
+   "wickets": 0,
+   "balls": 24,
+   "layout": "cricclubs",
+   "raw": "MPT 60/0 RR I5.00 OVERS 4"
+  },
+  {
+   "t": 876.0,
+   "runs": 60,
+   "wickets": 0,
+   "balls": 24,
+   "layout": "cricclubs",
+   "raw": "MPT 60/0 RR I5.00 OVERS 4"
+  },
+  {
+   "t": 879.0,
+   "runs": 60,
+   "wickets": 0,
+   "balls": 24,
+   "layout": "cricclubs",
+   "raw": "MPT 60/0 RR I5.00 OVERS 4"
+  },
+  {
+   "t": 882.0,
+   "runs": 60,
+   "wickets": 0,
+   "balls": 24,
+   "layout": "cricclubs",
+   "raw": "MPT 60/0 RR I5.00 OVERS 4"
+  },
+  {
+   "t": 885.0,
+   "runs": 60,
+   "wickets": 0,
+   "balls": 24,
+   "layout": "cricclubs",
+   "raw": "MPT 60/0 RR I5.00 OVERS 4"
+  },
+  {
+   "t": 888.0,
+   "runs": 60,
+   "wickets": 0,
+   "balls": 24,
+   "layout": "cricclubs",
+   "raw": "MPT 60/0 RR I5.00 OVERS 4"
+  },
+  {
+   "t": 891.0,
+   "runs": 60,
+   "wickets": 0,
+   "balls": 24,
+   "layout": "cricclubs",
+   "raw": "MPT 60/0 RR I5.00 OVERS 4"
+  },
+  {
+   "t": 894.0,
+   "runs": 60,
+   "wickets": 0,
+   "balls": 24,
+   "layout": "cricclubs",
+   "raw": "MPT 60/0 RR I5.00 OVERS 4"
+  },
+  {
+   "t": 897.0,
+   "runs": 60,
+   "wickets": 0,
+   "balls": 24,
+   "layout": "cricclubs",
+   "raw": "MPT 60/0 RR I5.00 OVERS 4"
+  },
+  {
+   "t": 900.0,
+   "runs": 60,
+   "wickets": 0,
+   "balls": 24,
+   "layout": "cricclubs",
+   "raw": "MPT 60/0 RR I5.00 OVERS 4"
+  },
+  {
+   "t": 903.0,
+   "runs": 60,
+   "wickets": 0,
+   "balls": 24,
+   "layout": "cricclubs",
+   "raw": "MPT 60/0 RRI5.00 OVERS 4"
+  },
+  {
+   "t": 906.0,
+   "runs": 60,
+   "wickets": 0,
+   "balls": 24,
+   "layout": "cricclubs",
+   "raw": "MPT 60/0 RR I5.00 OVERS 4"
+  },
+  {
+   "t": 909.0,
+   "runs": 60,
+   "wickets": 0,
+   "balls": 24,
+   "layout": "cricclubs",
+   "raw": "MPT 60/0 RR I5.00 OVERS 4"
+  },
+  {
+   "t": 912.0,
+   "runs": 60,
+   "wickets": 0,
+   "balls": 24,
+   "layout": "cricclubs",
+   "raw": "MPT 60/0 RR I5.00 OVERS 4"
+  },
+  {
+   "t": 915.0,
+   "runs": 60,
+   "wickets": 0,
+   "balls": 24,
+   "layout": "cricclubs",
+   "raw": "MPT 60/0 RR I5.00 OVERS 4"
+  },
+  {
+   "t": 918.0,
+   "runs": 60,
+   "wickets": 0,
+   "balls": 24,
+   "layout": "cricclubs",
+   "raw": "MPT 60/0 RR I5.00 OVERS 4"
+  },
+  {
+   "t": 921.0,
+   "runs": 60,
+   "wickets": 0,
+   "balls": 24,
+   "layout": "cricclubs",
+   "raw": "MPT 60/0 RR I5.00 OVERS 4"
+  },
+  {
+   "t": 924.0,
+   "runs": 60,
+   "wickets": 0,
+   "balls": 24,
+   "layout": "cricclubs",
+   "raw": "MPT 60/0 RR I5.00 OVERS 4"
+  },
+  {
+   "t": 927.0,
+   "runs": 60,
+   "wickets": 0,
+   "balls": 24,
+   "layout": "cricclubs",
+   "raw": "MPT 60/0 RR I5.00 OVERS 4"
+  },
+  {
+   "t": 930.0,
+   "runs": 60,
+   "wickets": 0,
+   "balls": 24,
+   "layout": "cricclubs",
+   "raw": "MPT 60/0 RR I5.00 OVERS 4"
+  },
+  {
+   "t": 933.0,
+   "runs": 60,
+   "wickets": 0,
+   "balls": 24,
+   "layout": "cricclubs",
+   "raw": "MPT 60/0 RR I5.00 OVERS 4"
+  },
+  {
+   "t": 936.0,
+   "runs": 60,
+   "wickets": 0,
+   "balls": 24,
+   "layout": "cricclubs",
+   "raw": "MPT 60/0 RR I5.00 OVERS 4"
+  },
+  {
+   "t": 939.0,
+   "runs": 60,
+   "wickets": 0,
+   "balls": 24,
+   "layout": "cricclubs",
+   "raw": "MPT 60/0 RR I5.00 OVERS 4"
+  },
+  {
+   "t": 942.0,
+   "runs": 60,
+   "wickets": 0,
+   "balls": 24,
+   "layout": "cricclubs",
+   "raw": "MPT 60/0 RR I5.00 OVERS 4"
+  },
+  {
+   "t": 945.0,
+   "runs": 60,
+   "wickets": 0,
+   "balls": 24,
+   "layout": "cricclubs",
+   "raw": "MPT 60/0 RR I5.00 OVERS 4"
+  },
+  {
+   "t": 948.0,
+   "runs": 60,
+   "wickets": 0,
+   "balls": 24,
+   "layout": "cricclubs",
+   "raw": "MPT 60/0 RR I5.00 OVERS 4"
+  },
+  {
+   "t": 951.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 954.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 957.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 960.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "JUGL"
+  },
+  {
+   "t": 963.0,
+   "runs": 64,
+   "wickets": 0,
+   "balls": 25,
+   "layout": "cricclubs",
+   "raw": "MPT 64/0 RR 15.36 OVERS 4.1"
+  },
+  {
+   "t": 966.0,
+   "runs": 64,
+   "wickets": 0,
+   "balls": 25,
+   "layout": "cricclubs",
+   "raw": "MPT 64/0 RR /5.36 OVERS 4.1"
+  },
+  {
+   "t": 969.0,
+   "runs": 64,
+   "wickets": 0,
+   "balls": 25,
+   "layout": "cricclubs",
+   "raw": "MPT 64/0 RR 15.36 OVERS 4.1"
+  },
+  {
+   "t": 972.0,
+   "runs": 64,
+   "wickets": 0,
+   "balls": 25,
+   "layout": "cricclubs",
+   "raw": "MPT 64/0 RR 15.36 OVERS4.1"
+  },
+  {
+   "t": 975.0,
+   "runs": 64,
+   "wickets": 0,
+   "balls": 25,
+   "layout": "cricclubs",
+   "raw": "MPT 64/0 RR 15.36 OVERS 4.1"
+  },
+  {
+   "t": 978.0,
+   "runs": 64,
+   "wickets": 0,
+   "balls": 25,
+   "layout": "cricclubs",
+   "raw": "MPT 64/0 RR 15.36 OVERS 4.1"
+  },
+  {
+   "t": 981.0,
+   "runs": 68,
+   "wickets": 0,
+   "balls": 26,
+   "layout": "cricclubs",
+   "raw": "MPT 68/0 RR 15.69 OVERS 4.2"
+  },
+  {
+   "t": 984.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "HPT 864"
+  },
+  {
+   "t": 987.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 990.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 993.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 996.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "EQI I1"
+  },
+  {
+   "t": 999.0,
+   "runs": 68,
+   "wickets": 0,
+   "balls": 26,
+   "layout": "cricclubs",
+   "raw": "MPT 68/0 RR 15.69 OVERS 4.2"
+  },
+  {
+   "t": 1002.0,
+   "runs": 68,
+   "wickets": 0,
+   "balls": 26,
+   "layout": "cricclubs",
+   "raw": "MPT 68/0 RR 15.69 OVERS 4.2"
+  },
+  {
+   "t": 1005.0,
+   "runs": 68,
+   "wickets": 0,
+   "balls": 26,
+   "layout": "cricclubs",
+   "raw": "MPT 68/0 RR 15.69 OVERS 4.2"
+  },
+  {
+   "t": 1008.0,
+   "runs": 68,
+   "wickets": 0,
+   "balls": 26,
+   "layout": "cricclubs",
+   "raw": "MPT 68/0 RR /5.69 OVERS 4.2"
+  },
+  {
+   "t": 1011.0,
+   "runs": 68,
+   "wickets": 0,
+   "balls": 26,
+   "layout": "cricclubs",
+   "raw": "MPT 68/0 RR 15.69 OVERS 4.2"
+  },
+  {
+   "t": 1014.0,
+   "runs": 68,
+   "wickets": 0,
+   "balls": 26,
+   "layout": "cricclubs",
+   "raw": "MPT 68/0 RR 15.69 OVERS 4.2"
+  },
+  {
+   "t": 1017.0,
+   "runs": 68,
+   "wickets": 0,
+   "balls": 26,
+   "layout": "cricclubs",
+   "raw": "MPT 68/0 RR 15.69 OVERS 4.2"
+  },
+  {
+   "t": 1020.0,
+   "runs": 68,
+   "wickets": 0,
+   "balls": 26,
+   "layout": "cricclubs",
+   "raw": "MPT 68/0 RR 15.69 OVERS 4.2"
+  },
+  {
+   "t": 1023.0,
+   "runs": 68,
+   "wickets": 0,
+   "balls": 26,
+   "layout": "cricclubs",
+   "raw": "MPT 68/0 RR /5.69 OVERS 4.2"
+  },
+  {
+   "t": 1026.0,
+   "runs": 68,
+   "wickets": 0,
+   "balls": 26,
+   "layout": "cricclubs",
+   "raw": "MPT 68/0 RR 15.69 OVERS 4.2"
+  },
+  {
+   "t": 1029.0,
+   "runs": 74,
+   "wickets": 0,
+   "balls": 27,
+   "layout": "cricclubs",
+   "raw": "MPT 74/0 RR 16.44 OVERS 4.3"
+  },
+  {
+   "t": 1032.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 74/0 ONS 14 OVEF\u20ac"
+  },
+  {
+   "t": 1035.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 1038.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 1041.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 1044.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 1047.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 1050.0,
+   "runs": 74,
+   "wickets": 0,
+   "balls": 27,
+   "layout": "cricclubs",
+   "raw": "MPT 74/0 RR 16.44 OVERS 4.3"
+  },
+  {
+   "t": 1053.0,
+   "runs": 74,
+   "wickets": 0,
+   "balls": 27,
+   "layout": "cricclubs",
+   "raw": "MPT 74/0 RR 16.44 OVERS 4.3"
+  },
+  {
+   "t": 1056.0,
+   "runs": 74,
+   "wickets": 0,
+   "balls": 27,
+   "layout": "cricclubs",
+   "raw": "MPT 74/0 RR 16.44 OVERS 4.3"
+  },
+  {
+   "t": 1059.0,
+   "runs": 74,
+   "wickets": 0,
+   "balls": 27,
+   "layout": "cricclubs",
+   "raw": "MPT 74/0 RR 16.44 OVERS 4.3"
+  },
+  {
+   "t": 1062.0,
+   "runs": 74,
+   "wickets": 0,
+   "balls": 27,
+   "layout": "cricclubs",
+   "raw": "MPT 74/0 RR 16.44 OVERS 4.3"
+  },
+  {
+   "t": 1065.0,
+   "runs": 74,
+   "wickets": 0,
+   "balls": 27,
+   "layout": "cricclubs",
+   "raw": "MPT 74/0 RR 16.44 OVERS 4.3"
+  },
+  {
+   "t": 1068.0,
+   "runs": 74,
+   "wickets": 0,
+   "balls": 27,
+   "layout": "cricclubs",
+   "raw": "MPT 74/0 RR 16.44 OVERS 4.3"
+  },
+  {
+   "t": 1071.0,
+   "runs": 74,
+   "wickets": 0,
+   "balls": 27,
+   "layout": "cricclubs",
+   "raw": "MPT 74/0 RR 16.44 OVERS 4.3"
+  },
+  {
+   "t": 1074.0,
+   "runs": 74,
+   "wickets": 0,
+   "balls": 27,
+   "layout": "cricclubs",
+   "raw": "MPT 74/0 RR 16.44 OVERS 4.3"
+  },
+  {
+   "t": 1077.0,
+   "runs": 74,
+   "wickets": 0,
+   "balls": 27,
+   "layout": "cricclubs",
+   "raw": "MPT 74/0 RR 16.44 OVERS 4.3"
+  },
+  {
+   "t": 1080.0,
+   "runs": 74,
+   "wickets": 0,
+   "balls": 27,
+   "layout": "cricclubs",
+   "raw": "MPT 74/0 RR 16.44 OVERS 4.3"
+  },
+  {
+   "t": 1083.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "IIN E"
+  },
+  {
+   "t": 1086.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 1089.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 1092.0,
+   "runs": 75,
+   "wickets": 0,
+   "balls": 28,
+   "layout": "cricclubs",
+   "raw": "MPT 75/0 RR 16.07 OVERS 4.4"
+  },
+  {
+   "t": 1095.0,
+   "runs": 75,
+   "wickets": 0,
+   "balls": 28,
+   "layout": "cricclubs",
+   "raw": "MPT 75/0 RR 16.07 OVERS 4.4"
+  },
+  {
+   "t": 1098.0,
+   "runs": 75,
+   "wickets": 0,
+   "balls": 28,
+   "layout": "cricclubs",
+   "raw": "MPT 75/0 RR 16.07 OVERS 4.4"
+  },
+  {
+   "t": 1101.0,
+   "runs": 75,
+   "wickets": 0,
+   "balls": 28,
+   "layout": "cricclubs",
+   "raw": "MPT 75/0 RR 16.07 OVERS 4.4"
+  },
+  {
+   "t": 1104.0,
+   "runs": 75,
+   "wickets": 0,
+   "balls": 28,
+   "layout": "cricclubs",
+   "raw": "MPT 75/0 RR 16.07 OVERS 4.4"
+  },
+  {
+   "t": 1107.0,
+   "runs": 64,
+   "wickets": 0,
+   "balls": 24,
+   "layout": "cricclubs",
+   "raw": "MPT 64/0 RR 15.36 OVERS4."
+  },
+  {
+   "t": 1110.0,
+   "runs": 64,
+   "wickets": 0,
+   "balls": 25,
+   "layout": "cricclubs",
+   "raw": "MPT 64/0 RR 15.36 OVERS 41"
+  },
+  {
+   "t": 1113.0,
+   "runs": 75,
+   "wickets": 0,
+   "balls": 26,
+   "layout": "cricclubs",
+   "raw": "MPT 75/0 RR 17.31 OVERS 4.2"
+  },
+  {
+   "t": 1116.0,
+   "runs": 76,
+   "wickets": 0,
+   "balls": 27,
+   "layout": "cricclubs",
+   "raw": "MPT 76/0 RR 16.89 OVERS 4.3"
+  },
+  {
+   "t": 1119.0,
+   "runs": 78,
+   "wickets": 0,
+   "balls": 28,
+   "layout": "cricclubs",
+   "raw": "MPT 78/0 RR 16.71 OVERS 4.4"
+  },
+  {
+   "t": 1122.0,
+   "runs": 78,
+   "wickets": 0,
+   "balls": 28,
+   "layout": "cricclubs",
+   "raw": "MPT 78/0 RR 16.71 OVERS 4.4"
+  },
+  {
+   "t": 1125.0,
+   "runs": 78,
+   "wickets": 0,
+   "balls": 28,
+   "layout": "cricclubs",
+   "raw": "MPT 78/0 RR 16.71 OVERS 44"
+  },
+  {
+   "t": 1128.0,
+   "runs": 78,
+   "wickets": 0,
+   "balls": 28,
+   "layout": "cricclubs",
+   "raw": "MPT 78/0 RR 16.71 OVERS 4.4"
+  },
+  {
+   "t": 1131.0,
+   "runs": 78,
+   "wickets": 0,
+   "balls": 28,
+   "layout": "cricclubs",
+   "raw": "MPT 78/0 RR 16.71 OVERS 4.4"
+  },
+  {
+   "t": 1134.0,
+   "runs": 78,
+   "wickets": 0,
+   "balls": 28,
+   "layout": "cricclubs",
+   "raw": "MPT 78/0 RR 16.71 OVERS 4.4"
+  },
+  {
+   "t": 1137.0,
+   "runs": 78,
+   "wickets": 0,
+   "balls": 28,
+   "layout": "cricclubs",
+   "raw": "MPT 78/0 RR 16.71 OVERS 4.4"
+  },
+  {
+   "t": 1140.0,
+   "runs": 78,
+   "wickets": 0,
+   "balls": 28,
+   "layout": "cricclubs",
+   "raw": "MPT 78/0 RR 16.71 OVERS 4.4"
+  },
+  {
+   "t": 1143.0,
+   "runs": 78,
+   "wickets": 0,
+   "balls": 28,
+   "layout": "cricclubs",
+   "raw": "MPT 78/0 RR 16.71 OVERS 4.4"
+  },
+  {
+   "t": 1146.0,
+   "runs": 78,
+   "wickets": 0,
+   "balls": 28,
+   "layout": "cricclubs",
+   "raw": "MPT 78/0 RR 16.71 OVERS 4.4"
+  },
+  {
+   "t": 1149.0,
+   "runs": 78,
+   "wickets": 0,
+   "balls": 28,
+   "layout": "cricclubs",
+   "raw": "MPT 78/0 RR 16.71 OVERS 4.4"
+  },
+  {
+   "t": 1152.0,
+   "runs": 78,
+   "wickets": 0,
+   "balls": 28,
+   "layout": "cricclubs",
+   "raw": "MPT 78/0 RR 16.71 OVERS 4.4"
+  },
+  {
+   "t": 1155.0,
+   "runs": 78,
+   "wickets": 0,
+   "balls": 28,
+   "layout": "cricclubs",
+   "raw": "MPT 78/0 RR 16.71 OVERS 4.4"
+  },
+  {
+   "t": 1158.0,
+   "runs": 78,
+   "wickets": 0,
+   "balls": 28,
+   "layout": "cricclubs",
+   "raw": "MPT 78/0 RR 16.71 OVERS 4.4"
+  },
+  {
+   "t": 1161.0,
+   "runs": 78,
+   "wickets": 0,
+   "balls": 28,
+   "layout": "cricclubs",
+   "raw": "MPT 78/0 RR 16.71 OVERS 4.4"
+  },
+  {
+   "t": 1164.0,
+   "runs": 80,
+   "wickets": 0,
+   "balls": 29,
+   "layout": "cricclubs",
+   "raw": "MPT 80/0 RR 16.55 OVERS 4.5"
+  },
+  {
+   "t": 1167.0,
+   "runs": 80,
+   "wickets": 0,
+   "balls": 29,
+   "layout": "cricclubs",
+   "raw": "MPT 80/0 RR 16.55 OVERS 4.5"
+  },
+  {
+   "t": 1170.0,
+   "runs": 80,
+   "wickets": 0,
+   "balls": 29,
+   "layout": "cricclubs",
+   "raw": "MPT 80/0 RR 16.55 OVERS 4.5"
+  },
+  {
+   "t": 1173.0,
+   "runs": 80,
+   "wickets": 0,
+   "balls": 29,
+   "layout": "cricclubs",
+   "raw": "MPT 80/0 RR 16.55 OVERS 4.5"
+  },
+  {
+   "t": 1176.0,
+   "runs": 80,
+   "wickets": 0,
+   "balls": 29,
+   "layout": "cricclubs",
+   "raw": "MPT 80/0 RR 16.55 OVERS 4.5"
+  },
+  {
+   "t": 1179.0,
+   "runs": 80,
+   "wickets": 0,
+   "balls": 29,
+   "layout": "cricclubs",
+   "raw": "MPT 80/0 RR 16.55 OVERS 4.5"
+  },
+  {
+   "t": 1182.0,
+   "runs": 80,
+   "wickets": 0,
+   "balls": 29,
+   "layout": "cricclubs",
+   "raw": "MPT 80/0 RR 16.55 OVERS 4.5"
+  },
+  {
+   "t": 1185.0,
+   "runs": 80,
+   "wickets": 0,
+   "balls": 29,
+   "layout": "cricclubs",
+   "raw": "MPT 80/0 RR 16.55 OVERS 4.5"
+  },
+  {
+   "t": 1188.0,
+   "runs": 80,
+   "wickets": 0,
+   "balls": 29,
+   "layout": "cricclubs",
+   "raw": "MPT 80/0 RR 16.55 OVERS 4.5"
+  },
+  {
+   "t": 1191.0,
+   "runs": 80,
+   "wickets": 0,
+   "balls": 29,
+   "layout": "cricclubs",
+   "raw": "MPT 80/0 RR 16.55 OVERS 4.5"
+  },
+  {
+   "t": 1194.0,
+   "runs": 80,
+   "wickets": 0,
+   "balls": 29,
+   "layout": "cricclubs",
+   "raw": "MPT 80/0 RR16.55 OVERS 4.5"
+  },
+  {
+   "t": 1197.0,
+   "runs": 80,
+   "wickets": 0,
+   "balls": 29,
+   "layout": "cricclubs",
+   "raw": "MPT 80/0 RR 16.55 OVERS 4.5"
+  },
+  {
+   "t": 1200.0,
+   "runs": 80,
+   "wickets": 0,
+   "balls": 29,
+   "layout": "cricclubs",
+   "raw": "MPT 80/0 RR 16.55 OVERS 4.5"
+  },
+  {
+   "t": 1203.0,
+   "runs": 81,
+   "wickets": 0,
+   "balls": 30,
+   "layout": "cricclubs",
+   "raw": "MPT 81/0 RR 16.20 OVERS 5"
+  },
+  {
+   "t": 1206.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 8L/0 RR 16.20 OVERS 5"
+  },
+  {
+   "t": 1209.0,
+   "runs": 81,
+   "wickets": 0,
+   "balls": 30,
+   "layout": "cricclubs",
+   "raw": "MPT 81/0 RR 16.20 OVERS 5"
+  },
+  {
+   "t": 1212.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 1215.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 1218.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 1221.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 1224.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 1227.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "JUM"
+  },
+  {
+   "t": 1230.0,
+   "runs": 81,
+   "wickets": 0,
+   "balls": 30,
+   "layout": "cricclubs",
+   "raw": "MPT 81/0 RR 16.20 OVERS 5"
+  },
+  {
+   "t": 1233.0,
+   "runs": 81,
+   "wickets": 0,
+   "balls": 30,
+   "layout": "cricclubs",
+   "raw": "MPT 81/0 RR /6.20 OVERS 5"
+  },
+  {
+   "t": 1236.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 1239.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 1242.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 1245.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "J"
+  },
+  {
+   "t": 1248.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 8L/0 RR 16.20 OVERS 5"
+  },
+  {
+   "t": 1251.0,
+   "runs": 81,
+   "wickets": 0,
+   "balls": 30,
+   "layout": "cricclubs",
+   "raw": "MPT 81/0 RR 16.20 OVERS 5"
+  },
+  {
+   "t": 1254.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 8L/0 RR 16.20 OVERS 5"
+  },
+  {
+   "t": 1257.0,
+   "runs": 81,
+   "wickets": 0,
+   "balls": 30,
+   "layout": "cricclubs",
+   "raw": "MPT 81/0 RR 16,20 OVERS 5"
+  },
+  {
+   "t": 1260.0,
+   "runs": 81,
+   "wickets": 0,
+   "balls": 30,
+   "layout": "cricclubs",
+   "raw": "MPT 81/0 RR 16.20 OVERS 5"
+  },
+  {
+   "t": 1263.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 8L/0 RR 16.20 OVERS 5"
+  },
+  {
+   "t": 1266.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 8L/0 RR 16.20 OVERS 5"
+  },
+  {
+   "t": 1269.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 8L/0 RR 16.20 OVERS 5"
+  },
+  {
+   "t": 1272.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 8L/0 RR 16.20 OVERS 5"
+  },
+  {
+   "t": 1275.0,
+   "runs": 81,
+   "wickets": 0,
+   "balls": 30,
+   "layout": "cricclubs",
+   "raw": "MPT 81/0 RR 16.20 OVERS 5"
+  },
+  {
+   "t": 1278.0,
+   "runs": 81,
+   "wickets": 0,
+   "balls": 30,
+   "layout": "cricclubs",
+   "raw": "MPT 81/0 RR 16.20 OVERS 5"
+  },
+  {
+   "t": 1281.0,
+   "runs": 81,
+   "wickets": 0,
+   "balls": 30,
+   "layout": "cricclubs",
+   "raw": "MPT 81/0 RR 16.20 OVERS 5"
+  },
+  {
+   "t": 1284.0,
+   "runs": 81,
+   "wickets": 0,
+   "balls": 30,
+   "layout": "cricclubs",
+   "raw": "MPT 81/0 RR 16.20 OVERS 5"
+  },
+  {
+   "t": 1287.0,
+   "runs": 81,
+   "wickets": 0,
+   "balls": 30,
+   "layout": "cricclubs",
+   "raw": "MPT 81/0 RR 16.20 OVERS 5"
+  },
+  {
+   "t": 1290.0,
+   "runs": 81,
+   "wickets": 0,
+   "balls": 30,
+   "layout": "cricclubs",
+   "raw": "MPT 81/0 RR 16.20 OVERS 5"
+  },
+  {
+   "t": 1293.0,
+   "runs": 81,
+   "wickets": 0,
+   "balls": 30,
+   "layout": "cricclubs",
+   "raw": "MPT 81/0 RR 16.20 OVERS 5"
+  },
+  {
+   "t": 1296.0,
+   "runs": 81,
+   "wickets": 0,
+   "balls": 30,
+   "layout": "cricclubs",
+   "raw": "MPT 81/0 RR 16.20 OVERS 5"
+  },
+  {
+   "t": 1299.0,
+   "runs": 81,
+   "wickets": 0,
+   "balls": 30,
+   "layout": "cricclubs",
+   "raw": "MPT 81/0 RR 16.20 OVERS 5"
+  },
+  {
+   "t": 1302.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 8L/0 RR 16.20 OVERS 5"
+  },
+  {
+   "t": 1305.0,
+   "runs": 82,
+   "wickets": 0,
+   "balls": 30,
+   "layout": "cricclubs",
+   "raw": "MPT 82/0 RR 15.87 OVERS 5."
+  },
+  {
+   "t": 1308.0,
+   "runs": 82,
+   "wickets": 0,
+   "balls": 31,
+   "layout": "cricclubs",
+   "raw": "MPT 82/0 RR 15.87 OVERS 5.1"
+  },
+  {
+   "t": 1311.0,
+   "runs": 82,
+   "wickets": 0,
+   "balls": 31,
+   "layout": "cricclubs",
+   "raw": "MPT 82/0 RR 15.87 OVERS 5.1"
+  },
+  {
+   "t": 1314.0,
+   "runs": 82,
+   "wickets": 0,
+   "balls": 31,
+   "layout": "cricclubs",
+   "raw": "MPT 82/0 RR 15.87 OVERS 5.1"
+  },
+  {
+   "t": 1317.0,
+   "runs": 82,
+   "wickets": 0,
+   "balls": 31,
+   "layout": "cricclubs",
+   "raw": "MPT 82/0 RR 15.87 OVERS 5.1"
+  },
+  {
+   "t": 1320.0,
+   "runs": 82,
+   "wickets": 0,
+   "balls": 30,
+   "layout": "cricclubs",
+   "raw": "MPT 82/0 RR 15.87 OVERS 5."
+  },
+  {
+   "t": 1323.0,
+   "runs": 82,
+   "wickets": 0,
+   "balls": 30,
+   "layout": "cricclubs",
+   "raw": "MPT 82/0 RR 15.87 OVERS 5."
+  },
+  {
+   "t": 1326.0,
+   "runs": 82,
+   "wickets": 0,
+   "balls": 30,
+   "layout": "cricclubs",
+   "raw": "MPT 82/0 RR 15.87 OVERS 5."
+  },
+  {
+   "t": 1329.0,
+   "runs": 82,
+   "wickets": 0,
+   "balls": 31,
+   "layout": "cricclubs",
+   "raw": "MPT 82/0 RR 15.87 OVERS 5.1"
+  },
+  {
+   "t": 1332.0,
+   "runs": 82,
+   "wickets": 0,
+   "balls": 31,
+   "layout": "cricclubs",
+   "raw": "MPT 82/0 RR 15.87 OVERS5.1"
+  },
+  {
+   "t": 1335.0,
+   "runs": 82,
+   "wickets": 0,
+   "balls": 31,
+   "layout": "cricclubs",
+   "raw": "MPT 82/0 RR 15.87 OVERS 5.1"
+  },
+  {
+   "t": 1338.0,
+   "runs": 82,
+   "wickets": 0,
+   "balls": 31,
+   "layout": "cricclubs",
+   "raw": "MPT 82/0 RR 15.87 OVERS 5.1"
+  },
+  {
+   "t": 1341.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 1344.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 1347.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 1350.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 1353.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 1356.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 1359.0,
+   "runs": 82,
+   "wickets": 1,
+   "balls": 32,
+   "layout": "cricclubs",
+   "raw": "MPT 82/1 RR /5.38 OVERS 5.2"
+  },
+  {
+   "t": 1362.0,
+   "runs": 82,
+   "wickets": 1,
+   "balls": 32,
+   "layout": "cricclubs",
+   "raw": "MPT 82/1 RR /5.38 OVERS 5.2"
+  },
+  {
+   "t": 1365.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 1368.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "ES / S/R 246.15"
+  },
+  {
+   "t": 1371.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 1374.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 82/ RR 15.38 OVERS 5.2"
+  },
+  {
+   "t": 1377.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 82/ RR 15.38 OVERS 5.2"
+  },
+  {
+   "t": 1380.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 82/ RR 15.38 OVERS 5.2"
+  },
+  {
+   "t": 1383.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 82/ RR 15.38 OVERS 5.2"
+  },
+  {
+   "t": 1386.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 1389.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 1392.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 1395.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 1398.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 1401.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 1404.0,
+   "runs": 82,
+   "wickets": 1,
+   "balls": 32,
+   "layout": "cricclubs",
+   "raw": "MPT 82/1 RR I5.38 OVERS 5.2"
+  },
+  {
+   "t": 1407.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 82/ RR 15.38 OVERS 5.2"
+  },
+  {
+   "t": 1410.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 82/ RR 15.38 OVERS 5.2"
+  },
+  {
+   "t": 1413.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 82/ RR 15.38 OVERS 5."
+  },
+  {
+   "t": 1416.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 82/ RR 15.38 OVERS 5.2"
+  },
+  {
+   "t": 1419.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 82/ RR 15.38 OVERS 5.2"
+  },
+  {
+   "t": 1422.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 82/ RR /5.38 OVERS 5.2"
+  },
+  {
+   "t": 1425.0,
+   "runs": 82,
+   "wickets": 1,
+   "balls": 32,
+   "layout": "cricclubs",
+   "raw": "MPT 82/1 RR 15.38 OVERS 5.2"
+  },
+  {
+   "t": 1428.0,
+   "runs": 82,
+   "wickets": 1,
+   "balls": 32,
+   "layout": "cricclubs",
+   "raw": "MPT 82/1 RR 15.38 OVERS 5.2"
+  },
+  {
+   "t": 1431.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 82/ RR 15.38 OVERS 5.22"
+  },
+  {
+   "t": 1434.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 82/ RR 15.38 OVERS 5.2"
+  },
+  {
+   "t": 1437.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 83/ RR 15,09 OVERS 5.3"
+  },
+  {
+   "t": 1440.0,
+   "runs": 83,
+   "wickets": 1,
+   "balls": 33,
+   "layout": "cricclubs",
+   "raw": "MPT 83/1 RR 15.09 OVERS 5.3"
+  },
+  {
+   "t": 1443.0,
+   "runs": 83,
+   "wickets": 1,
+   "balls": 33,
+   "layout": "cricclubs",
+   "raw": "MPT 83/1 RR 15.09 OVERS 5.3"
+  },
+  {
+   "t": 1446.0,
+   "runs": 83,
+   "wickets": 1,
+   "balls": 33,
+   "layout": "cricclubs",
+   "raw": "MPT 83/1 RR 15.09 OVERS 5.3"
+  },
+  {
+   "t": 1449.0,
+   "runs": 83,
+   "wickets": 1,
+   "balls": 33,
+   "layout": "cricclubs",
+   "raw": "MPT 83/1 RR 15.09 OVERS 5.3"
+  },
+  {
+   "t": 1452.0,
+   "runs": 83,
+   "wickets": 1,
+   "balls": 33,
+   "layout": "cricclubs",
+   "raw": "MPT 83/1 RR 15,09 OVERS 5.3"
+  },
+  {
+   "t": 1455.0,
+   "runs": 83,
+   "wickets": 1,
+   "balls": 33,
+   "layout": "cricclubs",
+   "raw": "MPT 83/1 RR 15.09 OVERS 5.3"
+  },
+  {
+   "t": 1458.0,
+   "runs": 83,
+   "wickets": 1,
+   "balls": 33,
+   "layout": "cricclubs",
+   "raw": "MPT 83/1 RR 15,09 OVERS 5.3"
+  },
+  {
+   "t": 1461.0,
+   "runs": 84,
+   "wickets": 1,
+   "balls": 34,
+   "layout": "cricclubs",
+   "raw": "MPT 84/1 RR 14.82 OVERS 5.4"
+  },
+  {
+   "t": 1464.0,
+   "runs": 84,
+   "wickets": 1,
+   "balls": 34,
+   "layout": "cricclubs",
+   "raw": "MPT 84/1 RR 14.82 OVERS 5.4"
+  },
+  {
+   "t": 1467.0,
+   "runs": 84,
+   "wickets": 1,
+   "balls": 34,
+   "layout": "cricclubs",
+   "raw": "MPT 84/1 RR 14.82 OVERS 5.4"
+  },
+  {
+   "t": 1470.0,
+   "runs": 84,
+   "wickets": 1,
+   "balls": 34,
+   "layout": "cricclubs",
+   "raw": "MPT 84/1 RR 14.82 OVERS 5.4"
+  },
+  {
+   "t": 1473.0,
+   "runs": 84,
+   "wickets": 1,
+   "balls": 34,
+   "layout": "cricclubs",
+   "raw": "MPT 84/1 RR 14.82 OVERS 5.4"
+  },
+  {
+   "t": 1476.0,
+   "runs": 84,
+   "wickets": 1,
+   "balls": 34,
+   "layout": "cricclubs",
+   "raw": "MPT 84/1 RR 14.82 OVERS 5.44"
+  },
+  {
+   "t": 1479.0,
+   "runs": 84,
+   "wickets": 1,
+   "balls": 34,
+   "layout": "cricclubs",
+   "raw": "MPT 84/1 RR 14.82 OVERS 5.4"
+  },
+  {
+   "t": 1482.0,
+   "runs": 84,
+   "wickets": 1,
+   "balls": 34,
+   "layout": "cricclubs",
+   "raw": "MPT 84/1 RR 14.82 OVERS 5.44"
+  },
+  {
+   "t": 1485.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 84/ RR 14.82 OVERS 5.4"
+  },
+  {
+   "t": 1488.0,
+   "runs": 85,
+   "wickets": 1,
+   "balls": 35,
+   "layout": "cricclubs",
+   "raw": "MPT 85/1 RR 14.57 OVERS 5.5"
+  },
+  {
+   "t": 1491.0,
+   "runs": 85,
+   "wickets": 1,
+   "balls": 35,
+   "layout": "cricclubs",
+   "raw": "MPT 85/1 RR 14.57 OVERS 5.5"
+  },
+  {
+   "t": 1494.0,
+   "runs": 85,
+   "wickets": 1,
+   "balls": 35,
+   "layout": "cricclubs",
+   "raw": "MPT 85/1 RR 14.57 OVERS 5.5"
+  },
+  {
+   "t": 1497.0,
+   "runs": 85,
+   "wickets": 1,
+   "balls": 35,
+   "layout": "cricclubs",
+   "raw": "MPT 85/1 RR 14.57 OVERS 5.5"
+  },
+  {
+   "t": 1500.0,
+   "runs": 85,
+   "wickets": 1,
+   "balls": 35,
+   "layout": "cricclubs",
+   "raw": "MPT 85/1 RR 14.57 OVERS 5.5"
+  },
+  {
+   "t": 1503.0,
+   "runs": 85,
+   "wickets": 1,
+   "balls": 35,
+   "layout": "cricclubs",
+   "raw": "MPT 85/1 RR 14.57 OVERS 5.5"
+  },
+  {
+   "t": 1506.0,
+   "runs": 85,
+   "wickets": 1,
+   "balls": 35,
+   "layout": "cricclubs",
+   "raw": "MPT 85/1 RR 14.57 OVERS 5.5"
+  },
+  {
+   "t": 1509.0,
+   "runs": 85,
+   "wickets": 1,
+   "balls": 35,
+   "layout": "cricclubs",
+   "raw": "MPT 85/1 RR 14.57 OVERS 5.5"
+  },
+  {
+   "t": 1512.0,
+   "runs": 85,
+   "wickets": 1,
+   "balls": 35,
+   "layout": "cricclubs",
+   "raw": "MPT 85/1 RR 14.57 OVERS 5.5"
+  },
+  {
+   "t": 1515.0,
+   "runs": 86,
+   "wickets": 1,
+   "balls": 36,
+   "layout": "cricclubs",
+   "raw": "MPT 86/1 RR 14.33 OVERS 6"
+  },
+  {
+   "t": 1518.0,
+   "runs": 86,
+   "wickets": 1,
+   "balls": 36,
+   "layout": "cricclubs",
+   "raw": "MPT 86/1 RR 14.33 OVERS 6"
+  },
+  {
+   "t": 1521.0,
+   "runs": 86,
+   "wickets": 1,
+   "balls": 36,
+   "layout": "cricclubs",
+   "raw": "MPT 86/1 RR 14.33 OVERS 6"
+  },
+  {
+   "t": 1524.0,
+   "runs": 86,
+   "wickets": 1,
+   "balls": 36,
+   "layout": "cricclubs",
+   "raw": "MPT 86/1 RR 14.33 OVERS 6"
+  },
+  {
+   "t": 1527.0,
+   "runs": 86,
+   "wickets": 1,
+   "balls": 36,
+   "layout": "cricclubs",
+   "raw": "MPT 86/1 RR 14.33 OVERS 6"
+  },
+  {
+   "t": 1530.0,
+   "runs": 86,
+   "wickets": 1,
+   "balls": 36,
+   "layout": "cricclubs",
+   "raw": "MPT 86/1 RR 14.33 OVERS 6"
+  },
+  {
+   "t": 1533.0,
+   "runs": 86,
+   "wickets": 1,
+   "balls": 36,
+   "layout": "cricclubs",
+   "raw": "MPT 86/1 RR 14.33 OVERS 6"
+  },
+  {
+   "t": 1536.0,
+   "runs": 86,
+   "wickets": 1,
+   "balls": 36,
+   "layout": "cricclubs",
+   "raw": "MPT 86/1 RR 14.33 OVERS 6"
+  },
+  {
+   "t": 1539.0,
+   "runs": 86,
+   "wickets": 1,
+   "balls": 36,
+   "layout": "cricclubs",
+   "raw": "MPT 86/1 RR 14.33 OVERS 6"
+  },
+  {
+   "t": 1542.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 86/ RR 14.33 OVERS 6"
+  },
+  {
+   "t": 1545.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 1548.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 8671 FJ : R.."
+  },
+  {
+   "t": 1551.0,
+   "runs": 86,
+   "wickets": 1,
+   "balls": 36,
+   "layout": "cricclubs",
+   "raw": "MPT 86/1 RR 14.33 OVERS 6"
+  },
+  {
+   "t": 1554.0,
+   "runs": 86,
+   "wickets": 1,
+   "balls": 36,
+   "layout": "cricclubs",
+   "raw": "MPT 86/1 RR 14.33 OVERS 6"
+  },
+  {
+   "t": 1557.0,
+   "runs": 86,
+   "wickets": 1,
+   "balls": 36,
+   "layout": "cricclubs",
+   "raw": "MPT 86/1 RR 14.33 OVERS 6"
+  },
+  {
+   "t": 1560.0,
+   "runs": 86,
+   "wickets": 1,
+   "balls": 36,
+   "layout": "cricclubs",
+   "raw": "MPT 86/1 RR 14.33 OVERS 6"
+  },
+  {
+   "t": 1563.0,
+   "runs": 86,
+   "wickets": 1,
+   "balls": 36,
+   "layout": "cricclubs",
+   "raw": "MPT 86/1 RR 14.33 OVERS 6"
+  },
+  {
+   "t": 1566.0,
+   "runs": 86,
+   "wickets": 1,
+   "balls": 36,
+   "layout": "cricclubs",
+   "raw": "MPT 86/1 RR 14.33 OVERS 6"
+  },
+  {
+   "t": 1569.0,
+   "runs": 86,
+   "wickets": 1,
+   "balls": 36,
+   "layout": "cricclubs",
+   "raw": "MPT 86/1 RR 14.33 OVERS 6"
+  },
+  {
+   "t": 1572.0,
+   "runs": 86,
+   "wickets": 1,
+   "balls": 36,
+   "layout": "cricclubs",
+   "raw": "MPT 86/1 RR 14.33 OVERS 6"
+  },
+  {
+   "t": 1575.0,
+   "runs": 86,
+   "wickets": 1,
+   "balls": 36,
+   "layout": "cricclubs",
+   "raw": "MPT 86/1 RR 14.33 OVERS 6"
+  },
+  {
+   "t": 1578.0,
+   "runs": 86,
+   "wickets": 1,
+   "balls": 36,
+   "layout": "cricclubs",
+   "raw": "MPT 86/1 RR 14.33 OVERS 6"
+  },
+  {
+   "t": 1581.0,
+   "runs": 86,
+   "wickets": 1,
+   "balls": 36,
+   "layout": "cricclubs",
+   "raw": "MPT 86/1 RR 14.33 OVERS 6"
+  },
+  {
+   "t": 1584.0,
+   "runs": 86,
+   "wickets": 1,
+   "balls": 36,
+   "layout": "cricclubs",
+   "raw": "MPT 86/1 RR 14.33 OVERS 6"
+  },
+  {
+   "t": 1587.0,
+   "runs": 86,
+   "wickets": 1,
+   "balls": 36,
+   "layout": "cricclubs",
+   "raw": "MPT 86/1 RR 14.33 OVERS 6"
+  },
+  {
+   "t": 1590.0,
+   "runs": 88,
+   "wickets": 1,
+   "balls": 37,
+   "layout": "cricclubs",
+   "raw": "MPT 88/1 RR 14.27 OVERS 6.1"
+  },
+  {
+   "t": 1593.0,
+   "runs": 88,
+   "wickets": 1,
+   "balls": 37,
+   "layout": "cricclubs",
+   "raw": "MPT 88/1 RR 14.27 OVERS 6.1"
+  },
+  {
+   "t": 1596.0,
+   "runs": 88,
+   "wickets": 1,
+   "balls": 37,
+   "layout": "cricclubs",
+   "raw": "MPT 88/1 RR 14.27 OVERS 6.1"
+  },
+  {
+   "t": 1599.0,
+   "runs": 88,
+   "wickets": 1,
+   "balls": 37,
+   "layout": "cricclubs",
+   "raw": "MPT 88/1 RR 14.27 OVERS 6.1"
+  },
+  {
+   "t": 1602.0,
+   "runs": 88,
+   "wickets": 1,
+   "balls": 37,
+   "layout": "cricclubs",
+   "raw": "MPT 88/1 RR 14.27 OVERS 6.1"
+  },
+  {
+   "t": 1605.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MPT 88/ RR 14.27 OVERS 6.1"
+  },
+  {
+   "t": 1608.0,
+   "runs": 88,
+   "wickets": 1,
+   "balls": 37,
+   "layout": "cricclubs",
+   "raw": "MPT 88/1 RR14.27 OVERS 6.1"
+  },
+  {
+   "t": 1611.0,
+   "runs": 88,
+   "wickets": 1,
+   "balls": 37,
+   "layout": "cricclubs",
+   "raw": "MPT 88/1 RR 14.27 OVERS 6.1"
+  },
+  {
+   "t": 1614.0,
+   "runs": 88,
+   "wickets": 1,
+   "balls": 37,
+   "layout": "cricclubs",
+   "raw": "MPT 88/1 RR 14.27 OVERS 6.1"
+  },
+  {
+   "t": 1617.0,
+   "runs": 88,
+   "wickets": 1,
+   "balls": 37,
+   "layout": "cricclubs",
+   "raw": "MPT 88/1 RR 14.27 OVERS 6.1"
+  }
+ ],
+ "deliveries": [
+  {
+   "t": 90.0,
+   "balls_bowled": 9,
+   "innings": 0
+  },
+  {
+   "t": 123.0,
+   "balls_bowled": 10,
+   "innings": 0
+  },
+  {
+   "t": 162.0,
+   "balls_bowled": 11,
+   "innings": 0
+  },
+  {
+   "t": 186.0,
+   "balls_bowled": 12,
+   "innings": 0
+  },
+  {
+   "t": 288.0,
+   "balls_bowled": 13,
+   "innings": 0
+  },
+  {
+   "t": 330.0,
+   "balls_bowled": 14,
+   "innings": 0
+  },
+  {
+   "t": 369.0,
+   "balls_bowled": 15,
+   "innings": 0
+  },
+  {
+   "t": 405.0,
+   "balls_bowled": 16,
+   "innings": 0
+  },
+  {
+   "t": 468.0,
+   "balls_bowled": 17,
+   "innings": 0
+  },
+  {
+   "t": 516.0,
+   "balls_bowled": 18,
+   "innings": 0
+  },
+  {
+   "t": 573.0,
+   "balls_bowled": 19,
+   "innings": 0
+  },
+  {
+   "t": 618.0,
+   "balls_bowled": 20,
+   "innings": 0
+  },
+  {
+   "t": 735.0,
+   "balls_bowled": 21,
+   "innings": 0
+  },
+  {
+   "t": 765.0,
+   "balls_bowled": 22,
+   "innings": 0
+  },
+  {
+   "t": 795.0,
+   "balls_bowled": 23,
+   "innings": 0
+  },
+  {
+   "t": 849.0,
+   "balls_bowled": 24,
+   "innings": 0
+  },
+  {
+   "t": 963.0,
+   "balls_bowled": 25,
+   "innings": 0
+  },
+  {
+   "t": 981.0,
+   "balls_bowled": 26,
+   "innings": 0
+  },
+  {
+   "t": 1029.0,
+   "balls_bowled": 27,
+   "innings": 0
+  },
+  {
+   "t": 1092.0,
+   "balls_bowled": 28,
+   "innings": 0
+  },
+  {
+   "t": 1164.0,
+   "balls_bowled": 29,
+   "innings": 0
+  },
+  {
+   "t": 1203.0,
+   "balls_bowled": 30,
+   "innings": 0
+  },
+  {
+   "t": 1308.0,
+   "balls_bowled": 31,
+   "innings": 0
+  },
+  {
+   "t": 1359.0,
+   "balls_bowled": 32,
+   "innings": 0
+  },
+  {
+   "t": 1440.0,
+   "balls_bowled": 33,
+   "innings": 0
+  },
+  {
+   "t": 1461.0,
+   "balls_bowled": 34,
+   "innings": 0
+  },
+  {
+   "t": 1488.0,
+   "balls_bowled": 35,
+   "innings": 0
+  },
+  {
+   "t": 1515.0,
+   "balls_bowled": 36,
+   "innings": 0
+  },
+  {
+   "t": 1590.0,
+   "balls_bowled": 37,
+   "innings": 0
+  }
+ ],
+ "scoring_events": [
+  {
+   "t": 90.0,
+   "delta": 1,
+   "runs": 23,
+   "type": "+1",
+   "innings": 0
+  },
+  {
+   "t": 123.0,
+   "delta": 1,
+   "runs": 24,
+   "type": "+1",
+   "innings": 0
+  },
+  {
+   "t": 162.0,
+   "delta": 4,
+   "runs": 28,
+   "type": "FOUR",
+   "innings": 0
+  },
+  {
+   "t": 288.0,
+   "delta": 4,
+   "runs": 32,
+   "type": "FOUR",
+   "innings": 0
+  },
+  {
+   "t": 330.0,
+   "delta": 4,
+   "runs": 36,
+   "type": "FOUR",
+   "innings": 0
+  },
+  {
+   "t": 369.0,
+   "delta": 1,
+   "runs": 37,
+   "type": "+1",
+   "innings": 0
+  },
+  {
+   "t": 468.0,
+   "delta": 4,
+   "runs": 41,
+   "type": "FOUR",
+   "innings": 0
+  },
+  {
+   "t": 516.0,
+   "delta": 4,
+   "runs": 45,
+   "type": "FOUR",
+   "innings": 0
+  },
+  {
+   "t": 573.0,
+   "delta": 1,
+   "runs": 46,
+   "type": "+1",
+   "innings": 0
+  },
+  {
+   "t": 618.0,
+   "delta": 6,
+   "runs": 52,
+   "type": "SIX",
+   "innings": 0
+  },
+  {
+   "t": 735.0,
+   "delta": 1,
+   "runs": 53,
+   "type": "+1",
+   "innings": 0
+  },
+  {
+   "t": 765.0,
+   "delta": 1,
+   "runs": 54,
+   "type": "+1",
+   "innings": 0
+  },
+  {
+   "t": 849.0,
+   "delta": 6,
+   "runs": 60,
+   "type": "SIX",
+   "innings": 0
+  },
+  {
+   "t": 963.0,
+   "delta": 4,
+   "runs": 64,
+   "type": "FOUR",
+   "innings": 0
+  },
+  {
+   "t": 981.0,
+   "delta": 4,
+   "runs": 68,
+   "type": "FOUR",
+   "innings": 0
+  },
+  {
+   "t": 1029.0,
+   "delta": 6,
+   "runs": 74,
+   "type": "SIX",
+   "innings": 0
+  },
+  {
+   "t": 1092.0,
+   "delta": 1,
+   "runs": 75,
+   "type": "+1",
+   "innings": 0
+  },
+  {
+   "t": 1119.0,
+   "delta": 3,
+   "runs": 78,
+   "type": "+3",
+   "innings": 0
+  },
+  {
+   "t": 1164.0,
+   "delta": 2,
+   "runs": 80,
+   "type": "+2",
+   "innings": 0
+  },
+  {
+   "t": 1203.0,
+   "delta": 1,
+   "runs": 81,
+   "type": "+1",
+   "innings": 0
+  },
+  {
+   "t": 1305.0,
+   "delta": 1,
+   "runs": 82,
+   "type": "+1",
+   "innings": 0
+  },
+  {
+   "t": 1359.0,
+   "delta": 0,
+   "runs": 82,
+   "type": "WICKET",
+   "innings": 0
+  },
+  {
+   "t": 1440.0,
+   "delta": 1,
+   "runs": 83,
+   "type": "+1",
+   "innings": 0
+  },
+  {
+   "t": 1461.0,
+   "delta": 1,
+   "runs": 84,
+   "type": "+1",
+   "innings": 0
+  },
+  {
+   "t": 1488.0,
+   "delta": 1,
+   "runs": 85,
+   "type": "+1",
+   "innings": 0
+  },
+  {
+   "t": 1515.0,
+   "delta": 1,
+   "runs": 86,
+   "type": "+1",
+   "innings": 0
+  },
+  {
+   "t": 1590.0,
+   "delta": 2,
+   "runs": 88,
+   "type": "+2",
+   "innings": 0
+  }
+ ]
+}

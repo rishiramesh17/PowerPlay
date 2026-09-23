@@ -118,3 +118,49 @@ def test_the_depth_threshold_separates_the_two_measured_streams():
     revisiting it later is an explicit decision rather than a silent drift.
     """
     assert 0.02 < sp.DEPTH_CORRELATION_STRONG < 0.47
+
+
+def test_the_audio_probe_asks_ffmpeg_to_actually_report():
+    """
+    The bug: audio_info ran ffmpeg with `-v error`, but volumedetect prints its
+    summary at info level. The measurement was suppressed, the parse found
+    nothing, and every stream was reported silent -- including one measured at
+    -22.6 dB. Two days of "no usable audio" from a healthy commentary track.
+    """
+    import ast
+    import inspect
+
+    # Find the argv list that actually invokes volumedetect. A crude string
+    # search hits the docstring, and audio_info legitimately passes `-v error`
+    # to ffprobe elsewhere -- the two calls must not be confused.
+    tree = ast.parse(inspect.getsource(sp.audio_info).lstrip())
+    argvs = [
+        [e.value for e in node.elts if isinstance(e, ast.Constant)]
+        for node in ast.walk(tree)
+        if isinstance(node, ast.List)
+        and any(isinstance(e, ast.Constant) and e.value == "volumedetect" for e in node.elts)
+    ]
+    assert argvs, "no argv list invoking volumedetect found"
+    for argv in argvs:
+        assert "-v" in argv, "verbosity must be set explicitly, not left to default"
+        level = argv[argv.index("-v") + 1]
+        assert level != "error", "quietening ffmpeg hides volumedetect's own output"
+        assert level == "info"
+
+
+def test_the_silence_floor_separates_measured_streams():
+    """
+    Measured: broadcast commentary 0.0804 (-22 dB), a near-empty college stream
+    0.0008 (-62 dB). The floor must sit between them, so "has a track" and "has
+    usable audio" stay different facts.
+    """
+    assert 0.0008 < sp.AUDIO_SILENCE_FLOOR < 0.0804
+    loud = sp.StreamProfile(1280, 720, 30.0, 600.0, has_audio=True, audio_rms=0.0804)
+    quiet = sp.StreamProfile(1280, 720, 30.0, 600.0, has_audio=True, audio_rms=0.0008)
+    assert loud.supports("audio") and not quiet.supports("audio")
+
+
+def test_audio_is_sampled_past_the_start_of_the_file():
+    """A title card or dead air at t=0 is not representative of the broadcast."""
+    assert sp.AUDIO_PROBE_OFFSET > 0.0
+    assert sp.AUDIO_PROBE_SECONDS >= 30.0

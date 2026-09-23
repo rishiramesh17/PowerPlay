@@ -73,6 +73,16 @@ OVERLAY_BAND_HYSTERESIS = 0.45
 #: edge-rich. This is the percentile of gradient magnitude it must exceed.
 OVERLAY_EDGE_PERCENTILE = 80.0
 
+#: Where in the file to sample audio from, and for how long. Offset past any
+#: title card; long enough to average over a quiet passage of play.
+AUDIO_PROBE_OFFSET = 60.0
+AUDIO_PROBE_SECONDS = 120.0
+
+#: Above this mean amplitude the track carries real content. -60 dBFS is about
+#: 0.001; measured broadcast commentary sits near -22 dB (0.074), and a genuinely
+#: empty track sits at or below the noise floor.
+AUDIO_SILENCE_FLOOR = 0.001
+
 #: Analysis width for the overlay pass. Coordinates are scaled back to full
 #: resolution on the way out.
 OVERLAY_WIDTH = 640
@@ -140,7 +150,7 @@ class StreamProfile:
         return {
             "scoreboard": self.scoreboard_roi is not None,
             "perspective": self.looks_along_pitch is True,
-            "audio": self.has_audio and self.audio_rms > 1e-4,
+            "audio": self.has_audio and self.audio_rms > AUDIO_SILENCE_FLOOR,
             "stable_framing": self.dynamic_fraction < 0.5,
         }.get(requirement, False)
 
@@ -302,9 +312,17 @@ def audio_info(video_path: str) -> Tuple[bool, float]:
     # A track can exist and be silent, which is common on re-encoded uploads --
     # so presence alone is not enough to promise an audio detector anything.
     try:
+        # `-v info`, not `-v error`: volumedetect reports its summary at info
+        # level, so quietening ffmpeg suppressed the measurement and every
+        # stream came back "silent". A track measured at -22.6 dB was reported
+        # as having no usable audio for two days.
+        #
+        # Sampled from inside the file rather than the head, which is often a
+        # title card or dead air before the broadcast settles.
         out = subprocess.run(
-            ["ffmpeg", "-nostdin", "-v", "error", "-i", video_path,
-             "-t", "120", "-af", "volumedetect", "-f", "null", "-"],
+            ["ffmpeg", "-nostdin", "-v", "info", "-ss", str(AUDIO_PROBE_OFFSET),
+             "-t", str(AUDIO_PROBE_SECONDS), "-i", video_path,
+             "-af", "volumedetect", "-f", "null", "-"],
             capture_output=True, text=True, timeout=180,
         )
         for line in out.stderr.splitlines():

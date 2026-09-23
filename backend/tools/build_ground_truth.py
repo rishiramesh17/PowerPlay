@@ -27,6 +27,7 @@ import re
 import subprocess
 import sys
 import tempfile
+from dataclasses import dataclass
 from pathlib import Path
 from typing import List, Optional, Tuple
 
@@ -37,21 +38,88 @@ import cv2
 # different crop, which is why it is exposed as a flag rather than buried.
 DEFAULT_ROI = (430, 610, 880, 670)  # x1, y1, x2, y2
 
-# "91 - 3  12.1 OVERS" -> runs, wickets, overs, balls-in-over.
+# Broadcasters do not share a scoreboard layout, so the parser carries one entry
+# per vendor and tries each in turn. Two are confirmed from real footage:
 #
-# The hyphen is one glyph and OCR renders it as almost anything: -, I, ~, O, C,
-# F, and -- disastrously -- as a digit. An earlier version made the separator
-# optional, which let "66 2 2 10.0 OVERS" match at the *second* 2 and report a
-# score of 2. That misparse alternated with the correct one every few seconds,
-# so the ball counter appeared to reset constantly and the innings logic tore
-# the match into three.
+#   CricCenter (MLC U21, college cricket):  "SLA V BRO 91 - 3  12.1 OVERS"
+#   CricClubs  (Minor League Cricket):      "MPT 80/0 RR 16.55 OVERS 4.5"
 #
-# So the separator is now exactly one throwaway non-space token, and the match
-# is anchored on the rigid "N.N OVERS" tail rather than on the fragile middle.
-SCORE_PATTERN = re.compile(
-    r"(\d{1,3})\s*\S?\s*(\d)\s+(\d{1,2})\s*[.,]\s*(\d)\s*OVERS",
-    re.IGNORECASE,
+# The hypothesis that one template would cover the market was wrong: three
+# broadcasts, two vendors, and the senior league uses the one the original
+# pattern cannot read at all.
+
+
+def _parse_overs(whole: str, frac: Optional[str]) -> Optional[int]:
+    """
+    Turn an over reading into a count of legal deliveries.
+
+    The decimal point is the first thing OCR loses at this size -- "3.1" comes
+    back as "31" and "4.0" as "4" -- so when it is missing the last digit is
+    treated as balls-within-the-over, which is only valid for 0-5. A reading
+    that cannot be interpreted that way is rejected rather than guessed at.
+    """
+    if frac is not None:
+        balls = int(frac)
+        return int(whole) * 6 + balls if balls <= 5 else None
+    digits = whole
+    if len(digits) == 1:
+        return int(digits) * 6
+    over, balls = int(digits[:-1]), int(digits[-1])
+    if balls <= 5 and over <= MAX_OVERS:
+        return over * 6 + balls
+    return None
+
+
+#: No limited-overs innings runs longer than this, so a larger "over number" is
+#: a misread rather than a match.
+MAX_OVERS = 50
+
+
+@dataclass(frozen=True)
+class ScoreboardLayout:
+    """One broadcaster's way of writing the score."""
+
+    name: str
+    pattern: "re.Pattern[str]"
+    #: Group indices for runs, wickets, whole overs, fractional overs.
+    groups: Tuple[int, int, int, int]
+
+
+LAYOUTS: Tuple[ScoreboardLayout, ...] = (
+    # "91 - 3  12.1 OVERS". The separator is one glyph and OCR renders it as
+    # -, I, ~, O, C, F and sometimes a digit, so it is matched as a single
+    # throwaway token and the match is anchored on the rigid "N.N OVERS" tail.
+    # Making it optional once let "66 2 2 10.0 OVERS" match at the second 2 and
+    # report a score of 2, alternating with the correct parse.
+    ScoreboardLayout(
+        "criccenter",
+        re.compile(r"(\d{1,3})\s*\S?\s*(\d)\s+(\d{1,2})\s*[.,]\s*(\d)\s*OVERS", re.I),
+        (1, 2, 3, 4),
+    ),
+    # "MPT 80/0 RR 16.55 OVERS 4.5". Runs and overs sit on separate rows with a
+    # run rate between them, so the gap is matched permissively -- it contains
+    # digits, which a \D run cannot cross.
+    ScoreboardLayout(
+        "cricclubs",
+        re.compile(r"(\d{1,3})\s*/\s*(\d).{0,40}?OVERS\s*(\d{1,3})(?:\s*[.,]\s*(\d))?", re.I),
+        (1, 2, 3, 4),
+    ),
 )
+
+
+def parse_scoreboard(flat: str) -> Optional[Tuple[int, int, int, str]]:
+    """First layout that reads this text: (runs, wickets, balls, layout name)."""
+    for layout in LAYOUTS:
+        m = layout.pattern.search(flat)
+        if not m:
+            continue
+        gr, gw, go, gf = layout.groups
+        balls = _parse_overs(m.group(go), m.group(gf))
+        if balls is None:
+            continue
+        return int(m.group(gr)), int(m.group(gw)), balls, layout.name
+    return None
+
 
 #: A batting side's score never falls, and no single delivery yields more than 7
 #: (six plus an overthrow). Anything outside that is an OCR misread, not cricket.
@@ -130,14 +198,15 @@ def scan(
             if img is None:
                 continue
             flat = " ".join(w[1] for w in reader.readtext(img)).upper()
-            m = SCORE_PATTERN.search(flat)
+            parsed = parse_scoreboard(flat)
             samples.append(
                 {
                     # ffmpeg emits the first frame at `start`, then one per step.
                     "t": round(start + i * step, 2),
-                    "runs": int(m.group(1)) if m else None,
-                    "wickets": int(m.group(2)) if m else None,
-                    "balls": (int(m.group(3)) * 6 + int(m.group(4))) if m else None,
+                    "runs": parsed[0] if parsed else None,
+                    "wickets": parsed[1] if parsed else None,
+                    "balls": parsed[2] if parsed else None,
+                    "layout": parsed[3] if parsed else None,
                     # Kept so the pattern can be fixed and the match re-derived
                     # offline. Recovering this cost a full 25-minute rescan once.
                     "raw": flat[:90],
@@ -286,11 +355,14 @@ def main() -> int:
     deliveries, events = derive(rows)
 
     parsed = sum(1 for s in samples if s["balls"] is not None)
+    from collections import Counter
+    layouts = dict(Counter(s["layout"] for s in samples if s.get("layout")))
     boundaries = [e for e in events if e["type"] in ("FOUR", "SIX")]
     payload = {
         "source": a.source or str(a.video),
         "window": {"start_sec": a.start, "end_sec": a.end, "step_sec": a.step},
         "roi": list(a.roi),
+        "layouts_matched": layouts,
         "derivation": f"scoreboard OCR @{a.step}s ({parsed}/{len(samples)} parsed, "
                       f"{len(rows)} survived cleaning)",
         "timing_caveat": (
