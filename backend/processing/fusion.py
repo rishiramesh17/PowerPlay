@@ -41,9 +41,13 @@ from .stream_profile import StreamProfile
 logger = logging.getLogger(__name__)
 
 #: Two signals within this many seconds are treated as describing the same ball.
-#: Sized from the measured spread between detectors on the same delivery, and
-#: kept well under the shortest observed gap between real deliveries (21s).
-AGREEMENT_WINDOW_SEC = 8.0
+#:
+#: Has to exceed the scoreboard's own lag, which was measured at 3-11 seconds on
+#: hand-verified deliveries: a board tick and a vision release describing the
+#: same ball can sit that far apart, and a narrower window would split one
+#: delivery into two events. Still comfortably under the shortest observed gap
+#: between real deliveries (21s), so it cannot chain across balls.
+AGREEMENT_WINDOW_SEC = 14.0
 
 #: Minimum fused confidence for an event to be reported. Favours precision: for
 #: a highlight reel a missed boundary is survivable, a clip of nothing happening
@@ -76,6 +80,14 @@ class Signal:
     #: 0-1. The detector's own view of how sure it is. Never a probability the
     #: fusion layer invented on its behalf.
     confidence: float
+    #: Seconds of uncertainty about *when*, which is a different quantity from
+    #: confidence about *whether*. A scoreboard is certain a ball was bowled and
+    #: vague about the moment -- its tick trails the delivery by a measured 3-11
+    #: seconds. A motion detector is the reverse: unsure the event is real, but
+    #: accurate to a fraction of a second once it fires. Collapsing both into one
+    #: number would let the surer detector drag the timestamp away from the more
+    #: precise one, which is backwards.
+    time_sigma: float = 1.0
     #: Raw values behind the opinion, kept for debugging. Fusion must never be
     #: the reason a failure becomes unexplainable.
     evidence: Dict[str, float] = field(default_factory=dict)
@@ -214,10 +226,12 @@ def _fuse_cluster(cluster: Sequence[Signal]) -> FusedEvent:
         miss *= (1.0 - max(0.0, min(1.0, s.confidence)))
     confidence = 1.0 - miss
 
-    # Timestamp is the confidence-weighted mean of the best signal per detector,
-    # so a hesitant source cannot drag a confident one off the ball.
-    total = sum(s.confidence for s in best_per_detector.values()) or 1.0
-    t = sum(s.t * s.confidence for s in best_per_detector.values()) / total
+    # Timestamp is weighted by timing precision, not by confidence: inverse
+    # variance, so the detector that knows *when* best sets the moment even if
+    # another is surer the event happened at all.
+    weights = [1.0 / max(s.time_sigma, 1e-3) ** 2 for s in best_per_detector.values()]
+    total = sum(weights) or 1.0
+    t = sum(s.t * w for s, w in zip(best_per_detector.values(), weights)) / total
 
     return FusedEvent(
         t=t,
@@ -259,7 +273,7 @@ def fuse(
         else:
             uncalibrated.append(d.name)
             collected.extend(
-                Signal(s.detector, s.t, UNCALIBRATED_CONFIDENCE,
+                Signal(s.detector, s.t, UNCALIBRATED_CONFIDENCE, s.time_sigma,
                        {**s.evidence, "raw_confidence": s.confidence})
                 for s in produced
             )

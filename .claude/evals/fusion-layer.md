@@ -144,3 +144,39 @@ delivery it can see, and inside a known event window the question is "when,
 within these 25 seconds" rather than "which N of K" -- a different task that this
 result does not speak to. What it rules out is using the current detector to
 *choose* among candidates.
+
+---
+
+## Capability eval 1: FAILED (measured on Minor League Cricket)
+
+| detector | precision | recall |
+|---|---|---|
+| vision (run-up) standalone | 0.43 | 0.62 |
+| scoreboard standalone | 0.76* | 1.00* |
+| **fused** | **0.95** | 0.62 |
+
+\* circular: this ground truth was produced by the same scoreboard reader, so
+those numbers grade it against itself. Upper bound, not a result.
+
+Against vision, fusion passes handsomely -- precision 0.43 to 0.95 at identical
+recall. Requiring two independent detectors to agree removed 23 of 24 false
+positives, which is exactly the behaviour the layer was built for.
+
+Against the scoreboard it fails. Fusion loses 11 deliveries of recall, because
+with both detectors marked uncalibrated neither may report alone, so every ball
+the board saw and vision missed is discarded.
+
+The cause is structural rather than a tuning problem. The scoreboard is the
+strongest detector measured and is being silenced for lacking independent
+validation -- correctly, since its only score comes from grading itself. The
+corroboration requirement then costs precisely the recall the board was bringing.
+
+This is not fixed by weakening the calibration contract, which exists because an
+uncalibrated confidence measured AUC 0.384 at predicting its own correctness.
+It is fixed by calibrating the scoreboard against a source it did not produce.
+Minor League Cricket publishes full ball-by-ball scorecards on CricClubs, which
+is exactly such a source: independent, authoritative, and free.
+
+Until then the honest reading is that fusion is a large precision win over
+vision and a recall regression against the board, and the system is blocked on
+external validation rather than on more detector work.

@@ -33,8 +33,8 @@ def _det(name, signals, requires=(), calibrated=True):
                        requires=requires, calibrated=calibrated)
 
 
-def _sig(name, t, conf=0.8):
-    return fz.Signal(detector=name, t=t, confidence=conf)
+def _sig(name, t, conf=0.8, sigma=1.0):
+    return fz.Signal(detector=name, t=t, confidence=conf, time_sigma=sigma)
 
 
 # --- eval 3: preconditions enforced before execution ------------------------
@@ -130,13 +130,20 @@ def test_separate_deliveries_stay_separate():
     assert [round(e.t) for e in report.events] == [50, 95]
 
 
-def test_a_confident_detector_is_not_dragged_off_by_a_hesitant_one():
+def test_the_timestamp_follows_timing_precision_not_confidence():
+    """
+    These are different quantities. A scoreboard is certain a ball was bowled
+    and vague about when -- its tick trails the delivery by a measured 3-11s. A
+    motion detector is unsure the event is real but accurate to a fraction of a
+    second. The precise one must set the moment even when the sure one disagrees,
+    or the fused time is dragged toward the worse estimate.
+    """
     report = fz.fuse(
-        [_det("sure", [_sig("sure", 100.0, 0.95)]),
-         _det("vague", [_sig("vague", 106.0, 0.10)])], _profile()
+        [_det("board", [_sig("board", 107.0, conf=0.95, sigma=4.0)]),
+         _det("vision", [_sig("vision", 100.0, conf=0.30, sigma=0.5)])], _profile()
     )
     assert len(report.events) == 1
-    assert report.events[0].t < 101.0, "weighted toward the confident signal"
+    assert report.events[0].t < 101.0, "the precise detector should set the time"
 
 
 # --- eval 5: precision favoured ---------------------------------------------
@@ -158,7 +165,7 @@ def test_the_same_weak_signal_corroborated_survives():
 # --- eval 4: attribution survives -------------------------------------------
 
 def test_every_event_names_its_contributors_and_evidence():
-    sig = fz.Signal("runup", 50.0, 0.7, {"prominence": 6.4, "speed": 1.04})
+    sig = fz.Signal("runup", 50.0, 0.7, 1.0, {"prominence": 6.4, "speed": 1.04})
     report = fz.fuse([_det("runup", [sig])], _profile())
     ev = report.events[0]
     assert ev.detectors == ("runup",)
@@ -250,7 +257,10 @@ def test_an_uncalibrated_detector_cannot_outvote_a_calibrated_one():
     solid = _det("solid", [_sig("solid", 54.0, 0.95)])
     report = fz.fuse([brash, solid], _profile())
     assert len(report.events) == 1
-    assert report.events[0].t < 57.0, "pulled toward the calibrated detector"
+    # Its inflated confidence is discarded; with equal timing precision the two
+    # contribute equally to the moment rather than the loud one winning.
+    assert report.events[0].t == pytest.approx(57.0)
+    assert report.uncalibrated == ["brash"]
 
 
 def test_the_flat_value_sits_below_the_reporting_threshold():
@@ -270,3 +280,22 @@ def test_summary_names_detectors_whose_confidence_was_distrusted():
         _profile(),
     )
     assert "uncalibrated" in report.summary() and "brash" in report.summary()
+
+
+def test_a_vague_detector_barely_moves_a_precise_one():
+    """Inverse-variance weighting: 4s of uncertainty against 0.5s is 64x less."""
+    report = fz.fuse(
+        [_det("board", [_sig("board", 120.0, sigma=4.0)]),
+         _det("vision", [_sig("vision", 110.0, sigma=0.5)])], _profile()
+    )
+    assert report.events[0].t == pytest.approx(110.15, abs=0.1)
+
+
+def test_the_agreement_window_spans_the_scoreboard_lag():
+    """
+    A board tick and a vision release describing the same ball sit 3-11s apart.
+    A narrower window would split one delivery into two events; a much wider one
+    would chain across real deliveries, which are >=21s apart.
+    """
+    assert fz.AGREEMENT_WINDOW_SEC > 11.0
+    assert fz.AGREEMENT_WINDOW_SEC < 21.0
