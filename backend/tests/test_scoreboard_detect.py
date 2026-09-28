@@ -40,7 +40,10 @@ def test_it_is_confident_about_the_event_and_vague_about_the_moment():
     """The whole reason it is worth fusing with a motion detector."""
     tl = Timeline(rows=[_row(0, 10, 6), _row(3, 11, 7)], parse_rate=1.0)
     sig = sd.signals_from_timeline(tl)[0]
-    assert sig.confidence > 0.9
+    # High, but capped at the lower bound of the interval around a perfect 30/30
+    # against an independent scorecard -- a flawless small sample does not license
+    # claiming certainty.
+    assert 0.85 < sig.confidence < 1.0
     assert sig.time_sigma >= 4.0
 
 
@@ -122,10 +125,16 @@ def test_it_reports_normally_from_a_healthy_board():
     assert out is not None and len(out) > 0
 
 
-def test_it_is_not_marked_calibrated():
+def test_counting_is_calibrated_and_timing_is_not():
     """
-    It found 29 of 29 deliveries in the one window measured -- but that window's
-    ground truth came from this same reader, so the number grades it against
-    itself. Calibration needs an independent source.
+    Calibration is per-claim, not per-detector.
+
+    Counting was measured at 30/30 against a CricClubs scorecard kept by a human
+    scorer, independent of the graphics this parses -- so `calibrated` is True and
+    fusion lets it report alone. Timing was NOT settled by that scorecard, whose
+    clocks are minute-resolution; the honest uncertainty stays declared in
+    SCOREBOARD_TIME_SIGMA, which must remain wide enough that a detector which
+    actually knows the moment outweighs it.
     """
-    assert sd.make_detector([], step=3.0).calibrated is False
+    assert sd.make_detector([], step=3.0).calibrated is True
+    assert sd.SCOREBOARD_TIME_SIGMA >= 4.0

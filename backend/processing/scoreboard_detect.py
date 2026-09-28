@@ -11,11 +11,13 @@ So it reports high confidence and poor timing precision, which is the opposite
 shape to the run-up localizer, and exactly why the two are worth fusing. The
 board settles whether a ball was bowled; vision settles the moment.
 
-Deliberately NOT marked calibrated. It found every delivery in the one window
-measured -- but that window's ground truth was derived from this same reader, so
-the number grades it against itself. Until an independent source confirms it,
-`calibrated=False` stands and fusion flattens its confidence like any other
-unmeasured detector.
+CALIBRATED against the CricClubs ball-by-ball scorecard for this match, a record
+kept by a human scorer at the ground and entirely independent of the broadcast
+graphics parsed here. Over balls 8-37 the reader found 30 of 30 deliveries and
+invented none. That replaces the previous figure, which was measured against
+ground truth this same reader produced and therefore meant nothing.
+
+`tools/calibrate_scoreboard.py` reproduces it.
 """
 
 from __future__ import annotations
@@ -34,8 +36,12 @@ logger = logging.getLogger(__name__)
 #: almost at once, while a six is only recorded once it has been tracked to the
 #: rope and signalled.
 #:
-#: PROVISIONAL, from n=2. It shifts the reported moment, so it is wrong to treat
-#: as precise -- which is what `SCOREBOARD_TIME_SIGMA` exists to declare.
+#: STILL PROVISIONAL, from n=2, and the scorecard could not improve it: its
+#: clocks are minute-resolution and carry the scorer's own delay, spreading
+#: measured offsets across 177 seconds on this match. Only hand-labelled
+#: releases against video can settle this. It shifts the reported moment, so it
+#: is wrong to treat as precise -- which is what `SCOREBOARD_TIME_SIGMA` exists
+#: to declare.
 SCOREBOARD_LAG_SEC = 7.0
 
 #: How far the corrected timestamp can still be out, in seconds. Covers the
@@ -45,9 +51,13 @@ SCOREBOARD_LAG_SEC = 7.0
 SCOREBOARD_TIME_SIGMA = 4.0
 
 #: Confidence attached to a delivery the counter actually advanced through.
-#: High because the counter incrementing is close to proof that a legal ball was
-#: bowled -- far stronger evidence than any motion heuristic has produced.
-DELIVERY_CONFIDENCE = 0.92
+#:
+#: This is the lower bound of the 95% interval around a perfect 30/30 against an
+#: independent scorecard -- not the 1.00 that was observed. A flawless run on
+#: thirty deliveries is consistent with a true rate near 0.89, and quoting the
+#: point estimate would reintroduce exactly the overclaiming the calibration
+#: contract exists to stop. It rises as more matches are measured.
+DELIVERY_CONFIDENCE = 0.886
 
 #: Confidence for a delivery known only because the counter jumped across an
 #: occluded span. The ball certainly happened; its position inside the gap is
@@ -139,8 +149,9 @@ def make_detector(
         name="scoreboard",
         run=run,
         requires=("scoreboard",),
-        # See the module docstring: 29/29 is measured against ground truth this
-        # same reader produced, so it grades itself. Not calibrated until an
-        # independent source says so.
-        calibrated=False,
+        # Earned: 30/30 deliveries against an independent CricClubs scorecard.
+        # Note this calibrates *counting*, which is all fusion asks of it. The
+        # timing remains uncalibrated, which is what SCOREBOARD_TIME_SIGMA
+        # declares -- scorecard clocks cannot resolve a lag of seconds.
+        calibrated=True,
     )

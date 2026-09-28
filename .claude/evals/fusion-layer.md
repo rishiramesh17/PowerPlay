@@ -180,3 +180,70 @@ is exactly such a source: independent, authoritative, and free.
 Until then the honest reading is that fusion is a large precision win over
 vision and a recall regression against the board, and the system is blocked on
 external validation rather than on more detector work.
+
+---
+
+## Capability eval 1: PASSED, after external calibration
+
+The failure above was diagnosed as "blocked on external validation, not on more
+detector work". That diagnosis held.
+
+### The independent source
+
+CricClubs publishes a ball-by-ball page for this match, kept by a human scorer at
+the ground. It is independent of the broadcast graphics the reader parses -- a
+different person, a different system, a different moment of recording. Measured
+by `tools/calibrate_scoreboard.py`:
+
+| | |
+|---|---|
+| deliveries in the analysed window (balls 8-37) | 30 |
+| found by the reader | **30** |
+| invented by the reader | **0** |
+| recall / precision | 1.000 / 1.000 |
+| 95% CI lower bound on that rate | 0.886 |
+| runs reading also correct | 28/30 |
+
+The two runs disagreements are both in over 4.2, where a no-ball was hit for four
+and the next legal ball went for six -- eleven runs inside about three seconds.
+The board was mid-update. No delivery was missed.
+
+`DELIVERY_CONFIDENCE` is therefore **0.886, not 1.00**. A perfect score on thirty
+deliveries is consistent with a true rate near 0.89, and quoting the point
+estimate would be the same overclaiming the calibration contract exists to stop.
+
+### Result
+
+| detector | precision | recall |
+|---|---|---|
+| scoreboard standalone | 0.76 | 1.00 |
+| **fused** | **1.00** | **1.00** |
+
+Fusion now equals or beats its best detector on both axes. Eval 1 passes.
+
+The mechanism is the one the layer was designed around and is worth naming: a
+calibrated detector may report alone, so the eleven deliveries previously lost
+are back; the occluded-span signals that cost the board its 0.76 precision get
+absorbed into the direct ticks they duplicate rather than reported separately.
+
+### What calibration did NOT settle
+
+`SCOREBOARD_LAG_SEC` is unchanged and still n=2. Scorecard clocks are
+minute-resolution and carry the scorer's own delay: mapping them onto video time
+across all 30 deliveries gave offsets spreading over 177 seconds, with one ball
+162s out. That is three orders of magnitude too coarse to resolve a 3-11s
+graphics lag.
+
+So the calibration is **of counting, not of timing** -- which is exactly the
+split `Signal.confidence` and `Signal.time_sigma` were separated to express. The
+board may now assert that a ball was bowled. It still may not assert when.
+
+Settling the lag needs hand-labelled releases against video. Roughly a dozen
+deliveries would do it, and until that exists the fused timestamp on any
+board-only event carries a declared +/-4s that nothing has verified.
+
+### Sample size
+
+One window, one match, one vendor. 30 deliveries. This is enough to unblock
+fusion and not enough to call the reader solved; the CI lower bound is the
+honest summary, and it is what the code now uses.
