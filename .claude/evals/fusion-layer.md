@@ -247,3 +247,22 @@ board-only event carries a declared +/-4s that nothing has verified.
 One window, one match, one vendor. 30 deliveries. This is enough to unblock
 fusion and not enough to call the reader solved; the CI lower bound is the
 honest summary, and it is what the code now uses.
+
+### Three-way, with vision re-measured
+
+| detector | precision | recall | reported |
+|---|---|---|---|
+| vision (run-up) standalone | 0.46 | 0.66 | 41 |
+| scoreboard standalone | 0.76 | 1.00 | 38 |
+| **fused** | **1.00** | **1.00** | **29** |
+
+Fusion beats both detectors on both axes, which is the whole justification for
+the layer. Note the honesty limit on the fused row: truth times here are the
+board's own lag-corrected ticks, so this measures *agreement about which
+deliveries*, not absolute timing. What makes the chain non-circular is the step
+underneath it -- the board was validated at 30/30 against the scorecard, by a
+different person on a different system.
+
+Vision remains uncalibrated and flattened, unchanged at 0.46 / 0.66. That is
+correct and should stay: its confidence scored AUC 0.384 at predicting its own
+correctness. It contributes timing precision and corroboration, not judgement.
