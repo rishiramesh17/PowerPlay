@@ -1,0 +1,4417 @@
+{
+ "source": "https://www.youtube.com/live/wnh6OMB-a6I (MiLC, Chicago Tigers v Kingsmen, 55-85min)",
+ "window": {
+  "start_sec": 0.0,
+  "end_sec": 1650.0,
+  "step_sec": 3.0
+ },
+ "roi": [
+  159,
+  945,
+  1761,
+  1047
+ ],
+ "layouts_matched": {},
+ "derivation": "scoreboard OCR @3.0s (0/548 parsed, 0 survived cleaning)",
+ "timing_caveat": "Timestamps are when the scoreboard was UPDATED, not when the ball was bowled. Measured lag on this broadcast ranges from ~2s on a dot to ~11s on a six, because the graphics follow ball-tracking and the umpire signal. Valid for counting and outcome labels; invalid as a release-time benchmark.",
+ "caveats": [
+  "extras (wides, no-balls) do not increment the over counter, so legal deliveries are counted but total balls faced is undercounted",
+  "sampling is 3.0s, so every timestamp carries at least that much quantisation error on top of the update lag",
+  "the ROI is broadcaster-specific and hardcoded per source"
+ ],
+ "totals": {
+  "deliveries": 0,
+  "scoring_events": 0,
+  "boundaries": 0,
+  "wickets": 0,
+  "innings": 0
+ },
+ "samples": [
+  {
+   "t": 0.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 3.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 6.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 9.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 12.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 15.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 18.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": ""
+  },
+  {
+   "t": 21.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "CHT 92/0 PP920 OVEPS I0"
+  },
+  {
+   "t": 24.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 35 27 MNITHIYANANDAM 5I CHT 92/0 A SHEIKH 26/0 2 FOMEAED BT CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 27.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 35 27 MNITHIYANANDAM 51 CHT 92/0 A SHEIKH 26/0 2 FOMEREO#Y CHICAGO TIGERS VS CHIC"
+  },
+  {
+   "t": 30.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 35 27 MNITHIYANANDAM 51 CHT 92/0 A SHEIKA 26/0 2 POWERED ER CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 33.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 35 27 MNITHIYANANDAM 5I CHT 92/0 A SHEIKH 26/0 2 DOWEREDSY CHICAGO TIGERS VS CHIC"
+  },
+  {
+   "t": 36.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 35 27 MNITHIYANANDAM 51 CHT 92/0 A SHEIKH 26/0 2 POWERED BY CHICAGO TIGERS VS CHI"
+  },
+  {
+   "t": 39.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 35 27 MNITHIYANANDAM 51 CHT 92/0 A SHEIKH 26/0 2 FOWEREC BY CHICAGO TIGERS VS CHI"
+  },
+  {
+   "t": 42.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 5I 33L_ MILANTHA 35 27 CHT 92/0 H AZAM 2/0 FOWERED BY CHICAGO TIGERS VS CHI"
+  },
+  {
+   "t": 45.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 5133_ MILANTHA 35 27 CHT 92/0 HAZAM 2/0 1 DORERED CHICAGO TIGERS VS CHICAGO"
+  },
+  {
+   "t": 48.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 35 27 MNITHIYANANDAM 52 CHT 93/0 AAZAM 3/0 L OLAED ER CHICAGO TIGERS VS CHICAGO "
+  },
+  {
+   "t": 51.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 35 27 MNITHIYANANDAM 52 CHT 93/0 HAZAM 3/0 L.I POWERLD @Y CHICAGO TIGERS VS CHICA"
+  },
+  {
+   "t": 54.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 35 27 MNITHIYANANDAM 52 CHT 93/0 AAZAM 3/0 L.I #OWEBEDJY CHICAGO TIGERS VS CHICA"
+  },
+  {
+   "t": 57.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 35 27 MNITHIYANANDAM 52 CHT 93/0 A AZAM 3/0 L.1 FOWERED # CHICAGO TIGERS VS CHICA"
+  },
+  {
+   "t": 60.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 35 27 MNITHIYANANDAM 52 CHT 93/0 H AZAM 3/0 L. BOWEREDET CHICAGO TIGERS VS CHICAG"
+  },
+  {
+   "t": 63.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 35 27 MNITHIYANANDAM 52 CHT 93/0 A AZAM 3/0 L.1 POWERED* CHICAGO TIGERS VS CHICAG"
+  },
+  {
+   "t": 66.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 35 27 MNITHIYANANDAM 52 CHT 93/0 AAZAM 3/0 L. POWERED EY CHICAGO TIGERS VS CHICAG"
+  },
+  {
+   "t": 69.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 35 27 MNITHIYANANDAM 52 CHT 93/0 A AZAM 3/0 L.1 OWUREL +Y CHICAGO TIGERS VS CHICA"
+  },
+  {
+   "t": 72.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 35 27 MNITHIYANANDAM 52 CHT 93/0 AAZAM 3/0 L.1 ROWLRECEY CHICAGO TIGERS VS CHICAG"
+  },
+  {
+   "t": 75.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 35 27 MNITHIYANANDAM 52 CHT 93/0 A AZAM 3/0 L. POWLRAD &Y CHICAGO TIGERS VS CHIC"
+  },
+  {
+   "t": 78.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 52 3 MILANTHA 36 28 CHT 94/0 A AZAM 4/0 |.2 FUWEREC &Y CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 81.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 52 3 MILANTHA 36 28 CHT 94/0 HAZAM 4/0 1.2 ROMIERED @Y CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 84.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 52 3 MILANTHA 36 28 CHT 94/0 HAZAM 4/0 1.2 FOWERED @Y CHICAGO TIGERS VS CHI"
+  },
+  {
+   "t": 87.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 52 3 MILANTHA 36 28 CHT 94/0 HAZAM 4/0 |.2 POYEMEUEY CHICAGO TIGERS VS CHIC"
+  },
+  {
+   "t": 90.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 52 3 MILANTHA 36 28 CHT 94/0 A AZAM 4/0 |.2 POWERED &X CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 93.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 52 3 MILANTHA 36 28 CHT 94/0 H AZAM 4/0 |.2 POWERED#T CHICAGO TIGERS VS CHI"
+  },
+  {
+   "t": 96.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 52 3 MILANTHA 36 28 CHT 94/0 A AZAM 4/0 |.2 DOWLREDEY CHICAGO TIGERS VS CHI"
+  },
+  {
+   "t": 99.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 52 3 MILANTHA 36 28 CHT 94/0 HAZAM 4/0 1.2 POWERED E7 CHICAGO TIGERS VS CHI"
+  },
+  {
+   "t": 102.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 52 3 MILANTHA 36 28 CHT 94/0 H AZAM 4/0 |.2 BOWERED &1 CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 105.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 52 3 MILANTHA 36 28 CHT 94/0 AAZAM 4/0 |.2 POWLRED EX CHICAGO TIGERS VS CHI"
+  },
+  {
+   "t": 108.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 58 3E MILANTHA 36 28 CHT IOO/0 H AZAM I0/0 L.3 #OWERED BY CHICAGO TIGERS VS"
+  },
+  {
+   "t": 111.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 58 3 MILANTHA 36 28 CHT IOO/0 HAZAM I0/0 |.3 #OWERED#Y CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 114.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 58 3E MILANTHA 36 28 CHT IOO/0 H AZAM I0/0 L.3 POMEXED @Y CHICAGO TIGERS VS"
+  },
+  {
+   "t": 117.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 58 3 MILANTHA 36 28 CHT IOO/0 A AZAM I0/0 1.3 DOWERED @Y CHICAGO TIGERS VS "
+  },
+  {
+   "t": 120.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 58 3E MILANTHA 36 28 CHT IOO/0 H AZAM I0/0 L.3 POWENED BY CHICAGO TIGERS VS"
+  },
+  {
+   "t": 123.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 58 3 MILANTHA 36 28 CHT IOO/0 AAZAM I0/0 .3 VONERED#Y CHICAGO TIGERS VS CHI"
+  },
+  {
+   "t": 126.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 58 3 MILANTHA 36 28 CHT IOO/0 AAZAM I0/0 |.3 BOWERED @X CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 129.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 58 3 MILANTHA 36 28 CHT IOO/0 A AZAM I0/0 L,3 ROWERED # CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 132.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 58 3 MILANTHA 36 28 CHT IOO/0 H AZAM I0/0 +.3 DOWERED @ CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 135.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 58 3 MILANTHA 36 28 CHT IOO/0 A AZAM I0/0 L.3 CHICAGO TIGERS VS CHICAGO KIN"
+  },
+  {
+   "t": 138.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 58 3E MILANTHA 36 28 CHT IOO/0 A AZAM I0/0 +.3 FOWERED EX CHICAGO TIGERS VS"
+  },
+  {
+   "t": 141.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 58 3 MILANTHA 36 28 CHT IOO/0 A AZAM I0/0 |.3 FOM EREU @7 CHICAGO TIGERS VS"
+  },
+  {
+   "t": 144.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 58 3E MILANTHA 36 28 CHT IOO/0 A AZAM I0/0 L.3 JOWEBCO *T CHICAGO TIGERS VS"
+  },
+  {
+   "t": 147.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 58 3 MILANTHA 36 28 CHT IOO/0 A AZAM I0/0 |.3 DOWLRED BT CHICAGO TIGERS VS "
+  },
+  {
+   "t": 150.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 58 3 MILANTHA 36 28 CHT IOO/0 A AZAM I0/0 L.3 DOWERED EY CHICAGO TIGERS VS "
+  },
+  {
+   "t": 153.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 58 3 MILANTHA 36 28 CHT IOO/0 H AZAM I0/0 L.3 #OWLRED#Y CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 156.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 58 3 MILANTHA 36 28 CHT IOO/0 H AZAM I0/0 L.3 POWLRED E7 CHICAGO TIGERS VS "
+  },
+  {
+   "t": 159.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 36 28 MNITHIYANANDAM 59 CHT IOL/O A AZAM IL/O L.4 POWERED#Y CHICAGO TIGERS VS CHI"
+  },
+  {
+   "t": 162.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 36 28 MNITHIYANANDAM 59 CHT IOL/O AAZAM IL/O L.4 POWERED @ CHICAGO TIGERS VS CHIC"
+  },
+  {
+   "t": 165.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 36 28 MNITHIYANANDAM 59 CHT IOL/O AAZAM IL/O L.4 POW ERED BY CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 168.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 36 28 MNITHIYANANDAM 59 CHT IOL/O AAZAM IL/O 1.4 DOWEREDEY CHICAGO TIGERS VS CHIC"
+  },
+  {
+   "t": 171.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 36 28 MNITHIYANANDAM 59 CHT IOL/O AAZAM IL/0 1.4 POWERED @Y CHICAGO TIGERS VS CHI"
+  },
+  {
+   "t": 174.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 36 28 MNITHIYANANDAM 59 CHT IOL/O A AZAM IL/O 1.4 #OWERED BY CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 177.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 36 28 MNITHIYANANDAM 59 CHT IOL/O H AZAM IL/O |.4 POWERED #Y CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 180.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 36 28 MNITHIYANANDAM 59 CHT IOL/O H AZAM IL/O 1.4 FOWERED EY CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 183.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 36 28 MNITHIYANANDAM 59 CHT IOL/O HAZAM IL/O |.4 VOWERED EY CHICAGO TIGERS VS CHI"
+  },
+  {
+   "t": 186.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 59 3E MILANTHA 37 29 CHT I02/0 AAZAM 12/0 L5 ROWERED @X CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 189.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 59 3 MILANTHA 37 29 CHT 102/0 AAZAM 12/0 L5 ROWLRED EY CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 192.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 59 3 MILANTHA 37 29 CHT I02/0 AAZAM 12/0 L5 FOWEREDEY CHICAGO TIGERS VS CHI"
+  },
+  {
+   "t": 195.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 59 3 MILANTHA 37 29 CHT I02/0 HAZAM 12/0 L5 FOW ERED E CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 198.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 59 3 MILANTHA 37 29 CHT I02/0 AAZAM 12/0 L5 BOWORED 7 CHICAGO TIGERS VS CHI"
+  },
+  {
+   "t": 201.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 59 3 MILANTHA 37 29 CHT I02/0 A AZAM 12/0 L5 POWEREO BY CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 204.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 59 3 MILANTHA 37 29 CHT I02/0 HAZAM 12/0 L5 PUWERED @X CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 207.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 59 3 MILANTHA 37 29 CHT I02/0 A AZAM 12/0 L5 POWEBED # CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 210.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 37 29 MNITHIYANANDAM 60 CHT 103/0 AAZAM 13/0 2 DOWERED BY CHICAGO TIGERS VS CHICA"
+  },
+  {
+   "t": 213.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 37 29 MNITHIYANANDAM 60 CHT 103/0 H AZAM 13/0 2 #OWLRED # CHICAGO TIGERS VS CHICA"
+  },
+  {
+   "t": 216.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 37 29 MNITHIYANANDAM 60 CHT 103/0 H AZAM 13/0 2 #OMLKED EY CHICAGO TIGERS VS CHIC"
+  },
+  {
+   "t": 219.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 37 29 MNITHIYANANDAM 60 CHT 103/0 AAZAM 13/0 2 DOWERED #Y CHICAGO TIGERS VS CHICA"
+  },
+  {
+   "t": 222.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 37 29 MNITHIYANANDAM 60 CHT 103/0 A AZAM 13/0 2 ROWERED EY CHICAGO TIGERS VS CHIC"
+  },
+  {
+   "t": 225.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 37 29 MNITHIYANANDAM 60 CHT 103/0 AAZAM 13/0 2 ROWERED JY CHICAGO TIGERS VS CHICA"
+  },
+  {
+   "t": 228.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 37 29 MNITHIYANANDAM 60 CHT 103/0 H AZAM 13/0 2 PONERED BY CHICAGO TIGERS VS CHI"
+  },
+  {
+   "t": 231.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 37 29 MNITHIYANANDAM 60 CHT 103/0 H AZAM 13/0 2 POWERED @X CHICAGO TIGERS VS CHIC"
+  },
+  {
+   "t": 234.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 37 29 MNITHIYANANDAM 60 CHT 103/0 H AZAM 13/0 2 POERED EY CHICAGO TIGERS VS CHIC"
+  },
+  {
+   "t": 237.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 37 29 MNITHIYANANDAM 60 CHT 103/0 H AZAM 13/0 2 BOWEREO EY CHICAGO TIGERS VS CHIC"
+  },
+  {
+   "t": 240.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 37 29 MNITHIYANANDAM 60 CHT 103/0 H AZAM 13/0 2 #OWLRED EY CHICAGO TIGERS VS CHIC"
+  },
+  {
+   "t": 243.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 37 29 MNITHIYANANDAM 60 CHT 103/0 A AZAM 13/0 2 POWLAED CHICAGO TIGERS VS CHICAGO"
+  },
+  {
+   "t": 246.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 37 29 MNITHIYANANDAM 60 CHT 103/0 A AZAM 13/0 2 DOWLRED EY CHICAGO TIGERS VS CHIC"
+  },
+  {
+   "t": 249.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 37 29 MNITHIYANANDAM 60 CHT 103/0 AAZAM 13/0 2 POWORED @ CHICAGO TIGERS VS CHICAG"
+  },
+  {
+   "t": 252.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 37 29 MNITHIYANANDAM 60 CHT 103/0 AAZAM 13/0 2 BO#ERED B8 CHICAGO TIGERS VS CHICA"
+  },
+  {
+   "t": 255.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 37 29 MNITHIYANANDAM 60 CHT 103/0 AAZAM 13/0 2 DOWERED ET CHICAGO TIGERS VS CHICA"
+  },
+  {
+   "t": 258.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 37 29 MNITHIYANANDAM 60 CHT 103/0 A AZAM 13/0 2 POYCREDBY CHICAGO TIGERS VS CHICA"
+  },
+  {
+   "t": 261.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 37 29 MNITHIYANANDAM 60 CHT 103/0 HAZAM 13/0 2 OWLRED #1 CHICAGO TIGERS VS CHICAG"
+  },
+  {
+   "t": 264.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 37 29 MNITHIYANANDAM 60 CHT 103/0 A AZAM 13/0 2 OWEREDB { CHICAGO TIGERS VS CHICA"
+  },
+  {
+   "t": 267.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 37 29 MNITHIYANANDAM 60 CHT 103/0 A AZAM 13/0 2 BOMLRED @7 CHICAGO TIGERS VS CHIC"
+  },
+  {
+   "t": 270.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 37 29 MNITHIYANANDAM 60 CHT 103/0 A AZAM 13/0 2 OLRED BY CHICAGO TIGERS VS CHICAG"
+  },
+  {
+   "t": 273.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 37 29 MNITHIYANANDAM 60 CHT 103/0 A AZAM 13/0 2 BOWERLDE CHICAGO TIGERS VS CHICAG"
+  },
+  {
+   "t": 276.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 37 29 MNITHIYANANDAM 60 CHT 103/0 H AZAM 13/0 2 POWERED !8 CHICAGO TIGERS VS CHIC"
+  },
+  {
+   "t": 279.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 37 29 MNITHIYANANDAM 60 CHT 103/0 A AZAM 13/0 2 FOWERED # CHICAGO TIGERS VS CHICA"
+  },
+  {
+   "t": 282.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 60 3 MILANTHA 37 29 CHT 103/0 0 SHEIKH 26/0 2 TOWERED #Y CHICAGO TIGERS VS "
+  },
+  {
+   "t": 285.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 64 30 MILANTHA 37 29 CHT 107/0 A SHEIKH 30/0 2.1 DOWLREDEY CHICAGO TIGERS V"
+  },
+  {
+   "t": 288.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 64 32 MILANTHA 37 29 CHT 107/0 A SHEIKH 30/0 2.1 #OWERED BY CHICAGO TIGERS "
+  },
+  {
+   "t": 291.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 64 32 MILANTHA 37 29 CHT 107/0 A SHEIKH 30/0 2.1 #OWLRED # CHICAGO TIGERS V"
+  },
+  {
+   "t": 294.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 64 30 MILANTHA 37 29 CHT 107/0 A SHEIKA 30/0 2.1 POWLRED B7 CHICAGO TIGERS "
+  },
+  {
+   "t": 297.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 64 30 MILANTHA 37 29 CHT 107/0 SHEIKA 30/0 2.1 POXLRED EY CHICAGO TIGERS VS"
+  },
+  {
+   "t": 300.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 64 30 MILANTHA 37 29 CHT 107/0 A SHEIKH 30/0 2.1 DOWEREDEY CHICAGO TIGERS V"
+  },
+  {
+   "t": 303.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 64 3 MILANTHA 37 29 CHT 107/0 A SHEIKH 30/0 2.1 POMLRELEY CHICAGO TIGERS VS"
+  },
+  {
+   "t": 306.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 64 3 MILANTHA 37 29 CHT 107/0 A SHEIKH 30/0 2.1 OWILREDEY CHICAGO TIGERS VS"
+  },
+  {
+   "t": 309.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 64 30 MILANTHA 37 29 CHT 107/0 A SHEIKH 30/0 2.1 POOREDEY CHICAGO TIGERS VS"
+  },
+  {
+   "t": 312.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 64 3 MILANTHA 37 29 CHT 107/0 A SHEIKA 30/0 2.1 #OWERED ET CHICAGO TIGERS V"
+  },
+  {
+   "t": 315.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 64 30 MILANTHA 37 29 CHT 107/0 A SHEIKH 30/0 2.1 POWEREO @1 CHICAGO TIGERS "
+  },
+  {
+   "t": 318.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 64 3 MILANTHA 37 29 CHT I07/0 SHEIKA 30/0 2.1 ROKEAED E CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 321.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 64 30 MILANTHA 37 29 CHT 107/0 A SHEIKH 30/0 2.1 ROMERED EV CHICAGO TIGERS "
+  },
+  {
+   "t": 324.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 64 30 MILANTHA 37 29 CHT 107/0 SHEIKH 30/0 2.1 FOWERED@ CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 327.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 64 32 MILANTHA 37 29 CHT 107/0 A SHEIKH 30/0 2.1 #O#ERED#Y CHICAGO TIGERS V"
+  },
+  {
+   "t": 330.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 64 32 MILANTHA 37 29 CHT 107/0 A SHEIKA 30/0 2.1 WOWEREDEY CHICAGO TIGERS V"
+  },
+  {
+   "t": 333.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 64 3 MILANTHA 37 29 CHT I07/0 A SHEIKH 30/0 2.1 POTEREDRT CHICAGO TIGERS VS"
+  },
+  {
+   "t": 336.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 64 30 MILANTHA 37 29 CHT 107/0 A SHEIKH 30/0 2.1 POLRED @T CHICAGO TIGERS V"
+  },
+  {
+   "t": 339.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 64 32 MILANTHA 37 29 CHT 107/0 A SHEIKA 30/0 2.1 POMEREO ET CHICAGO TIGERS "
+  },
+  {
+   "t": 342.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 64 32 MILANTHA 37 29 CHT 107/0 A SHEIKH 30/0 2.1 FOVERED UR CHICAGO TIGERS "
+  },
+  {
+   "t": 345.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 64 3 MILANTHA 37 29 CHT 107/0 A SHEIKA 30/0 2.1 HOWORED#Y CHICAGO TIGERS VS"
+  },
+  {
+   "t": 348.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 70 4B MILANTHA 37 29 CHT I3/0 A SHEIKH 36/0 2.3 RO#EREC ET CHICAGO TIGERS V"
+  },
+  {
+   "t": 351.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 70 4B MILANTHA 37 29 CHT I3/0 A SHEIKH 36/0 2.3 FOWORED 91 CHICAGO TIGERS V"
+  },
+  {
+   "t": 354.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 70 4B MILANTHA 37 29 CHT I3/0 A SHEIKH 36/0 2.3 #OEREDBY CHICAGO TIGERS VS "
+  },
+  {
+   "t": 357.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 70 4B MILANTHA 37 29 CHT 13/0 A SHEIKH 36/0 2.3 POWERED @7 CHICAGO TIGERS V"
+  },
+  {
+   "t": 360.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 70 4B MILANTHA 37 29 CHT I3/0 SHEIKA 36/0 2.3 POWLREDEY CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 363.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 70 4B MILANTHA 37 29 CHT I3/0 A SHEIKH 36/0 2.3 POWLHED EY CHICAGO TIGERS V"
+  },
+  {
+   "t": 366.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 70 4B MILANTHA 37 29 CHT I3/0 A SHEIKH 36/0 2.3 ROWERED#T CHICAGO TIGERS VS"
+  },
+  {
+   "t": 369.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 70 4B MILANTHA 37 29 CHT I3/0 A SHEIKH 36/0 2.3 ROWORED @1 CHICAGO TIGERS V"
+  },
+  {
+   "t": 372.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 70 4B MILANTHA 37 29 CHT 13/0 A SHEIKH 36/0 2.3 POWEMED EY CHICAGO TIGERS V"
+  },
+  {
+   "t": 375.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 70 4B MILANTHA 37 29 CHT I3/0 A SHEIKH 36/0 2.3 #OWERED BY CHICAGO TIGERS V"
+  },
+  {
+   "t": 378.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 70 4B MILANTHA 37 29 CHT I3/0 A SHEIKH 36/0 2.3 DOWERED BY CHICAGO TIGERS V"
+  },
+  {
+   "t": 381.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 70 4B MILANTHA 37 29 CHT I3/0 SHEIKA 36/0 2.3 POWERED @7 CHICAGO TIGERS VE "
+  },
+  {
+   "t": 384.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 70 4B MILANTHA 37 29 CHT I3/0 A SHEIKH 36/0 2.3 ROMERED E CHICAGO TIGERS VS"
+  },
+  {
+   "t": 387.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 70 4B MILANTHA 37 29 CHT I3/0 A SHEIKH 36/0 2.3 POWEREDJY CHICAGO TIGERS VS"
+  },
+  {
+   "t": 390.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 70 4B MILANTHA 37 29 CHT I3/0 A SHEIKH 36/0 2.3 JOWERED * CHICAGO TIGERS VS"
+  },
+  {
+   "t": 393.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 70 4B MILANTHA 37 29 CHT I3/0 4 SHEIKH 36/0 2.3 FOWERED @Y CHICAGO TIGERS V"
+  },
+  {
+   "t": 396.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 70 4B MILANTHA 37 29 CHT I3/0 A SHEIKA 36/0 2.3 BOMERED *Y CHICAGO TIGERS V"
+  },
+  {
+   "t": 399.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 70 4B MILANTHA 37 29 CHT I3/0 A SHEIKH 36/0 2.3 POW@RED &R CHICAGO TIGERS V"
+  },
+  {
+   "t": 402.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 70 4B MILANTHA 37 29 CHT I3/0 A SHEIKH 36/0 2.3 DOWICRED @Y CHICAGO TIGERS "
+  },
+  {
+   "t": 405.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 70 4B MILANTHA 37 29 CHT IL3/0 A SHEIKH 36/0 2.3 #OWERED #Y CHICAGO TIGERS "
+  },
+  {
+   "t": 408.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 70 4B MILANTHA 37 29 CHT I3/0 A SHEIKH 36/0 2.3 POMERED #Y CHICAGO TIGERS V"
+  },
+  {
+   "t": 411.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 70 4B MILANTHA 37 29 CHT I3/0 SHEIKH 36/0 2.3 TOWEREC LY CHICAGO TIGERS VS "
+  },
+  {
+   "t": 414.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 70 4B MILANTHA 37 29 CHT I3/0 SHEIKH 36/0 2.3 TOWONEO #1 CHICAGO TIGERS VS "
+  },
+  {
+   "t": 417.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 37 29 MNITHIYANANDAM 71 CHT IL4/0  SHEIKH 37/0 2.4 TOWLVEDEY CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 420.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 37 29 MNITHIYANANDAM 71 CHT IL4/0 A SHEIKA 37/0 2.4 #OMERED BY CHICAGO TIGERS VS"
+  },
+  {
+   "t": 423.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 37 29 MNITHIYANANDAM 71 CHT IL4/0 A SHEIKH 37/0 2.4 #OWLBEDY CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 426.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 37 29 MNITHIYANANDAM 71 CHT IL4/0 A SHEIKH 37/0 2.4 POMEREDE1 CHICAGO TIGERS VS "
+  },
+  {
+   "t": 429.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 37 29 MNITHIYANANDAM 71 CHT IL4/0 A SHEIKH 37/0 2.4 #OMLRED @7 CHICAGO TIGERS VS "
+  },
+  {
+   "t": 432.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 37 29 MNITHIYANANDAM 71 CHT IL4/0 A SHEIKH 37/0 2.4 OWLRED BY CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 435.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 37 29 MNITHIYANANDAM 71 CHT IL4/0 SHEIKH 37/0 2.4 POMERLD # CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 438.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 37 29 MNITHIYANANDAM 71 CHT IL4/O A SHEIKH 37/0 2.4 POWLRED 0X CHICAGO TIGERS VS "
+  },
+  {
+   "t": 441.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 37 29 MNITHIYANANDAM 71 CHT IL4/0 A SHEIKH 37/0 2.4 JOWERED *Y CHICAGO TIGERS VS "
+  },
+  {
+   "t": 444.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 37 29 MNITHIYANANDAM 71 CHT IL4/0 A SHEIKH 37/0 2.4 WOERED EX CHICAGO TIGERS VS "
+  },
+  {
+   "t": 447.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 37 29 MNITHIYANANDAM 71 CHT IL4/0 A SHEIKH 37/0 2.4 POYERED @T CHICAGO TIGERS VS"
+  },
+  {
+   "t": 450.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 37 29 MNITHIYANANDAM 71 CHT IL4/0 A SHEIKA 37/0 2.4 #OWEREDAY CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 453.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 37 29 MNITHIYANANDAM 71 CHT IL4/0 A SHEIKH 37/0 2.4 BOWENEDEY CHICAGO TIGERS VS "
+  },
+  {
+   "t": 456.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 37 29 MNITHIYANANDAM 71 CHT IL4/0 A SHEIKH 37/0 2.4 #OWERED #Y CHICAGO TIGERS VS"
+  },
+  {
+   "t": 459.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 37 29 MNITHIYANANDAM 71 CHT IL4/0 A SHEIKH 37/0 2.4 DOMEREDIY CHICAGO TIGERS VS "
+  },
+  {
+   "t": 462.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 37 29 MNITHIYANANDAM 71 CHT IL4/0 A SHEIKH 37/0 2.4 TOWEREDEY CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 465.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 37 29 MNITHIYANANDAM 71 CHT IL4/0 A SHEIKH 37/0 2.4 POWERED #Y CHICAGO TIGERS VS "
+  },
+  {
+   "t": 468.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 39 30 MNITHIYANANDAM 71 CHT IL6/0 A SHEIKH 39/0 2.5 PO # LRED EY CHICAGO TIGERS "
+  },
+  {
+   "t": 471.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 39 30 MNITHIYANANDAM 71 CHT I6/0 A SHEIKA 39/0 2.5 PBVERED @T CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 474.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 39 30 MNITHIYANANDAM 71 CHT 116/0 A SHEIKH 39/0 2.5 ROTLREC 1 CHICAGO TIGERS VS "
+  },
+  {
+   "t": 477.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 39 30 MNITHIYANANDAM 71 CHT 116/0 A SHEIKH 39/0 2.5 DOWERCD BT CHICAGO TIGERS VS "
+  },
+  {
+   "t": 480.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 39 30 MNITHIYANANDAM 71 CHT I6/0 A SHEIKA 39/0 2.5 POWLRED @7 CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 483.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 39 30 MNITHIYANANDAM 71 CHT I6/0 A SHEIKH 39/0 2.5 #OWLILD*Y CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 486.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 39 30 MNITHIYANANDAM 71 CHT IL6/0 A SHEIKH 39/0 2.5 DOWLRLD #Y CHICAGO TIGERS VS "
+  },
+  {
+   "t": 489.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 39 30 MNITHIYANANDAM 71 CHT I16/0 A SHEIKH 39/0 2.5 TOWLRED# CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 492.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 39 30 MNITHIYANANDAM 71 CHT 116/0 A SHEIKH 39/0 2.5 BOWLRLDUY CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 495.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 39 30 MNITHIYANANDAM 71 CHT I6/0 A SHEIKA 39/0 2.5 OWLREDET CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 498.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 39 30 MNITHIYANANDAM 71 CHT I6/0 A SHEIKH 39/0 2.5 POWEREO BY CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 501.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 39 30 MNITHIYANANDAM 71 CHT IL6/0 4 SHEIKH 39/0 2.5 POVIERED ET CHICAGO TIGERS V"
+  },
+  {
+   "t": 504.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 39 30 MNITHIYANANDAM 71 CHT 116/0 A SHEIKH 39/0 2.5 POWLRED @Y CHICAGO TIGERS VS "
+  },
+  {
+   "t": 507.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 39 30 MNITHIYANANDAM 71 CHT IL6/0 A SHEIKH 39/0 2.5 POWERED BY CHICAGO TIGERS VS "
+  },
+  {
+   "t": 510.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 39 30 MNITHIYANANDAM 71 CHT IL6/0 A SHEIKA 39/0 2.5 BOWERLDET CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 513.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 39 30 MNITHIYANANDAM 71 CHT II6/0 A SHEIKH 39/0 2.5 TOWENED B CHICAGO TIGERS VS "
+  },
+  {
+   "t": 516.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 71 4I L MILANTHA 40 31 CHT IL7/0 SHEIKH 40/0 3 DOWLRED E1 CHICAGO TIGERS VS"
+  },
+  {
+   "t": 519.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 71 4I L MILANTHA 40 31 CHT I7/0 A SHEIKH 40/0 3 ROWLKED @Y CHICAGO TIGERS V"
+  },
+  {
+   "t": 522.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 71 4I L MILANTHA 40 31 CHT II7/0 4 SHEIKH 40/0 3 BOWERED @Y CHICAGO TIGERS "
+  },
+  {
+   "t": 525.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 71 41 L MILANTHA 40 31 CHT II7/0 A SHEIKH 40/0 3 POW ERLD*Y CHICAGO TIGERS "
+  },
+  {
+   "t": 528.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 71 41 L MILANTHA 40 31 CHT II7/0 A SHEIKA 40/0 3 TOMERLDEY CHICAGO TIGERS V"
+  },
+  {
+   "t": 531.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 71 4I1 L MILANTHA 40 31 CHT II7/0 A SHEIKH 40/0 3 DO#ORED#Y CHICAGO TIGERS "
+  },
+  {
+   "t": 534.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 71 41 LMILANTHA 40 31 CHT IL7/0 A SHEIKH 40/0 3 DOMEREDEY CHICAGO TIGERS VS"
+  },
+  {
+   "t": 537.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 71 41 L MILANTHA 40 31 CHT II7/0 A SHEIKA 40/0 3 POWEREDEY CHICAGO TIGERS V"
+  },
+  {
+   "t": 540.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 71 4I L MILANTHA 40 31 CHT II7/0 A SHEIKH 40/0 3 POWEREO# CHICAGO TIGERS VS"
+  },
+  {
+   "t": 543.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 71 41 LMILANTHA 40 31 CHT I7/0 ^ SHEIKH 40/0 3 ROMERLD 2Y CHICAGO TIGERS VS"
+  },
+  {
+   "t": 546.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 71 41 L MILANTHA 40 31 CHT II7/0 A SHEIKH 40/0 3 TOWERED 8 CHICAGO TIGERS V"
+  },
+  {
+   "t": 549.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 71 41 L MILANTHA 40 31 CHT II7/0 A SHEIKH 40/0 3 RUWEREL 01 CHICAGO TIGERS "
+  },
+  {
+   "t": 552.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 71 41 L MILANTHA 40 31 CHT II7/0 A SHEIKH 40/0 3 FOWLRLDEY CHICAGO TIGERS V"
+  },
+  {
+   "t": 555.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 71 4I L MILANTHA 40 31 CHT II7/0 A SHEIKH 40/0 3 DOWRLDEY CHICAGO TIGERS VS"
+  },
+  {
+   "t": 558.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 71 41 L MILANTHA 40 31 CHT II7/0 SHEIKA 40/0 3 QOWRLDA CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 561.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 71 41 L MILANTHA 40 31 CHT IL7/0 SHEIKH 40/0 3 FOWLRED #Y CHICAGO TIGERS VS"
+  },
+  {
+   "t": 564.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 71 41 L MILANTHA 40 31 CHT IL7/0 SHEIKH 40/0 3 FOMERED JY CHICAGO TIGERS VS"
+  },
+  {
+   "t": 567.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 71 41 L MILANTHA 40 31 CHT II7/0 4 SHEIKH 40/0 3 BOLMEDEY CHICAGO TIGERS VS"
+  },
+  {
+   "t": 570.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 71 41 L MILANTHA 40 31 CHT II7/0 A SHEIKH 40/0 3 POWERED EY CHICAGO TIGERS "
+  },
+  {
+   "t": 573.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 71 41 L MILANTHA 40 31 CHT II7/0 A SHEIKA 40/0 3 POWLRED 3 CHICAGO TIGERS V"
+  },
+  {
+   "t": 576.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 71 41 L MILANTHA 40 31 CHT II7/0 A SHEIKA 40/0 3 JOWERED *Y CHICAGO TIGERS "
+  },
+  {
+   "t": 579.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 71 4I L MILANTHA 40 31 CHT II7/0 A SHEIKH 40/0 3 VOWERED BY CHICAGO TIGERS "
+  },
+  {
+   "t": 582.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 40 31 MNITHIYANANDAM 71 CHT II7/0 T DHILLON 0/0 0 POWEREC @Y CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 585.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 40 31 MNITHIYANANDAM 71 CHT II7/0 T DHILLON 0/0 0 VOWEREDEY CHICAGO TIGERS VS CHI"
+  },
+  {
+   "t": 588.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 40 31 MNITHIYANANDAM 71 CHT II7/0 T DHILLON 0/0 0 POVERED BY CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 591.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 40 31 MNITHIYANANDAM 71 CHT II7/0 T DHILLON 0/0 0 POWERED @Y CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 594.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 40 31 MNITHIYANANDAM 71 CHT II7/0 T DHILLON 0/0 0 DOWERED &Y CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 597.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 40 31 MNITHIYANANDAM 71 CHT II7/0 T DHILLON 0/0 0 POWERED @Y CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 600.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 40 31 MNITHIYANANDAM 71 CHT II7/0 T DHILLON 0/0 0 VO#ERED CHICAGO TIGERS VS CHICA"
+  },
+  {
+   "t": 603.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 40 31 MNITHIYANANDAM 71 CHT II7/0 T DHILLON 0/0 0 FOWERED EY CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 606.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 40 32 MNITHIYANANDAM 71 CHT II7/0 T DHILLON 0/0 0, POWLRED * CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 609.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 40 32 MNITHIYANANDAM 71 CHT II7/0 T DHILLON 0/0 0. DOWEREO B8 CHICAGO TIGERS VS "
+  },
+  {
+   "t": 612.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "L MILANTHA 40 32 MNITHIYANANDAM 71 CHT II7/0 T DHILLON 0/0 0.1 TOWERED EY CHICAGO TIGERS V"
+  },
+  {
+   "t": 615.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 40 32 MNITHIYANANDAM 71 CHT II7/0 T DHILLON 0/0 0. ROWENEDET CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 618.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 40 32 MNITHIYANANDAM 71 CHT II7/0 T DHILLON 0/0 0, #OWERED UU CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 621.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 40 32 MNITHIYANANDAM 71 CHT II7/0 T DHILLON 0/0 0.1 DUWLRED #T CHICAGO TIGERS VS "
+  },
+  {
+   "t": 624.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 71 4I LMILANTHA 41 33 CHT II8/0 T DHILLON I/0 0.2 OMERED @T CHICAGO TIGERS "
+  },
+  {
+   "t": 627.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 71 41 LMILANTHA 4133 CHT I8/0 T DHILLON I/0 0.2 HOWERED @ CHICAGO TIGERS VS"
+  },
+  {
+   "t": 630.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 71 41 LMILANTHA 4133 CHT I8/0 T DHILLON I/0 0.2 DOWEREDET CHICAGO TIGERS VS"
+  },
+  {
+   "t": 633.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 71 4I LMILANTHA 4133 CHT 18/0 T DHILLON I/0 0.2 ROMLRED ET CHICAGO TIGERS V"
+  },
+  {
+   "t": 636.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 71 4I LMILANTHA 4133 CHT I8/0 T DHILLON I/0 0.2 POWERED BT CHICAGO TIGERS V"
+  },
+  {
+   "t": 639.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 71 41 LMILANTHA 4133 CHT II8/0 T DHILLON I/O 0.2 FOWERED @T CHICAGO TIGERS "
+  },
+  {
+   "t": 642.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 71 41 LMILANTHA 4133 CHT I8/0 T DHILLON 1/0 0.2 POWEKED BY CHICAGO TIGERS V"
+  },
+  {
+   "t": 645.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 71 41 LMILANTHA 41 33 CHT I8/0 T DHILLON 1/0 0.2 FOWERED @7 CHICAGO TIGERS "
+  },
+  {
+   "t": 648.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 71 4I LMILANTHA 41 33 CHT I8/0 T DHILLON I/0 0.2 TOWERED BY CHICAGO TIGERS "
+  },
+  {
+   "t": 651.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 71 41 LMILANTHA 4133 CHT I8/0 T DHILLON I/0 0.2 DOWERED 2Y CHICAGO TIGERS V"
+  },
+  {
+   "t": 654.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 71 41 LMILANTHA 4133 CHT II8/0 T DHILLON I/0 0.2 RO\"LLD CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 657.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 71 41 LMILANTHA 4133 CHT I8/0 T DHILLON I/0 0.2 POWERED E1 CHICAGO TIGERS V"
+  },
+  {
+   "t": 660.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 73 42 MILANTHA 4133 CHT 120/0 T DHILLON 3/0 0.3 TOMEREOUY CHICAGO TIGERS VS"
+  },
+  {
+   "t": 663.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 73 42 MILANTHA 4133 CHT I20/0 T DHILLON 3/0 0.3 DUWLRED E CHICAGO TIGERS VS"
+  },
+  {
+   "t": 666.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 73 42L MILANTHA 4133 CHT 120/0 T DHILLON 3/0 0.3 ROWLREDT CHICAGO TIGERS VS"
+  },
+  {
+   "t": 669.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 73 42L MILANTHA 4133 CHT I20/0 T DHILLON 3/0 0.3 ROMERED 8 CHICAGO TIGERS V"
+  },
+  {
+   "t": 672.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 73 42L MILANTHA 41 33 CHT 120/0 T DHILLON 3/0 0.3 ROWERED# CHICAGO TIGERS V"
+  },
+  {
+   "t": 675.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 73 42 MILANTHA 4133 CHT 120/0 T DHILLON 3/0 0.3 POMLRED EY CHICAGO TIGERS V"
+  },
+  {
+   "t": 678.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 73 42 MILANTHA 41 33 CHT I20/0 T DHILLON 3/0 0.3 WOEREDEY CHICAGO TIGERS VS"
+  },
+  {
+   "t": 681.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 73 42 MILANTHA 41 33 CHT 120/0 T DHILLON 3/0 0.3 POMERED*Y CHICAGO TIGERS V"
+  },
+  {
+   "t": 684.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 73 42L MILANTHA 4133 CHT 120/0 T DHILLON 3/0 0.3 ROWERED EY CHICAGO TIGERS "
+  },
+  {
+   "t": 687.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 41 33 MNITHIYANANDAM 74 CHT I21/0 T DHILLON 4/0 0.4 BOVIERED LT CHICAGO TIGERS VS"
+  },
+  {
+   "t": 690.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 41 33 MNITHIYANANDAM 74 CHT I21/O T DHILLON 4/0 04 BOWLRED8R CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 693.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 41 33 MNITHIYANANDAM 74 CHT I21/O T DHILLON 4/0 0.4 ROWOREQ BX CHICAGO TIGERS VS "
+  },
+  {
+   "t": 696.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 41 33 MNITHIYANANDAM 74 CHT I21/O T DHILLON 4/0 0.4 UWERED #Y CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 699.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 41 33 MNITHIYANANDAM 74 CHT I21/0 T DHILLON 4/0 0.4 ROWEMED E1 CHICAGO TIGERS VS"
+  },
+  {
+   "t": 702.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 41 33 MNITHIYANANDAM 74 CHT I21/0 T DHILLON 4/0 04 PO#ERED BY CHICAGO TIGERS VS "
+  },
+  {
+   "t": 705.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 41 33 MNITHIYANANDAM 74 CHT I21/0 T DHILLON 4/0 0.4 FOMLRED @R CHICAGO TIGERS VS "
+  },
+  {
+   "t": 708.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 41 33 MNITHIYANANDAM 74 CHT I21/0 T DHILLON 4/0 0.4 ROMERECAY CHICAGO TIGERS VS "
+  },
+  {
+   "t": 711.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 41 33 MNITHIYANANDAM 74 CHT I21/0 T DHILLON 4/0 0.4 TOMERED CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 714.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 41 33 MNITHIYANANDAM 74 CHT I21/0 T DHILLON 4/0 04 ROWUMAD !Y CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 717.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 74 4E MILANTHA 42 34 CHT I22/0 T DHILLON 5/0 0.5 OWLREDJY CHICAGO TIGERS VS"
+  },
+  {
+   "t": 720.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 74 4E MILANTHA 42 34 CHT 122/0 T DHILLON 5/0 0.5 AOORED @V CHICAGO TIGERS V"
+  },
+  {
+   "t": 723.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 74 4E MILANTHA 42 34 CHT I22/0 T DHILLON 5/0 0.5 POMRED E4 CHICAGO TIGERS V"
+  },
+  {
+   "t": 726.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 74 4E MILANTHA 42 34 CHT 122/0 T DHILLON 5/0 0.5 DOWERED EY CHICAGO TIGERS "
+  },
+  {
+   "t": 729.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 74 4E MILANTHA 42 34 CHT 122/0 T DHILLON 5/0 0.5 POWERED EY CHICAGO TIGERS "
+  },
+  {
+   "t": 732.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 74 41 MILANTHA 42 34 CHT 122/0 T DHILLON 5/0 0.5 POWERED BT CHICAGO TIGERS "
+  },
+  {
+   "t": 735.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 74 41 MILANTHA 42 34 CHT 122/0 T DHILLON 5/0 0.5 VOWERED * CHICAGO TIGERS V"
+  },
+  {
+   "t": 738.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 42 34 MNITHIYANANDAM 75 CHT 123/0 T DHILLON 6/0 POWLRLD#Y CHICAGO TIGERS VS CHIC"
+  },
+  {
+   "t": 741.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 42 34 MNITHIYANANDAM 75 CHT 123/0 T DHILLON 6/0 | JOWEKED EY CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 744.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 42 34 MNITHIYANANDAM 75 CHT 123/0 T DHILLON 6/0 | OWERED EX CHICAGO TIGERS VS CHI"
+  },
+  {
+   "t": 747.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 42 34 MNITHIYANANDAM 75 CHT 123/0 T DHILLON 6/0 1 DOWERED BY CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 750.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 42 34 MNITHIYANANDAM 75 CHT 123/0 T DHILLON 6/0 | POWERED EY CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 753.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 42 34 MNITHIYANANDAM 75 CHT 123/0 T DHILLON 6/0 | POWERED BT CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 756.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 42 34 MNITHIYANANDAM 75 CHT 123/0 T DHILLON 6/0 | DOLRED @Y CHICAGO TIGERS VS CHI"
+  },
+  {
+   "t": 759.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 42 34 MNITHIYANANDAM 75 CHT 123/0 T DHILLON 6/0 | POWEREDEY CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 762.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 42 34 MNITHIYANANDAM 75 CHT 123/0 T DHILLON 6/0 OWLREDEY CHICAGO TIGERS VS CHICAG"
+  },
+  {
+   "t": 765.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 42 34 MNITHIYANANDAM 75 CHT 123/0 T DHILLON 6/0 BOWLRED#Y CHICAGO TIGERS VS CHICA"
+  },
+  {
+   "t": 768.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 42 34 MNITHIYANANDAM 75 CHT 123/0 T DHILLON 6/0 | TOWERED BY CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 771.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 42 34 MNITHIYANANDAM 75 CHT 123/0 T DHILLON 6/0 | POVIERED EY CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 774.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 42 34 MNITHIYANANDAM 75 CHT 123/0 T DHILLON 6/0 | ROMLRLDAY CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 777.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 42 34 MNITHIYANANDAM 75 CHT 123/0 T DHILLON 6/0 | POWENEDAY CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 780.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 42 34 MNITHIYANANDAM 75 CHT 123/0 T DHILLON 6/0 | DOWEREDEY CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 783.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 75 4H MILANTHA 42 34 CHT 123/0 H AZAM 13/0 2 POWERLD @Y CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 786.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 75 4K MILANTHA 42 34 CHT 123/0 A AZAM 13/0 2 POWLRCD EY CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 789.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 75 4H MILANTHA 42 34 CHT 123/0 AAZAM 13/0 2 #OERED BY CHICAGO TIGERS VS CHI"
+  },
+  {
+   "t": 792.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 75 4H MILANTHA 42 34 CHT 123/0 AAZAM 13/0 2 ROWERED *Y CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 795.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 75 4H MILANTHA 42 34 CHT 123/0 H AZAM 13/0 2 POWERED2 CHICAGO TIGERS VS CHI"
+  },
+  {
+   "t": 798.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 75 4H MILANTHA 42 34 CHT 123/0 H AZAM 13/0 2 ROMERECET CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 801.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 75 4H MILANTHA 42 34 CHT 123/0 H AZAM 13/0 2 POWERED U { CHICAGO TIGERS VS "
+  },
+  {
+   "t": 804.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 75 4H MILANTHA 42 34 CHT 123/0 H AZAM 13/0 2 FOWLRED JY CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 807.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 75 4H MILANTHA 42 34 CHT 123/0 A AZAM 13/0 2 POWERED BY CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 810.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 75 4H MILANTHA 42 34 CHT 123/0 AAZAM 13/0 2 POWERED BY CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 813.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 81 41 MILANTHA 42 34 CHT 129/0 AAZAM 19/0 2. BOWERED #Y CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 816.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 81 41 MILANTHA 42 34 CHT I29/0 H AZAM 19/0 2.1 POWERED EY CHICAGO TIGERS VS"
+  },
+  {
+   "t": 819.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 81 41 MILANTHA 42 34 CHT 129/0 H AZAM 19/0 2. POWEBED *Y CHICAGO TIGERS VS "
+  },
+  {
+   "t": 822.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 81 41 MILANTHA 42 34 CHT 129/0 A AZAM 19/0 2. TOWUBED B CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 825.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 81 41 MILANTHA 42 34 CHT 129/0 HAZAM I9/0 2.1 TOHERED EY CHICAGO TIGERS VS "
+  },
+  {
+   "t": 828.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 81 41 MILANTHA 42 34 CHT 129/0 A AZAM 19/0 2.1 ROWLRED BY CHICAGO TIGERS VS"
+  },
+  {
+   "t": 831.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 81 41 MILANTHA 42 34 CHT 129/0 H AZAM 19/0 2.1 BOWERED #Y CHICAGO TIGERS VS"
+  },
+  {
+   "t": 834.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 81 41 MILANTHA 42 34 CHT 129/0 A AZAM 19/0 2. DOWERED \u20ac CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 837.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 81 41 MILANTHA 42 34 CHT 129/0 AAZAM 19/0 2. POWERED EY CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 840.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 81 41 MILANTHA 42 34 CHT 129/0 H AZAM 19/0 2. POMERED EY CHICAGO TIGERS VS "
+  },
+  {
+   "t": 843.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 81 4L MILANTHA 42 34 CHT 129/0 A AZAM 19/0 2. PUWERED 87 CHICAGO TIGERS VS "
+  },
+  {
+   "t": 846.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 81 41 MILANTHA 42 34 CHT 129/0 A AZAM 19/0 2.1 POWELED EY CHICAGO TIGERS VS"
+  },
+  {
+   "t": 849.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM B1 41 MILANTHA 42 34 CHT I29/0 H AZAM 19/0 2,1 ROMEREDEY CHICAGO TIGERS VS "
+  },
+  {
+   "t": 852.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 81 41 MILANTHA 42 34 CHT 129/0 A AZAM 19/0 2.| POWERCO EY CHICAGO TIGERS VS"
+  },
+  {
+   "t": 855.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 81 41 MILANTHA 42 34 CHT 129/0 AAZAM 19/0 2. BOWEREDET CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 858.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 81 41 MILANTHA 42 34 CHT 129/0 A AZAM 19/0 2. BOMERED#T CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 861.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 81 41 MILANTHA 42 34 CHT 129/0 H AZAM 19/0 2, WOWLRLDEY CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 864.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 81 41 MILANTHA 42 34 CHT 129/0 H AZAM 19/0 2.1 WOWREDEY CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 867.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 81 4L MILANTHA 42 34 CHT 129/0 HAZAM 19/0 2. DOWEBED #Y CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 870.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 81 41 MILANTHA 42 34 CHT 129/0 A AZAM 19/0 2.1 JOWERED#Y CHICAGO TIGERS VS "
+  },
+  {
+   "t": 873.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 81 41 MILANTHA 42 34 CHT 129/0 H AZAM 19/0 2. FOWLRED JY CHICAGO TIGERS VS "
+  },
+  {
+   "t": 876.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 81 41 MILANTHA 42 34 CHT 129/0 A AZAM 19/0 2.2 POWEREDBY CHICAGO TIGERS VS "
+  },
+  {
+   "t": 879.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 81 41 MILANTHA 42 34 CHT 129/0 A AZAM 19/0 2.2 JOWUEDE7 CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 882.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 81 41 MILANTHA 42 34 CHT 129/0 H AZAM 19/0 2.2 #OWLREDET CHICAGO TIGERS VS "
+  },
+  {
+   "t": 885.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 81 41 MILANTHA 42 34 CHT 129/0 A AZAM 19/0 2.2 MOWEREO E1 CHICAGO TIGERS VS"
+  },
+  {
+   "t": 888.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 81 4D MILANTHA 42 34 CHT 129/0 A AZAM I9/0 2.2 BOWLALD * CHICAGO TIGERS VS "
+  },
+  {
+   "t": 891.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 81 4D MILANTHA 42 34 CHT I29/0 H AZAM 19/0 2.2 ROWERED ET CHICAGO TIGERS VS"
+  },
+  {
+   "t": 894.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 81 41 MILANTHA 42 34 CHT 129/0 H AZAM 19/0 2.2 #OWLAED # CHICAGO TIGERS VS "
+  },
+  {
+   "t": 897.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 81 41 MILANTHA 42 34 CHT 129/0 A AZAM I9/0 2,2 #OMLAED CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 900.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 81 41 MILANTHA 42 34 CHT 129/0 H AZAM 19/0 2.2 DOWORED! CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 903.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 85 41 MILANTHA 42 34 CHT 133/0 A AZAM 23/0 2.3 ROWLCDEY CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 906.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 85 41 MILANTHA 42 34 CHT 133/0 H AZAM 23/0 2.3 FOWERLD @ CHICAGO TIGERS VS "
+  },
+  {
+   "t": 909.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 85 41 MILANTHA 42 34 CHT 133/0 A AZAM 23/0 2.3 BUWERLD @Y CHICAGO TIGERS VS"
+  },
+  {
+   "t": 912.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 85 41 MILANTHA 42 34 CHT 133/0 A AZAM 23/0 2.3 POWERED*Y CHICAGO TIGERS VS "
+  },
+  {
+   "t": 915.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 85 41 MILANTHA 42 34 CHT 133/0 A AZAM 23/0 2.3 FOVCEED CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 918.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 85 41 MILANTHA 42 34 CHT 133/0 H AZAM 23/0 2.3 BOMENED CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 921.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 85 41 MILANTHA 42 34 CHT 133/0 H AZAM 23/0 2.3 ROWIEREO @1 CHICAGO TIGERS V"
+  },
+  {
+   "t": 924.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 85 41 MILANTHA 42 34 CHT 133/0 HAZAM 23/0 2.3 POWERED BY CHICAGO TIGERS VS "
+  },
+  {
+   "t": 927.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 85 41 MILANTHA 42 34 CHT 133/0 AAZAM 23/0 2.3 FOMERE0 87 CHICAGO TIGERS VS "
+  },
+  {
+   "t": 930.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 85 41 MILANTHA 42 34 CHT 133/0 H AZAM 23/0 2.3 POWERED BY CHICAGO TIGERS VS"
+  },
+  {
+   "t": 933.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 85 41 MILANTHA 42 34 CHT 133/0 A AZAM 23/0 2.3 POWERED #Y CHICAGO TIGERS VS"
+  },
+  {
+   "t": 936.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 85 41 MILANTHA 42 34 CHT 133/0 A AZAM 23/0 2.3 BO #ERED #Y CHICAGO TIGERS V"
+  },
+  {
+   "t": 939.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 85 41 MILANTHA 42 34 CHT 133/0 A AZAM 23/0 2.3 POWEREDET CHICAGO TIGERS VS "
+  },
+  {
+   "t": 942.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 42 34 MNITHIYANANDAM 86 CHT 134/0 A AZAM 24/0 2.4 POWERED BY CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 945.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 42 34 MNITHIYANANDAM 86 CHT 134/0 AAZAM 24/0 2.4 POWEVED @T CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 948.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "L MILANTHA 42 34 MNITHIYANANDAM 86 CHT 134/0 A AZAM 24/0 2.4 #OWEED*Y CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 951.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 42 34 MNITHIYANANDAM 86 CHT 134/0 A AZAM 24/0 2.4 BOWERED31 CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 954.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 42 34 MNITHIYANANDAM 86 CHT 134/0 H AZAM 24/0 2.4 POWERED @Y CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 957.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 42 34 MNITHIYANANDAM 86 CHT 134/0 A AZAM 24/0 24 PUVERED E7 CHICAGO TIGERS VS CHI"
+  },
+  {
+   "t": 960.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 42 34 MNITHIYANANDAM 86 CHT 134/0 A AZAM 24/0 2.4 POWERED #Y CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 963.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 42 34 MNITHIYANANDAM 86 CHT 134/0 HAZAM 24/0 2.4 #UMENLO #Y CHICAGO TIGERS VS CHI"
+  },
+  {
+   "t": 966.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 42 34 MNITHIYANANDAM 86 CHT 134/0 A AZAM 24/0 2.4 TOWERED! CHICAGO TIGERS VS CHIC"
+  },
+  {
+   "t": 969.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 42 34 MNITHIYANANDAM 86 CHT 134/0 A AZAM 24/0 2.4 ROWENEDEY CHICAGO TIGERS VS CHI"
+  },
+  {
+   "t": 972.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 86 40 MILANTHA 43 35 CHT 135/0 A AZAM 25/0 2.5 ROWEREL @X CHICAGO TIGERS VS"
+  },
+  {
+   "t": 975.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 86 40 MILANTHA 43 35 CHT 135/0 A AZAM 25/0 2.5 #ONERED #8 CHICAGO TIGERS VS"
+  },
+  {
+   "t": 978.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 86 4 MILANTHA 43 35 CHT 135/0 A AZAM 25/0 2.5 FOWERED #Y CHICAGO TIGERS VS "
+  },
+  {
+   "t": 981.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 86 4B MILANTHA 43 35 CHT 135/0 AAZAM 25/0 2.5 POWERED B CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 984.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 86 4B MILANTHA 43 35 CHT 135/0 A AZAM 25/0 2.5 TOYERED BY CHICAGO TIGERS VS"
+  },
+  {
+   "t": 987.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 86 40 MILANTHA 43 35 CHT 135/0 A AZAM 25/0 2.5 #OWERD @Y CHICAGO TIGERS VS "
+  },
+  {
+   "t": 990.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 86 40 MILANTHA 43 35 CHT 135/0 AAZAM 25/0 2.5 PO#ERED BY CHICAGO TIGERS VS "
+  },
+  {
+   "t": 993.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 86 4B MILANTHA 43 35 CHT 135/0 A AZAM 25/0 2.5 POWERED @Y CHICAGO TIGERS VS"
+  },
+  {
+   "t": 996.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 43 35 MNITHIYANANDAM 87 CHT 136/0 AAZAM 26/0 3 ROMLLO 4 CHICAGO TIGERS VS CHICAGO"
+  },
+  {
+   "t": 999.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 43 35 MNITHIYANANDAM 87 CHT 136/0 A AZAM 26/0 3 BOWERED BY CHICAGO TIGERS VS CHIC"
+  },
+  {
+   "t": 1002.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 43 35 MNITHIYANANDAM 87 CHT 136/0 AAZAM 26/0 3 #OWERED#Y CHICAGO TIGERS VS CHICA"
+  },
+  {
+   "t": 1005.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 43 35 MNITHIYANANDAM 87 CHT 136/0 A AZAM 26/0 3 POMERED BY CHICAGO TIGERS VS CHIC"
+  },
+  {
+   "t": 1008.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 43 35 MNITHIYANANDAM 87 CHT 136/0 AAZAM 26/0 3 POWLAEO CHICAGO TIGERS VS CHICAGO"
+  },
+  {
+   "t": 1011.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 43 35 MNITHIYANANDAM 87 CHT 136/0 AAZAM 26/0 3 POWLRED BY CHICAGO TIGERS VS CHICA"
+  },
+  {
+   "t": 1014.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 43 35 MNITHIYANANDAM 87 CHT 136/0 A AZAM 26/0 3 FO#EREO B1 CHICAGO TIGERS VS CHIC"
+  },
+  {
+   "t": 1017.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 43 35 MNITHIYANANDAM 87 CHT 136/0 A AZAM 26/0 3 NOWENED E7 CHICAGO TIGERS VS CHIC"
+  },
+  {
+   "t": 1020.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 43 35 MNITHIYANANDAM 87 CHT 136/0 A AZAM 26/0 3 FOWERED 4T CHICAGO TIGERS VS CHIC"
+  },
+  {
+   "t": 1023.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 43 35 MNITHIYANANDAM 87 CHT 136/0 A AZAM 26/0 3 POWERED@T CHICAGO TIGERS VS CHICA"
+  },
+  {
+   "t": 1026.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 43 35 MNITHIYANANDAM 87 CHT 136/0 H AZAM 26/0 3 WOWLRED # CHICAGO TIGERS VS CHICA"
+  },
+  {
+   "t": 1029.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 43 35 MNITHIYANANDAM 87 CHT 136/0 A AZAM 26/0 3 POWLRED*Y CHICAGO TIGERS VS CHIC"
+  },
+  {
+   "t": 1032.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 43 35 MNITHIYANANDAM 87 CHT 136/0 A AZAM 26/0 3 DOWEREDET CHICAGO TIGERS VS CHIC"
+  },
+  {
+   "t": 1035.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 43 35 MNITHIYANANDAM 87 CHT 136/0 A AZAM 26/0 3 POWEREL ET CHICAGO TIGERS VS CHI"
+  },
+  {
+   "t": 1038.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 43 35 MNITHIYANANDAM 87 CHT 136/0 A AZAM 26/0 3 DOVERED#T CHICAGO TIGERS VS CHICA"
+  },
+  {
+   "t": 1041.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 43 35 MNITHIYANANDAM 87 CHT 136/0 AAZAM 26/0 3 POWLRED # CHICAGO TIGERS VS CHICAG"
+  },
+  {
+   "t": 1044.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 43 35 MNITHIYANANDAM 87 CHT 136/0 AAZAM 26/0 3 POMERED ET CHICAGO TIGERS VS CHICA"
+  },
+  {
+   "t": 1047.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 43 35 MNITHIYANANDAM 87 CHT 136/0 A AZAM 26/0 3 POLRED @Y CHICAGO TIGERS VS CHICA"
+  },
+  {
+   "t": 1050.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 43 35 MNITHIYANANDAM 87 CHT 136/0 H AZAM 26/0 3 BOWERED @Y CHICAGO TIGERS VS CHIC"
+  },
+  {
+   "t": 1053.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 43 35 MNITHIYANANDAM 87 CHT 136/0 A AZAM 26/0 3 #OWERED #Y CHICAGO TIGERS VS CHIC"
+  },
+  {
+   "t": 1056.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 43 35 MNITHIYANANDAM 87 CHT 136/0 HAZAM 26/0 3 #OWERED @ CHICAGO TIGERS VS CHICAG"
+  },
+  {
+   "t": 1059.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 43 35 MNITHIYANANDAM 87 CHT 136/0 A AZAM 26/0 3 POWLRED @ CHICAGO TIGERS VS CHICA"
+  },
+  {
+   "t": 1062.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 43 35 MNITHIYANANDAM 87 CHT 136/0 H AZAM 26/0 3 FOWLREDE1 CHICAGO TIGERS VS CHICA"
+  },
+  {
+   "t": 1065.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 43 35 MNITHIYANANDAM 87 CHT 136/0 AAZAM 26/0 3 POWERED EX CHICAGO TIGERS VS CHICA"
+  },
+  {
+   "t": 1068.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 43 35 MNITHIYANANDAM 87 CHT 136/0 A AZAM 26/0 3 ROMKERED ET CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 1071.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 43 35 MNITHIYANANDAM 87 CHT 136/0 H AZAM 26/0 3 HOWERED EY CHICAGO TIGERS VS CHIC"
+  },
+  {
+   "t": 1074.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 87 40 MILANTHA 43 35 CHT 136/0 T DHILLON 6/0 1 VOWERED 81 CHICAGO TIGERS VS"
+  },
+  {
+   "t": 1077.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 43 35 MNITHIYANANDAM 87 CHT 137/0 T DHILLON 6/0 U. OWERAC EX CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 1080.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 43 35 MNITHIYANANDAM 87 CHT 137/0 T DHILLON 6/0 U. POWERED @T CHICAGO TIGERS VS "
+  },
+  {
+   "t": 1083.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 43 35 MNITHIYANANDAM 87 CHT 137/0 T DHILLON 6/0 V, POWERED @7 CHICAGO TIGERS VS "
+  },
+  {
+   "t": 1086.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 43 35 MNITHIYANANDAM 87 CHT 137/0 T DHILLON 6/0 U, #OWEREDET CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 1089.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 43 35 MNITHIYANANDAM 87 CHT 137/0 T DHILLON 6/0 U. POWERED ET CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 1092.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 43 35 MNITHIYANANDAM 87 CHT 137/0 T DHILLON 6/0 H DOWEREDE CHICAGO TIGERS VS CHI"
+  },
+  {
+   "t": 1095.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 43 35 MNITHIYANANDAM 87 CHT 137/0 T DHILLON 6/0 U OWERED BY CHICAGO TIGERS VS CHI"
+  },
+  {
+   "t": 1098.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "L MILANTHA 43 35 MNITHIYANANDAM 87 CHT 137/0 T DHILLON 6/0 U BOMEACDI CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 1101.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 43 35 MNITHIYANANDAM 87 CHT 137/0 T DHILLON 6/0 U. FOWERED @Y CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 1104.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 87 SB MILANTHA 43 36 CHT 138/0 T DHILLON 6/0 L.2 WOWERLDEY CHICAGO TIGERS V"
+  },
+  {
+   "t": 1107.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 87 SB MILANTHA 43 36 CHT 138/0 T DHILLON 6/0 .2 DOWLRED 0X CHICAGO TIGERS V"
+  },
+  {
+   "t": 1110.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 87 SB MILANTHA 43 36 CHT 138/0 T DHILLON 6/0 L.2 JOWEDED* CHICAGO TIGERS VS"
+  },
+  {
+   "t": 1113.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 87 S0 MILANTHA 43 36 CHT 138/0 T DHILLON 6/0 L.2 BOWERED #Y CHICAGO TIGERS "
+  },
+  {
+   "t": 1116.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 87 S0 MILANTHA 43 36 CHT 138/0 T DHILLON 6/0 6.2 POWLRED @1 CHICAGO TIGERS "
+  },
+  {
+   "t": 1119.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 87 S0 MILANTHA 43 36 CHT 138/0 T DHILLON 6/0 |.2 DOWERED 81 CHICAGO TIGERS "
+  },
+  {
+   "t": 1122.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 43 36 MNITHIYANANDAM 88 CHT 139/0 T DHILLON 7/0 4.3 OWLRED #Y CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 1125.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 43 36 MNITHIYANANDAM 88 CHT 139/0 T DHILLON 7/0 4.3 BOWOREDY CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 1128.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 43 36 MNITHIYANANDAM 88 CHT 139/0 T DHILLON 7/0 1.3 POMEREDE CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 1131.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 43 36 MNITHIYANANDAM 88 CHT 139/0 T DHILLON 7/0 4.3 POWILRED ET CHICAGO TIGERS VS"
+  },
+  {
+   "t": 1134.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 43 36 MNITHIYANANDAM 88 CHT 139/0 T DHILLON 7/0 43 BOWEREDB CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 1137.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 43 36 MNITHIYANANDAM 88 CHT 139/0 T DHILLON 7/0 4.3 FOMERED JY CHICAGO TIGERS VS"
+  },
+  {
+   "t": 1140.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 43 36 MNITHIYANANDAM 88 CHT 139/0 T DHILLON 7/0 1,3 ROMICRED @Y CHICAGO TIGERS VS"
+  },
+  {
+   "t": 1143.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 43 36 MNITHIYANANDAM 88 CHT 139/0 T DHILLON 7/0 1.3 POWERED B8 CHICAGO TIGERS VS "
+  },
+  {
+   "t": 1146.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 43 36 MNITHIYANANDAM 88 CHT 140/0 T DHILLON 8/0 L.3 POWERED EY CHICAGO TIGERS VS"
+  },
+  {
+   "t": 1149.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 43 36 MNITHIYANANDAM 88 CHT 140/0 T DHILLON 8/0 L.3 FOWERED #Y CHICAGO TIGERS VS "
+  },
+  {
+   "t": 1152.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 43 36 MNITHIYANANDAM 88 CHT 140/0 T DHILLON 8/0 L.3 FOWERED @Y CHICAGO TIGERS VS "
+  },
+  {
+   "t": 1155.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 43 36 MNITHIYANANDAM 88 CHT 140/0 T DHILLON 8/0 6.3 PUWERED #T CHICAGO TIGERS VS "
+  },
+  {
+   "t": 1158.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 43 36 MNITHIYANANDAM 88 CHT 140/0 T DHILLON 8/0 6,3 BOWEREDB CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 1161.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 43 36 MNITHIYANANDAM 88 CHT 140/0 T DHILLON 8/0 L.3 POVIERED @7 CHICAGO TIGERS V"
+  },
+  {
+   "t": 1164.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM BB 5L MILANTHA 1 37 CHT I4L/O T DHILLON 9/0 1 4 VOWERED*Y CHICAGO TIGERS VS"
+  },
+  {
+   "t": 1167.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 88 5L MILANTHA 44 37 CHT 14L/O T DHILLON 9/0 ,4 POMEREO4T CHICAGO TIGERS VS"
+  },
+  {
+   "t": 1170.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 88 5L MILANTHA 44 37 CHT 14L/O T DHILLON 9/0 /4 BOEAED E1 CHICAGO TIGERS VS"
+  },
+  {
+   "t": 1173.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 88 5L MILANTHA 44 37 CHT 14L/O T DHILLON 9/0 1.4 TOWERED3T CHICAGO TIGERS V"
+  },
+  {
+   "t": 1176.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 88 SL MILANTHA 44 37 CHT 14L/O T DHILLON 9/0 1.4 BOWILRED @T CHICAGO TIGERS"
+  },
+  {
+   "t": 1179.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 88 5L MILANTHA 44 37 CHT 14L/O T DHILLON 9/0 |4 VOWERED BY CHICAGO TIGERS V"
+  },
+  {
+   "t": 1182.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 88 5L MILANTHA 44 37 CHT I4L/O T DHILLON 9/0 1.4 TOWERED BY CHICAGO TIGERS "
+  },
+  {
+   "t": 1185.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 88 5L MILANTHA 44 37 CHT 14L/O T DHILLON 9/0 |4 ROWERED *Y CHICAGO TIGERS V"
+  },
+  {
+   "t": 1188.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 88 SE MILANTHA 44 37 CHT 14L/0 T DHILLON 9/0 L.5 POWERED CHICAGO TIGERS VS "
+  },
+  {
+   "t": 1191.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 88 5B MILANTHA 44 37 CHT I4L/O T DHILLON 9/0 L5 TOWENED BY CHICAGO TIGERS V"
+  },
+  {
+   "t": 1194.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 88 SB MILANTHA 44 37 CHT 14L/0 T DHILLON 9/0 L5 #OWREDEY CHICAGO TIGERS VS "
+  },
+  {
+   "t": 1197.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 88 SB MILANTHA 44 37 CHT 14L/O T DHILLON 9/0 L5 POWERED @Y CHICAGO TIGERS V"
+  },
+  {
+   "t": 1200.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 88 SE MILANTHA 44 37 CHT 14L/O T DHILLON 9/0 L5 POWERED EY CHICAGO TIGERS V"
+  },
+  {
+   "t": 1203.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 88 SB MILANTHA 44 37 CHT 14L/O T DHILLON 9/0 L5 POWLID 8Y CHICAGO TIGERS VS"
+  },
+  {
+   "t": 1206.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 37 MNITHIYANANDAM 89 CHT 142/0 T DHILLON IO/0 2 POWORED E1 CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 1209.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 44 37 M NITHIYANANDAM 89 CHT 142/0 T DHILLON 10/0 2 POMEREDE CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 1212.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 37 MNITHIYANANDAM 89 CHT 142/0 T DHILLON 10/0 2 WOWEREDET CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 1215.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 44 37 MNITHIYANANDAM 89 CHT 142/0 T DHILLON I0/0 2 TOWERED 61 CHICAGO TIGERS VS "
+  },
+  {
+   "t": 1218.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 37 MNITHIYANANDAM 89 CHT 142/0 T DHILLON I0/0 2 FOWILRED *1 CHICAGO TIGERS VS "
+  },
+  {
+   "t": 1221.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 37 MNITHIYANANDAM 89 CHT 142/0 T DHILLON I0/0 2 VOWEREDEY CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 1224.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 37 MNITHIYANANDAM 89 CHT 142/0 T DHILLON I0/0 2 POWLRED EY CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 1227.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 37 MNITHIYANANDAM 89 CHT 142/0 T DHILLON I0/0 2 FO EBED EY CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 1230.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 37 MNITHIYANANDAM 89 CHT 142/0 T DHILLON I0/0 2 #OMERED BY CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 1233.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 37 MNITHIYANANDAM 89 CHT 142/0 T DHILLON I0/0 2 HOLRED  1 CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 1236.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 37 MNITHIYANANDAM 89 CHT 142/0 T DHILLON I0/0 2 BOWERED#T CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 1239.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 37 MNITHIYANANDAM 89 CHT 142/0 T DHILLON I0/0 2 #OMLRED BY CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 1242.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 37 MNITHIYANANDAM 89 CHT 142/0 T DHILLON I0/0 2 POLRED &Y CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 1245.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 37 MNITHIYANANDAM 89 CHT 142/0 T DHILLON I0/0 2 FOXLRED BY CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 1248.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 37 MNITHIYANANDAM 89 CHT 142/0 T DHILLON I0/0 2 POWERECEY CHICAGO TIGERS VS CH"
+  },
+  {
+   "t": 1251.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 44 37 MNITHIYANANDAM 89 CHT 142/0 T DHILLON I0/0 2 POW ERED BY CHICAGO TIGERS VS"
+  },
+  {
+   "t": 1254.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 89 SH MILANTHA 44 37 CHT 142/0 G MUDASSAR 19/0 2 FOYEREO #T CHICAGO TIGERS "
+  },
+  {
+   "t": 1257.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 89 SH MILANTHA 44 37 CHT 142/0 G MUDASSAR I9/0 2 POWERED BY CHICAGO TIGERS "
+  },
+  {
+   "t": 1260.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 89 SH MILANTHA 44 37 CHT 142/0 G MUDASSAR I9/0 2 POWLRED @T CHICAGO TIGERS "
+  },
+  {
+   "t": 1263.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 89 SH MILANTHA 44 37 CHT 142/0 G MUDASSAR I9/0 2 KOHLRED E CHICAGO TIGERS V"
+  },
+  {
+   "t": 1266.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 89 SB MILANTHA 44 37 CHT 142/0 G MUDASSAR I9/0 2 POWLAED ! # CHICAGO TIGERS"
+  },
+  {
+   "t": 1269.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 89 SB MILANTHA 44 37 CHT 142/0 G MUDASSAR 19/0 2 BOWLRED E7 CHICAGO TIGERS "
+  },
+  {
+   "t": 1272.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 89 SH MILANTHA 44 37 CHT 142/0 G MUDASSAR 19/0 2 POWERED @Y CHICAGO TIGERS "
+  },
+  {
+   "t": 1275.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 89 SH MILANTHA 44 37 CHT 142/0 G MUDASSAR 19/0 2 BOMERED @Y CHICAGO TIGERS "
+  },
+  {
+   "t": 1278.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 89 SB MILANTHA 44 37 CHT 142/0 G MUDASSAR I9/0 2 ROWERED @ CHICAGO TIGERS V"
+  },
+  {
+   "t": 1281.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 89 SH MILANTHA 44 37 CHT 142/0 G MUDASSAR I9/0 2 VOEBED ET CHICAGO TIGERS V"
+  },
+  {
+   "t": 1284.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 89 SB MILANTHA 44 37 CHT 142/0 G MUDASSAR I9/0 2 RDWDILD #Y CHICAGO TIGERS "
+  },
+  {
+   "t": 1287.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 89 SB MILANTHA 44 37 CHT 142/0 G MUDASSAR I9/0 2 FOWERED#Y CHICAGO TIGERS V"
+  },
+  {
+   "t": 1290.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 89 SB MILANTHA 44 37 CHT 142/0 G MUDASSAR 19/0 2 #OWEREDAT CHICAGO TIGERS V"
+  },
+  {
+   "t": 1293.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 89 SB MILANTHA 44 37 CHT 142/0 G MUDASSAR 19/0 2 POWERED BY CHICAGO TIGERS "
+  },
+  {
+   "t": 1296.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 89 SB MILANTHA 44 37 CHT 142/0 G MUDASSAR I9/0 2 POWERED*T CHICAGO TIGERS V"
+  },
+  {
+   "t": 1299.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 89 SB MILANTHA 44 37 CHT 142/0 G MUDASSAR I9/0 2 #OMERED *Y CHICAGO TIGERS "
+  },
+  {
+   "t": 1302.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 89 SB MILANTHA 44 37 CHT 142/0 G MUDASSAR I9/0 2 POWEREDEY CHICAGO TIGERS V"
+  },
+  {
+   "t": 1305.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 89 SB MILANTHA 44 37 CHT 142/0 G MUDASSAR 19/0 2 POMCRED ET CHICAGO TIGERS "
+  },
+  {
+   "t": 1308.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 89 SB MILANTHA 44 37 CHT 142/0 G MUDASSAR I9/0 2 JOWLREO BY CHICAGO TIGERS "
+  },
+  {
+   "t": 1311.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 89 SB MILANTHA 44 37 CHT 142/0 G MUDASSAR I9/0 2 DOWERED BY CHICAGO TIGERS "
+  },
+  {
+   "t": 1314.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 89 SB MILANTHA 44 37 CHT 142/0 G MUDASSAR I9/0 2 ROMLALO 27 CHICAGO TIGERS "
+  },
+  {
+   "t": 1317.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 89 SB MILANTHA 44 37 CHT 142/0 G MUDASSAR I9/0 2 JOWERED 4 CHICAGO TIGERS V"
+  },
+  {
+   "t": 1320.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 89 SL MILANTHA 44 37 CHT 142/0 G MUDASSAR 19/0 2.1 DUWLWED JY CHICAGO TIGER"
+  },
+  {
+   "t": 1323.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 89 5L MILANTHA 44 37 CHT 142/0 G MUDASSAR I9/0 2. #OEEEDBY CHICAGO TIGERS V"
+  },
+  {
+   "t": 1326.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 89 SK MILANTHA 44 37 CHT 142/0 G MUDASSAR I9/0 2.1 #OWREDEY CHICAGO TIGERS "
+  },
+  {
+   "t": 1329.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 89 SL MILANTHA 44 37 CHT 142/0 G MUDASSAR I9/0 2. WOMERED *Y CHICAGO TIGERS"
+  },
+  {
+   "t": 1332.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 89 SK MILANTHA 44 37 CHT 142/0 G MUDASSAR I9/0 2.1 #OULRED BY CHICAGO TIGER"
+  },
+  {
+   "t": 1335.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 89 SK MILANTHA 44 37 CHT 142/0 G MUDASSAR I9/0 2,1 JOWLRED EY CHICAGO TIGER"
+  },
+  {
+   "t": 1338.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 89 SL MILANTHA 44 37 CHT 142/0 G MUDASSAR I9/0 2.1 POWERED E7 CHICAGO TIGER"
+  },
+  {
+   "t": 1341.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 89 SL MILANTHA 44 37 CHT 142/0 G MUDASSAR I9/0 2.1 ROMLREDEY CHICAGO TIGERS"
+  },
+  {
+   "t": 1344.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 89 SL MILANTHA 44 37 CHT 142/0 G MUDASSAR I9/0 2. BO#LILCY CHICAGO TIGERS V"
+  },
+  {
+   "t": 1347.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 89 SL MILANTHA 44 37 CHT 142/0 G MUDASSAR I9/0 2.1 FOWIRED @Y CHICAGO TIGER"
+  },
+  {
+   "t": 1350.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 89 SL MILANTHA 44 37 CHT 142/0 G MUDASSAR I9/0 2.1 DOWDREDAT CHICAGO TIGERS"
+  },
+  {
+   "t": 1353.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 89 5L MILANTHA 44 37 CHT 142/0 G MUDASSAR I9/0 2.1 #OWEREDBY CHICAGO TIGERS"
+  },
+  {
+   "t": 1356.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 89 SL MILANTHA 44 37 CHT 142/0 G MUDASSAR I9/0 2,1 DOWERED B CHICAGO TIGERS"
+  },
+  {
+   "t": 1359.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 89 SK MILANTHA 44 37 CHT 142/0 G MUDASSAR 19/0 2.1 POWEREDEY CHICAGO TIGERS"
+  },
+  {
+   "t": 1362.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 95 SE MILANTHA 44 37 CHT 148/0 G MUDASSAR 25/0 2.2 FOWERED8Y CHICAGO TIGERS"
+  },
+  {
+   "t": 1365.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 95 SE MILANTHA 44 37 CHT 148/0 G MUDASSAR 25/0 2.2 DOWERED*Y CHICAGO TIGERS"
+  },
+  {
+   "t": 1368.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 95 SE MILANTHA 44 37 CHT 148/0 G MUDASSAR 25/0 2.2 DUWERED \u20ac CHICAGO TIGERS"
+  },
+  {
+   "t": 1371.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 95 SE MILANTHA 44 37 CHT 148/0 G MUDASSAR 25/0 2.2 VOWERED #T CHICAGO TIGER"
+  },
+  {
+   "t": 1374.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 95 SE MILANTHA 44 37 CHT 148/0 G MUDASSAR 25/0 2.2 FUMEREOY CHICAGO TIGERS "
+  },
+  {
+   "t": 1377.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 95 SE MILANTHA 44 37 CHT 148/0 G MUDASSAR 25/0 2.2 ROWEKED BY CHICAGO TIGER"
+  },
+  {
+   "t": 1380.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 95 SE MILANTHA 44 37 CHT 148/0 G MUDASSAR 25/0 2.2 VOWERED #Y CHICAGO TIGER"
+  },
+  {
+   "t": 1383.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 95 5E MILANTHA 44 37 CHT 148/0 G MUDASSAR 25/0 2.2 FOWERED#T CHICAGO TIGERS"
+  },
+  {
+   "t": 1386.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 95 SE MILANTHA 44 37 CHT 148/0 G MUDASSAR 25/0 2.2 DOWERED E CHICAGO TIGERS"
+  },
+  {
+   "t": 1389.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 95 SE MILANTHA 44 37 CHT 148/0 G MUDASSAR 25/0 2.2 POWERED #Y CHICAGO TIGER"
+  },
+  {
+   "t": 1392.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 95 SE MILANTHA 44 37 CHT 148/0 G MUDASSAR 25/0 2.2 ROMEREDET CHICAGO TIGERS"
+  },
+  {
+   "t": 1395.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 95 SE MILANTHA 44 37 CHT 148/0 G MUDASSAR 25/0 2.2 POWERED EY CHICAGO TIGER"
+  },
+  {
+   "t": 1398.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 95 SE MILANTHA 44 37 CHT 148/0 G MUDASSAR 25/0 2.3 40MLREL EO CHICAGO TIGER"
+  },
+  {
+   "t": 1401.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 95 SE MILANTHA 44 37 CHT 148/0 G MUDASSAR 25/0 2.3 WUWLRED \u20ac CHICAGO TIGERS"
+  },
+  {
+   "t": 1404.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 95 SE MILANTHA 44 37 CHT 148/0 G MUDASSAR 25/0 2.3 POWERED &Y CHICAGO TIGER"
+  },
+  {
+   "t": 1407.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 95 SE MILANTHA 44 37 CHT 148/0 G MUDASSAR 25/0 2.3 BOWERED #Y CHICAGO TIGER"
+  },
+  {
+   "t": 1410.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 95 SE MILANTHA 44 37 CHT 148/0 G MUDASSAR 25/0 2.3 FOWELD 81 CHICAGO TIGERS"
+  },
+  {
+   "t": 1413.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 95 SE MILANTHA 44 37 CHT 148/0 G MUDASSAR 25/0 2.3 ROWILVEL EY CHICAGO TIGE"
+  },
+  {
+   "t": 1416.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 95 5E MILANTHA 44 37 CHT 148/0 G MUDASSAR 25/0 2.3 WOWEREO *T CHICAGO TIGER"
+  },
+  {
+   "t": 1419.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 95 SE MILANTHA 44 37 CHT 148/0 G MUDASSAR 25/0 2.3 POWLRED * CHICAGO TIGERS"
+  },
+  {
+   "t": 1422.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 95 SE MILANTHA 44 37 CHT 148/0 G MUDASSAR 25/0 2.3 POWLRED @Y CHICAGO TIGER"
+  },
+  {
+   "t": 1425.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 95 SE MILANTHA 44 37 CHT 148/0 G MUDASSAR 25/0 2.3 DOWEREDUY CHICAGO TIGERS"
+  },
+  {
+   "t": 1428.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 95 SE MILANTHA 44 37 CHT 148/0 G MUDASSAR 25/0 2.3 POWEREO ET CHICAGO TIGER"
+  },
+  {
+   "t": 1431.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 95 SE MILANTHA 44 37 CHT 148/0 G MUDASSAR 25/0 2.3 DOMERED BY CHICAGO TIGER"
+  },
+  {
+   "t": 1434.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 95 SE MILANTHA 44 37 CHT 148/0 G MUDASSAR 25/0 2.3 BOWEREOAT CHICAGO TIGERS"
+  },
+  {
+   "t": 1437.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 95 SE MILANTHA 44 37 CHT 148/0 G MUDASSAR 25/0 2.3 OWEKCC @T CHICAGO TIGERS"
+  },
+  {
+   "t": 1440.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 95 SE MILANTHA 44 37 CHT 149/0 G MUDASSAR 26/0 2.3 POWERECEY CHICAGO TIGERS"
+  },
+  {
+   "t": 1443.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 95 SE MILANTHA 44 37 CHT 149/0 G MUDASSAR 26/0 2.3 FOW ERED @Y CHICAGO TIGE"
+  },
+  {
+   "t": 1446.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 95 SE MILANTHA 44 37 CHT 149/0 G MUDASSAR 26/0 2.3 JOWERED*# CHICAGO TIGERS"
+  },
+  {
+   "t": 1449.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 95 SE MILANTHA 44 37 CHT 149/0 G MUDASSAR 26/0 2.3 POWERED #Y CHICAGO TIGER"
+  },
+  {
+   "t": 1452.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 95 SE MILANTHA 44 37 CHT 149/0 G MUDASSAR 26/0 2.3 ROWERED #Y CHICAGO TIGER"
+  },
+  {
+   "t": 1455.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 95 SE MILANTHA 44 37 CHT 149/0 G MUDASSAR 26/0 2.3 DOWEREDGY CHICAGO TIGERS"
+  },
+  {
+   "t": 1458.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 95 SE MILANTHA 44 37 CHT 149/0 G MUDASSAR 26/0 2.3 POWEREDAY CHICAGO TIGERS"
+  },
+  {
+   "t": 1461.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 95 SE MILANTHA 44 37 CHT 149/0 G MUDASSAR 26/0 2.3 PODENLD#Y CHICAGO TIGERS"
+  },
+  {
+   "t": 1464.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 95 SE MILANTHA 44 37 CHT 149/0 G MUDASSAR 26/0 2.3 UWERED #Y CHICAGO TIGERS"
+  },
+  {
+   "t": 1467.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 95 SE MILANTHA 44 37 CHT 149/0 G MUDASSAR 26/0 2.3 POWERED EY CHICAGO TIGER"
+  },
+  {
+   "t": 1470.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MNITHIYANANDAM 95 SE MILANTHA 44 37 CHT 149/0 G MUDASSAR 26/0 2.3 DOWEVED *1 CHICAGO TIGER"
+  },
+  {
+   "t": 1473.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 37 MNITHIYANANDAM 96 CHT 150/0 G MUDASSAR 27/0 2.4 POERED EX CHICAGO TIGERS VS"
+  },
+  {
+   "t": 1476.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 44 37 MNITHIYANANDAM 96 CHT 150/0 G MUDASSAR 27/0 2.4 JOWEBEO#T CHICAGO TIGERS V"
+  },
+  {
+   "t": 1479.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 37 MNITHIYANANDAM 96 CHT 150/0 G MUDASSAR 27/0 2.4 ROWEED 3 CHICAGO TIGERS VS "
+  },
+  {
+   "t": 1482.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 44 37 MNITHIYANANDAM 96 CHT 150/0 G MUDASSAR 27/0 2.4 FOMERED *T CHICAGO TIGERS "
+  },
+  {
+   "t": 1485.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 37 MNITHIYANANDAM 96 CHT 150/0 G MUDASSAR 27/0 2.4 #OERED &7 CHICAGO TIGERS VS"
+  },
+  {
+   "t": 1488.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 37 MNITHIYANANDAM 96 CHT 150/0 G MUDASSAR 27/0 2.4 FOMERED #T CHICAGO TIGERS V"
+  },
+  {
+   "t": 1491.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 37 MNITHIYANANDAM 96 CHT 150/0 G MUDASSAR 27/0 2.4 #OWEREDAY CHICAGO TIGERS VS"
+  },
+  {
+   "t": 1494.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 37 MNITHIYANANDAM 96 CHT 150/0 G MUDASSAR 27/0 2.4 POWERED #Y CHICAGO TIGERS V"
+  },
+  {
+   "t": 1497.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 44 37 MNITHIYANANDAM 96 CHT 150/0 G MUDASSAR 27/0 2.4 POWERED @7 CHICAGO TIGERS "
+  },
+  {
+   "t": 1500.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 44 37 MNITHIYANANDAM 96 CHT 150/0 G MUDASSAR 27/0 2.4 POWERED EY CHICAGO TIGERS "
+  },
+  {
+   "t": 1503.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 44 37 MNITHIYANANDAM 96 CHT 150/0 G MUDASSAR 27/0 2.4 #OWEREDBY CHICAGO TIGERS V"
+  },
+  {
+   "t": 1506.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 44 37 MNITHIYANANDAM 96 CHT 150/0 G MUDASSAR 27/0 2.4 DOWLDED* CHICAGO TIGERS VS"
+  },
+  {
+   "t": 1509.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 44 37 MNITHIYANANDAM 96 CHT 150/0 G MUDASSAR 27/0 2.4 ROWERLD#Y CHICAGO TIGERS V"
+  },
+  {
+   "t": 1512.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 37 MNITHIYANANDAM 96 CHT 150/0 G MUDASSAR 27/0 2.4 POWERED BT CHICAGO TIGERS V"
+  },
+  {
+   "t": 1515.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 37 MNITHIYANANDAM 96 CHT IS0/0 G MUDASSAR 27/0 2.4 POMEREDU CHICAGO TIGERS VS "
+  },
+  {
+   "t": 1518.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 37 MNITHIYANANDAM 96 CHT 150/0 G MUDASSAR 27/0 2.4 POMLRED &X CHICAGO TIGERS V"
+  },
+  {
+   "t": 1521.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 44 37 MNITHIYANANDAM 96 CHT 150/0 G MUDASSAR 27/0 2.4 TOWERED B8 CHICAGO TIGERS "
+  },
+  {
+   "t": 1524.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 37 MNITHIYANANDAM 96 CHT 150/0 G MUDASSAR 27/0 2.4 #OWERED #8 CHICAGO TIGERS V"
+  },
+  {
+   "t": 1527.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 44 37 MNITHIYANANDAM 96 CHT 150/0 G MUDASSAR 27/0 2.4 #OWEREC BY CHICAGO TIGERS "
+  },
+  {
+   "t": 1530.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 38 MNITHIYANANDAM 96 CHT 150/ G MUDASSAR 27/1 25 DO# ERED @T CHICAGO TIGERS VS"
+  },
+  {
+   "t": 1533.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 4 38 MNITHIYANANDAM 96 CHT 150/ G MUDASSAR 27/1 2.5 DOWERED ET CHICAGO TIGERS VS "
+  },
+  {
+   "t": 1536.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 38 MNITHIYANANDAM 96 CHT 150/ G MUDASSAR 27/1 2.5 ROWEREDEY CHICAGO TIGERS VS "
+  },
+  {
+   "t": 1539.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 38 MNITHIYANANDAM 96 CHT 150/ G MUDASSAR 27/1 2.5 FOWEREC B7 CHICAGO TIGERS VS"
+  },
+  {
+   "t": 1542.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 14 38 MNITHIYANANDAM 96 CHT 150/ G MUDASSAR 27/1 2.5 BO#EBED*T CHICAGO TIGERS VS "
+  },
+  {
+   "t": 1545.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 38 MNITHIYANANDAM 96 CHT 150/ G MUDASSAR 27/1 2.5 OWERED @Y CHICAGO TIGERS VS "
+  },
+  {
+   "t": 1548.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 38 MNITHIYANANDAM 96 CHT 150/ G MUDASSAR 27/1 2.5 ROWERED 27 CHICAGO TIGERS VS"
+  },
+  {
+   "t": 1551.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 38 MNITHIYANANDAM 96 CHT 150/ G MUDASSAR 27/1 2.5 VOWERED B8 CHICAGO TIGERS VS"
+  },
+  {
+   "t": 1554.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 38 MNITHIYANANDAM 96 CHT 150/ G MUDASSAR 27/1 2.5 DOM ERED41 CHICAGO TIGERS VS"
+  },
+  {
+   "t": 1557.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 38 MNITHIYANANDAM 96 CHT 150/ G MUDASSAR 27/1 2.5 POWERED @ CHICAGO TIGERS VS "
+  },
+  {
+   "t": 1560.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 38 MNITHIYANANDAM 96 CHT 150/ G MUDASSAR 27/1 2.5 POWEREO*Y CHICAGO TIGERS VS "
+  },
+  {
+   "t": 1563.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 38 MNITHIYANANDAM 96 CHT 150/ G MUDASSAR 27/1 2.5 OTEREOJY CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 1566.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 38 MNITHIYANANDAM 96 CHT 150/ G MUDASSAR 27/1 2.5 #OWEREDEY CHICAGO TIGERS VS "
+  },
+  {
+   "t": 1569.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 38 MNITHIYANANDAM 96 CHT 150/ G MUDASSAR 27/1 2.5 JOWERED* CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 1572.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 38 MNITHIYANANDAM 96 CHT 150/ G MUDASSAR 27/1 2.5 DUREREC # CHICAGO TIGERS VS "
+  },
+  {
+   "t": 1575.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 38 MNITHIYANANDAM 96 CHT 150/ G MUDASSAR 27/1 2.5 ROWERED #Y CHICAGO TIGERS VS"
+  },
+  {
+   "t": 1578.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 44 38 MNITHIYANANDAM 96 CHT 1S0/ G MUDASSAR 27/1 2.5 POWLRCD @ CHICAGO TIGERS VS"
+  },
+  {
+   "t": 1581.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 44 38 MNITHIYANANDAM 96 CHT 150/ G MUDASSAR 27/1 2.5 FOWDECD @Y CHICAGO TIGERS V"
+  },
+  {
+   "t": 1584.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 38 MNITHIYANANDAM 96 CHT 150/ G MUDASSAR 27/1 2.5 O#EREDJY CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 1587.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 38 MNITHIYANANDAM 96 CHT IS0/ G MUDASSAR 27/1 2.5 POWLRLO EY CHICAGO TIGERS VS"
+  },
+  {
+   "t": 1590.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 33 MNITHIYANANDAM 96 CHT 150/ G MUDASSAR 27/1 2.5 POLRED @Y CHICAGO TIGERS VS "
+  },
+  {
+   "t": 1593.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 38 MNITHIYANANDAM 96 CHT 150/ G MUDASSAR 27/1 2.5 POWERED GY CHICAGO TIGERS VS"
+  },
+  {
+   "t": 1596.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 39 MNITHIYANANDAM 96 CHT 150/ G MUDASSAR 27/1 2.5 DO#UREU EY CHICAGO TIGERS VS"
+  },
+  {
+   "t": 1599.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 38 MNITHIYANANDAM 96 CHT 150/ G MUDASSAR 27/1 2.5 #OWEREO BY CHICAGO TIGERS VS"
+  },
+  {
+   "t": 1602.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 38 MNITHIYANANDAM 96 CHT 150/ G MUDASSAR 27/1 2.5 TOWERED 2 CHICAGO TIGERS VS "
+  },
+  {
+   "t": 1605.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 38 MNITHIYANANDAM 96 CHT 150/ G MUDASSAR 27/1 2.5 #OWERED Y CHICAGO TIGERS VS "
+  },
+  {
+   "t": 1608.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 38 MNITHIYANANDAM 96 CHT 1S0/ G MUDASSAR 27/1 2.5 FOWLRED @T CHICAGO TIGERS VS"
+  },
+  {
+   "t": 1611.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 38 MNITHIYANANDAM 96 CHT 150/ G MUDASSAR 27/1 2.5 POWERED !Y CHICAGO TIGERS VS"
+  },
+  {
+   "t": 1614.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 38 MNITHIYANANDAM 96 CHT 150/ G MUDASSAR 27/1 2.5 POWERED3 CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 1617.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 38 MNITHIYANANDAM 96 CHT 150/ G MUDASSAR 27/1 2.5 ROWERED @X CHICAGO TIGERS VS"
+  },
+  {
+   "t": 1620.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 44 38 MNITHIYANANDAM 96 CHT 150/ G MUDASSAR 27/1 2.5 BOWLREQ 9 Y CHICAGO TIGERS "
+  },
+  {
+   "t": 1623.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 38 MNITHIYANANDAM 96 CHT 150/ G MUDASSAR 27/1 2.5 #OWERED*Y CHICAGO TIGERS VS "
+  },
+  {
+   "t": 1626.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 44 38 MNITHIYANANDAM 96 CHT 150/ G MUDASSAR 27/1 2.5 POWENLDST CHICAGO TIGERS VS"
+  },
+  {
+   "t": 1629.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 38 MNITHIYANANDAM 96 CHT 150/ G MUDASSAR 27/1 2.5 POWERED* CHICAGO TIGERS VS C"
+  },
+  {
+   "t": 1632.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 39 MNITHIYANANDAM 96 CHT 150/ G MUDASSAR 27/1 2,5 DOWERED EY CHICAGO TIGERS VS"
+  },
+  {
+   "t": 1635.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 44 38 MNITHIYANANDAM 96 CHT 150/ G MUDASSAR 27/1 2.5 #OWERED #Y CHICAGO TIGERS V"
+  },
+  {
+   "t": 1638.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "MILANTHA 44 38 MNITHIYANANDAM 96 CHT 150/ G MUDASSAR 27/1 2.5 KOWERED @7 CHICAGO TIGERS VS"
+  },
+  {
+   "t": 1641.0,
+   "runs": null,
+   "wickets": null,
+   "balls": null,
+   "layout": null,
+   "raw": "LMILANTHA 44 38 MNITHIYANANDAM 96 CHT 150/ G MUDASSAR 27/1 2.5 ROMERED E CHICAGO TIGERS VS"
+  }
+ ],
+ "deliveries": [],
+ "scoring_events": []
+}

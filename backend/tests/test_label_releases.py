@@ -145,7 +145,8 @@ class TestPage:
     @staticmethod
     def _rows():
         return [{"clip": "01_ball9_single.mp4", "ball": 9, "outcome": "single",
-                 "runs_delta": 1, "tick_t": 90.0, "release_t": None}]
+                 "runs_delta": 1, "tick_t": 90.0, "clip_start": 68.0,
+                 "dark_since": None, "release_t": None}]
 
     def test_the_clip_list_is_inlined_not_fetched(self, tmp_path):
         """
@@ -162,16 +163,17 @@ class TestPage:
         html = write_page(self._rows(), tmp_path).read_text()
         assert "__ROWS__" not in html and "__LEAD__" not in html
 
-    def test_the_page_knows_the_lead_used_to_cut_the_clips(self, tmp_path):
+    def test_the_page_takes_clip_start_from_the_cutter(self, tmp_path):
         """
-        Release time is reconstructed as clip_start + playhead, and clip_start
-        is tick_t - LEAD_SEC. If the page disagreed with the cutter about LEAD,
-        every label would be offset by the difference -- a constant error, which
-        is the hardest kind to notice in a measurement of a constant.
+        Release time is reconstructed as clip_start + playhead. Clip starts are
+        no longer a fixed lead before the tick -- a replay can hide the board for
+        over a minute -- so a page that re-derived them would offset every label
+        on exactly the occluded deliveries the clips were re-cut to capture.
         """
-        from tools.label_releases import write_page, LEAD_SEC
+        from tools.label_releases import write_page
         html = write_page(self._rows(), tmp_path).read_text()
-        assert f"const LEAD = {LEAD_SEC!r}" in html
+        assert "const clipStart = r => r.clip_start;" in html
+        assert "tick_t - LEAD" not in html
 
     def test_it_is_self_contained(self, tmp_path):
         """No network: the machine labelling may be offline, and a missing
@@ -179,3 +181,88 @@ class TestPage:
         from tools.label_releases import write_page
         html = write_page(self._rows(), tmp_path).read_text()
         assert "http://" not in html and "https://" not in html
+
+
+class TestDarkSince:
+    """
+    Finding when the board went dark is what decides where a clip begins, and
+    getting it wrong is how five of the first fifteen clips opened after the ball
+    had already been hit.
+    """
+
+    class _Gap:
+        def __init__(self, start, end):
+            self.start, self.end = start, end
+
+        @property
+        def duration(self):
+            return self.end - self.start
+
+    def test_no_occlusion_before_the_tick_reports_none(self):
+        from tools.label_releases import dark_since
+        assert dark_since(500.0, [self._Gap(100.0, 200.0)], 3.0) is None
+
+    def test_a_single_gap_ending_at_the_tick_is_found(self):
+        from tools.label_releases import dark_since
+        assert dark_since(162.0, [self._Gap(144.0, 162.0)], 3.0) == 144.0
+
+    def test_touching_gaps_are_chained_back_to_the_true_start(self):
+        """
+        The measured failure: one readable frame between occlusions splits an
+        81-second blackout into three gaps. Taking only the last one placed the
+        start at 498s instead of 435s, and the clip opened with the ball already
+        halfway to the boundary.
+        """
+        from tools.label_releases import dark_since
+        gaps = [self._Gap(435.0, 486.0), self._Gap(486.0, 498.0),
+                self._Gap(498.0, 516.0)]
+        assert dark_since(516.0, gaps, 3.0) == 435.0
+
+    def test_an_unrelated_earlier_blackout_is_not_chained_in(self):
+        """Chaining must stop at a genuine readable span, or every clip would
+        begin at the start of the match."""
+        from tools.label_releases import dark_since
+        gaps = [self._Gap(100.0, 200.0), self._Gap(480.0, 516.0)]
+        assert dark_since(516.0, gaps, 3.0) == 480.0
+
+
+class TestClipWindows:
+    @staticmethod
+    def _gt(rows):
+        return {"samples": rows}
+
+    def test_a_clip_starts_before_the_board_went_dark(self):
+        """
+        The bug this was built to fix: the release precedes the cut to replay,
+        which precedes the blackout, which precedes the tick. A clip led from the
+        tick misses it entirely on exactly the boundaries worth clipping.
+        """
+        from tools.label_releases import deliveries_from, PRE_DARK_SEC
+        samples = []
+        for t in range(0, 600, 3):
+            readable = not (435 <= t < 516)
+            samples.append({"t": float(t), "runs": 40 if t < 435 else 44,
+                            "wickets": 0, "balls": 10 if t < 435 else 11,
+                            "layout": "cricclubs" if readable else None,
+                            "raw": ""} if readable else
+                           {"t": float(t), "runs": None, "wickets": None,
+                            "balls": None, "layout": None, "raw": ""})
+        found = deliveries_from(self._gt(samples), 3.0)
+        assert found, "expected a delivery across the blackout"
+        d = found[-1]
+        assert d["dark_since"] is not None
+        assert d["clip_start"] <= d["dark_since"] - PRE_DARK_SEC + 0.01
+
+    def test_a_clip_never_reaches_back_past_the_previous_delivery(self):
+        """
+        A long blackout spanning two deliveries would otherwise produce a clip
+        containing both, which cannot be labelled unambiguously.
+        """
+        from tools.label_releases import deliveries_from
+        found = deliveries_from(self._gt([
+            {"t": float(t), "runs": min(t // 60, 5), "wickets": 0,
+             "balls": int(min(t // 60, 5)), "layout": "cricclubs", "raw": ""}
+            for t in range(0, 420, 3)
+        ]), 3.0)
+        for earlier, later in zip(found, found[1:]):
+            assert later["clip_start"] >= earlier["tick_t"]

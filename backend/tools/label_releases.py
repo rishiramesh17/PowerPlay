@@ -45,7 +45,7 @@ import subprocess
 import sys
 from collections import defaultdict
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Sequence
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
@@ -59,6 +59,18 @@ LEAD_SEC = 22.0
 
 #: Seconds after the tick to keep, for context on what the ball did.
 TRAIL_SEC = 4.0
+
+#: How far before the board goes dark to start a clip.
+#:
+#: Hand-labelling exposed the real shape of the problem. On a boundary the
+#: broadcast cuts to replay, which hides the scoreboard; the "tick" we record is
+#: therefore not the operator updating but the board REAPPEARING afterwards. On
+#: one four the board was dark for 81 seconds, so a clip led by 22s opened with
+#: the ball already halfway to the rope and the release long past.
+#:
+#: The release precedes the cut-to-replay, which itself follows the shot, so a
+#: clip must start before the darkness rather than before the tick.
+PRE_DARK_SEC = 20.0
 
 #: A usable timestamp font. macOS ships both; the first that exists is used.
 FONT_CANDIDATES = (
@@ -80,20 +92,54 @@ def outcome_of(delta: int, wicket: bool) -> str:
         delta, f"+{delta}")
 
 
+def dark_since(tick: float, gaps: Sequence, step: float) -> Optional[float]:
+    """
+    When the board last went dark before reappearing at `tick`, or None.
+
+    Occlusion arrives as a run of separate gaps separated by a single readable
+    frame, so they are chained: treating only the final gap would place the start
+    of a 81-second blackout at 18 seconds and miss the delivery entirely.
+    """
+    current = next((g for g in gaps if abs(g.end - tick) <= step + 0.1), None)
+    if current is None:
+        return None
+    start, moved = current.start, True
+    while moved:
+        moved = False
+        for g in gaps:
+            if abs(g.end - start) <= step + 0.1 and g.start < start:
+                start, moved = g.start, True
+    return start
+
+
 def deliveries_from(gt: Dict, step: float) -> List[Dict]:
-    """Every delivery the board saw, tagged with its outcome."""
+    """Every delivery the board saw, tagged with its outcome and search window."""
     timeline = build_timeline(list(gt["samples"]), step=step)
     out: List[Dict] = []
     prev = None
+    prev_tick = 0.0
     for row in timeline.rows:
         if prev is not None and row["balls"] > prev["balls"] and row["innings"] == prev["innings"]:
+            tick = row["t"]
+            dark = dark_since(tick, timeline.gaps, step)
+            start = tick - LEAD_SEC
+            if dark is not None:
+                start = min(start, dark - PRE_DARK_SEC)
+            # The previous delivery's tick is a hard floor: the ball cannot have
+            # been bowled before the one before it was recorded, and without this
+            # a long blackout produces a clip spanning two deliveries, which
+            # cannot be labelled unambiguously.
+            start = max(start, prev_tick)
             out.append({
                 "ball": row["balls"],
-                "tick_t": row["t"],
+                "tick_t": tick,
+                "clip_start": max(0.0, start),
+                "dark_since": dark,
                 "runs_delta": row["runs"] - prev["runs"],
                 "outcome": outcome_of(row["runs"] - prev["runs"],
                                       row["wickets"] > prev["wickets"]),
             })
+            prev_tick = tick
         prev = row
     return out
 
@@ -130,7 +176,8 @@ def cut_clips(video: Path, picks: List[Dict], out_dir: Path) -> List[Dict]:
 
     rows: List[Dict] = []
     for i, d in enumerate(picks, 1):
-        start = max(0.0, d["tick_t"] - LEAD_SEC)
+        start = d["clip_start"]
+        length = d["tick_t"] + TRAIL_SEC - start
         name = f"{i:02d}_ball{d['ball']}_{d['outcome']}.mp4"
         dest = out_dir / name
         # `start` is added back to the clip-local clock so the burnt-in number is
@@ -143,7 +190,7 @@ def cut_clips(video: Path, picks: List[Dict], out_dir: Path) -> List[Dict]:
         )
         subprocess.run(
             ["ffmpeg", "-y", "-v", "error", "-ss", f"{start:.2f}", "-i", str(video),
-             "-t", f"{LEAD_SEC + TRAIL_SEC:.2f}", "-vf", label,
+             "-t", f"{length:.2f}", "-vf", label,
              "-an", "-c:v", "libx264", "-preset", "veryfast", "-crf", "26", str(dest)],
             check=True,
         )
@@ -153,6 +200,11 @@ def cut_clips(video: Path, picks: List[Dict], out_dir: Path) -> List[Dict]:
             "outcome": d["outcome"],
             "runs_delta": d["runs_delta"],
             "tick_t": d["tick_t"],
+            # Stored rather than recomputed: the page turns a playhead position
+            # into absolute video time with it, and a clip start it had to infer
+            # could drift from the one ffmpeg actually used.
+            "clip_start": start,
+            "dark_since": d["dark_since"],
             # The thing to fill in: the video time the ball leaves the hand.
             "release_t": None,
         })
@@ -233,6 +285,7 @@ PAGE_TEMPLATE = r"""<!doctype html>
   <span>clip <b id="idx"></b></span>
   <span>outcome <b id="outcome"></b></span>
   <span>board ticked at <b id="tick"></b></span>
+  <span id="darkwrap">board went dark at <b id="dark"></b></span>
   <span>labelled <b id="count"></b></span>
   <span style="margin-left:auto">video time <span class="now" id="now"></span></span>
 </div>
@@ -264,8 +317,10 @@ const $ = id => document.getElementById(id);
 
 // Absolute time in the ORIGINAL video, which is the only frame of reference the
 // pipeline uses. Computed from the playhead rather than typed, so a label cannot
-// disagree with the frame the labeller was actually looking at.
-const clipStart = r => Math.max(0, r.tick_t - LEAD);
+// disagree with the frame the labeller was actually looking at. clip_start comes
+// from the cutter rather than being re-derived here: clips are no longer a fixed
+// lead before the tick, because a replay can hide the board for over a minute.
+const clipStart = r => r.clip_start;
 const absNow = () => clipStart(ROWS[i]) + v.currentTime;
 
 function load(n) {
@@ -276,6 +331,8 @@ function load(n) {
   $('idx').textContent = `${i + 1} / ${ROWS.length}`;
   $('outcome').textContent = r.outcome;
   $('tick').textContent = r.tick_t.toFixed(1) + 's';
+  $('darkwrap').style.display = r.dark_since === null ? 'none' : '';
+  if (r.dark_since !== null) $('dark').textContent = r.dark_since.toFixed(1) + 's';
   draw();
 }
 
