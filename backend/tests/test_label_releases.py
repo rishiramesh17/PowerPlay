@@ -134,3 +134,48 @@ def test_clips_start_well_before_the_largest_plausible_lag():
     the delivery silently drops out of the sample. Measured lags reach 10.9s.
     """
     assert LEAD_SEC > 2 * 10.9
+
+
+class TestPage:
+    """
+    The labelling page is where the measurement is actually taken, so the ways
+    it can fail silently matter more than the ways it can look wrong.
+    """
+
+    @staticmethod
+    def _rows():
+        return [{"clip": "01_ball9_single.mp4", "ball": 9, "outcome": "single",
+                 "runs_delta": 1, "tick_t": 90.0, "release_t": None}]
+
+    def test_the_clip_list_is_inlined_not_fetched(self, tmp_path):
+        """
+        A page opened over file:// cannot read a sibling JSON file. Fetching
+        would leave the labeller staring at an empty page with no error.
+        """
+        from tools.label_releases import write_page
+        html = write_page(self._rows(), tmp_path).read_text()
+        assert "01_ball9_single.mp4" in html
+        assert "fetch(" not in html
+
+    def test_no_placeholder_survives_substitution(self, tmp_path):
+        from tools.label_releases import write_page
+        html = write_page(self._rows(), tmp_path).read_text()
+        assert "__ROWS__" not in html and "__LEAD__" not in html
+
+    def test_the_page_knows_the_lead_used_to_cut_the_clips(self, tmp_path):
+        """
+        Release time is reconstructed as clip_start + playhead, and clip_start
+        is tick_t - LEAD_SEC. If the page disagreed with the cutter about LEAD,
+        every label would be offset by the difference -- a constant error, which
+        is the hardest kind to notice in a measurement of a constant.
+        """
+        from tools.label_releases import write_page, LEAD_SEC
+        html = write_page(self._rows(), tmp_path).read_text()
+        assert f"const LEAD = {LEAD_SEC!r}" in html
+
+    def test_it_is_self_contained(self, tmp_path):
+        """No network: the machine labelling may be offline, and a missing
+        stylesheet would silently degrade the frame-stepping controls."""
+        from tools.label_releases import write_page
+        html = write_page(self._rows(), tmp_path).read_text()
+        assert "http://" not in html and "https://" not in html

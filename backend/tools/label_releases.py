@@ -159,6 +159,190 @@ def cut_clips(video: Path, picks: List[Dict], out_dir: Path) -> List[Dict]:
     return rows
 
 
+#: A self-contained labelling page written alongside the clips.
+#:
+#: The alternative is scrubbing in a video player and typing timestamps into a
+#: JSON file by hand, fifteen times. That is not merely tedious: the number has
+#: to be converted from a seek-bar position into original-video time, and an
+#: error there corrupts the measured lag invisibly.
+#:
+#: Here the release time is read from the playhead rather than typed, so a label
+#: cannot disagree with the frame the labeller was looking at. The timestamp
+#: burnt into the video stays as the independent cross-check.
+PAGE_TEMPLATE = r"""<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>PowerPlay · label release times</title>
+<style>
+ :root { color-scheme: dark; --bg:#13151a; --fg:#e8eaed; --dim:#9aa0a6;
+         --line:#2c3038; --go:#ffd400; --ok:#34d058; }
+ * { box-sizing:border-box; margin:0; padding:0 }
+ body { background:var(--bg); color:var(--fg); font:15px/1.5 -apple-system,
+        BlinkMacSystemFont,"Segoe UI",sans-serif; padding:24px;
+        max-width:1100px; margin:0 auto }
+ h1 { font-size:19px; font-weight:600; margin-bottom:2px }
+ .sub { color:var(--dim); font-size:13px; margin-bottom:18px }
+ video { width:100%; border-radius:8px; background:#000; display:block }
+ .bar { display:flex; gap:10px; align-items:center; flex-wrap:wrap;
+        margin:14px 0; }
+ button { background:#23272f; color:var(--fg); border:1px solid var(--line);
+          padding:9px 16px; border-radius:7px; font-size:14px; cursor:pointer }
+ button:hover { background:#2c313a }
+ button.primary { background:var(--go); color:#000; border-color:var(--go);
+                  font-weight:600 }
+ .meta { display:flex; gap:22px; color:var(--dim); font-size:13px;
+         padding:10px 0; border-top:1px solid var(--line);
+         border-bottom:1px solid var(--line); flex-wrap:wrap }
+ .meta b { color:var(--fg); font-weight:600 }
+ .now { font-variant-numeric:tabular-nums; font-size:28px; font-weight:600;
+        color:var(--go) }
+ .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(112px,1fr));
+         gap:7px; margin-top:18px }
+ .chip { padding:8px 6px; border:1px solid var(--line); border-radius:6px;
+         font-size:12px; text-align:center; cursor:pointer; background:#1a1d23 }
+ .chip:hover { border-color:var(--dim) }
+ .chip.cur { border-color:var(--go); background:#2a2510 }
+ .chip.done { border-color:var(--ok) }
+ .chip .o { color:var(--dim); display:block; font-size:11px }
+ .chip .v { color:var(--ok); display:block; font-variant-numeric:tabular-nums }
+ kbd { background:#23272f; border:1px solid var(--line); border-radius:4px;
+       padding:1px 6px; font-size:12px; font-family:ui-monospace,monospace }
+ .help { color:var(--dim); font-size:13px; margin-top:16px; line-height:2 }
+ .done-box { margin-top:22px; padding:16px; border:1px solid var(--line);
+             border-radius:8px; background:#1a1d23 }
+ textarea { width:100%; height:120px; background:#0f1115; color:var(--fg);
+            border:1px solid var(--line); border-radius:6px; padding:10px;
+            font-family:ui-monospace,monospace; font-size:12px; margin-top:10px }
+</style></head><body>
+
+<h1>Label release times</h1>
+<div class="sub">Find the frame the ball leaves the bowler's hand, then press
+  <kbd>Enter</kbd>. The yellow number burnt into the video should match the big
+  number below &mdash; that is your cross-check.</div>
+
+<video id="v" preload="auto"></video>
+
+<div class="bar">
+  <button id="back">&larr; prev clip</button>
+  <button id="play">play / pause</button>
+  <button class="primary" id="mark">Mark release &amp; next &nbsp;<kbd>Enter</kbd></button>
+  <button id="skip">Can't tell &mdash; skip</button>
+  <button id="next">next clip &rarr;</button>
+</div>
+
+<div class="meta">
+  <span>clip <b id="idx"></b></span>
+  <span>outcome <b id="outcome"></b></span>
+  <span>board ticked at <b id="tick"></b></span>
+  <span>labelled <b id="count"></b></span>
+  <span style="margin-left:auto">video time <span class="now" id="now"></span></span>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<div class="help">
+  <kbd>&larr;</kbd> <kbd>&rarr;</kbd> step one frame &nbsp;·&nbsp;
+  <kbd>&#8679;</kbd>+<kbd>&larr;</kbd>/<kbd>&rarr;</kbd> half a second &nbsp;·&nbsp;
+  <kbd>space</kbd> play/pause &nbsp;·&nbsp;
+  <kbd>Enter</kbd> mark release &nbsp;·&nbsp;
+  <kbd>S</kbd> skip
+</div>
+
+<div class="done-box">
+  <button class="primary" id="save">Download labels.json</button>
+  <span style="color:var(--dim);font-size:13px">&nbsp; then replace the file in
+    this folder and run the analyse command</span>
+  <textarea id="out" readonly></textarea>
+</div>
+
+<script>
+const ROWS = __ROWS__;
+const LEAD = __LEAD__;
+const FRAME = 1/30;
+let i = 0;
+const v = document.getElementById('v');
+const $ = id => document.getElementById(id);
+
+// Absolute time in the ORIGINAL video, which is the only frame of reference the
+// pipeline uses. Computed from the playhead rather than typed, so a label cannot
+// disagree with the frame the labeller was actually looking at.
+const clipStart = r => Math.max(0, r.tick_t - LEAD);
+const absNow = () => clipStart(ROWS[i]) + v.currentTime;
+
+function load(n) {
+  i = Math.max(0, Math.min(ROWS.length - 1, n));
+  const r = ROWS[i];
+  v.src = r.clip;
+  v.currentTime = 0;
+  $('idx').textContent = `${i + 1} / ${ROWS.length}`;
+  $('outcome').textContent = r.outcome;
+  $('tick').textContent = r.tick_t.toFixed(1) + 's';
+  draw();
+}
+
+function draw() {
+  $('now').textContent = absNow().toFixed(2) + 's';
+  $('count').textContent = ROWS.filter(r => r.release_t !== null).length
+                         + ' / ' + ROWS.length;
+  $('grid').innerHTML = ROWS.map((r, n) =>
+    `<div class="chip ${n === i ? 'cur' : ''} ${r.release_t !== null ? 'done' : ''}"
+          data-n="${n}">ball ${r.ball}<span class="o">${r.outcome}</span>
+      <span class="v">${r.release_t !== null ? r.release_t.toFixed(1) + 's' : '&nbsp;'}</span>
+     </div>`).join('');
+  $('out').value = JSON.stringify(ROWS, null, 1);
+}
+
+function mark() {
+  ROWS[i].release_t = Math.round(absNow() * 100) / 100;
+  draw();
+  if (i < ROWS.length - 1) load(i + 1);
+}
+
+v.addEventListener('timeupdate', () => $('now').textContent = absNow().toFixed(2) + 's');
+v.addEventListener('seeked',     () => $('now').textContent = absNow().toFixed(2) + 's');
+$('grid').addEventListener('click', e => {
+  const c = e.target.closest('.chip'); if (c) load(+c.dataset.n);
+});
+$('mark').onclick = mark;
+$('next').onclick = () => load(i + 1);
+$('back').onclick = () => load(i - 1);
+$('play').onclick = () => v.paused ? v.play() : v.pause();
+$('skip').onclick = () => { ROWS[i].release_t = null; draw(); load(i + 1); };
+$('save').onclick = () => {
+  const b = new Blob([JSON.stringify(ROWS, null, 1)], {type: 'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(b); a.download = 'labels.json'; a.click();
+};
+
+addEventListener('keydown', e => {
+  if (e.target.tagName === 'TEXTAREA') return;
+  const step = e.shiftKey ? 0.5 : FRAME;
+  if (e.key === 'ArrowLeft')  { v.pause(); v.currentTime -= step; e.preventDefault(); }
+  if (e.key === 'ArrowRight') { v.pause(); v.currentTime += step; e.preventDefault(); }
+  if (e.key === ' ')     { v.paused ? v.play() : v.pause(); e.preventDefault(); }
+  if (e.key === 'Enter') { mark(); e.preventDefault(); }
+  if (e.key.toLowerCase() === 's') { ROWS[i].release_t = null; draw(); load(i + 1); }
+});
+
+load(0);
+</script></body></html>
+"""
+
+
+def write_page(rows: List[Dict], out_dir: Path) -> Path:
+    """Write the labelling page, with the clip list baked in.
+
+    Inlined rather than fetched: a page opened over file:// cannot read a
+    sibling JSON file, and a labelling tool that silently shows no clips is
+    worse than one that does not exist.
+    """
+    page = (PAGE_TEMPLATE
+            .replace("__ROWS__", json.dumps(rows))
+            .replace("__LEAD__", repr(LEAD_SEC)))
+    dest = out_dir / "label.html"
+    dest.write_text(page, encoding="utf-8")
+    return dest
+
+
 def analyse(labels: List[Dict]) -> Dict:
     """
     Turn filled labels into a lag measurement, per outcome and overall.
@@ -224,12 +408,13 @@ def _cmd_clips(args) -> int:
     rows = cut_clips(Path(args.video), picks, out_dir)
     labels_path = out_dir / "labels.json"
     labels_path.write_text(json.dumps(rows, indent=1))
+    page = write_page(rows, out_dir)
 
     print(f"\nwrote {len(rows)} clips to {out_dir}/")
-    print(f"fill in `release_t` for each entry in {labels_path}")
-    print("\nFor each clip: play it, find the frame the ball leaves the bowler's")
-    print("hand, and type the yellow number in the corner into `release_t`.")
+    print(f"\n  open {page}")
+    print("\nStep to the frame the ball leaves the bowler's hand and press Enter.")
     print("Leave any you cannot judge as null -- a guess is worse than a gap.")
+    print(f"Download the result over {labels_path}, then run `analyse`.")
     return 0
 
 
