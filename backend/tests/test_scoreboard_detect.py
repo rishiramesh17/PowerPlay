@@ -44,7 +44,11 @@ def test_it_is_confident_about_the_event_and_vague_about_the_moment():
     # against an independent scorecard -- a flawless small sample does not license
     # claiming certainty.
     assert 0.85 < sig.confidence < 1.0
-    assert sig.time_sigma >= 4.0
+    # Vague about the moment relative to a motion detector (~0.4s), which is the
+    # comparison that matters -- not vague in absolute terms. Measurement brought
+    # this down from a guessed 4.0 to 2.2, and that is a real gain: it is the
+    # difference between a clip that starts on the run-up and one that does not.
+    assert sig.time_sigma > 4 * 0.4
 
 
 def test_no_signal_is_emitted_across_an_innings_break():
@@ -125,16 +129,45 @@ def test_it_reports_normally_from_a_healthy_board():
     assert out is not None and len(out) > 0
 
 
-def test_counting_is_calibrated_and_timing_is_not():
+def test_counting_is_calibrated_and_timing_is_measured_separately():
     """
     Calibration is per-claim, not per-detector.
 
     Counting was measured at 30/30 against a CricClubs scorecard kept by a human
-    scorer, independent of the graphics this parses -- so `calibrated` is True and
-    fusion lets it report alone. Timing was NOT settled by that scorecard, whose
-    clocks are minute-resolution; the honest uncertainty stays declared in
-    SCOREBOARD_TIME_SIGMA, which must remain wide enough that a detector which
-    actually knows the moment outweighs it.
+    scorer, independent of the graphics this parses. Timing came later and from
+    elsewhere -- 15 hand-labelled releases -- and is reported through time_sigma
+    rather than folded into the same number.
     """
     assert sd.make_detector([], step=3.0).calibrated is True
-    assert sd.SCOREBOARD_TIME_SIGMA >= 4.0
+    assert sd.SCOREBOARD_TIME_SIGMA == 2.2
+
+
+def test_a_tick_after_a_blackout_is_treated_as_a_different_regime():
+    """
+    Measured, not assumed: ticks with the board continuously visible trail the
+    ball by 10.1s +/- 2.2s; ticks where it had gone dark trail by 21.5s +/- 10.0s,
+    because what we see is the board REAPPEARING after a replay. Permutation test
+    on occlusion gave p = 0.005; on outcome, p = 0.19.
+    """
+    assert sd.OCCLUDED_TICK_LAG_SEC > sd.SCOREBOARD_LAG_SEC
+    assert sd.OCCLUDED_TICK_TIME_SIGMA > sd.SCOREBOARD_TIME_SIGMA
+
+    from processing.scoreboard import Gap
+    tl = Timeline(rows=[_row(0, 10, 6), _row(30, 11, 7)],
+                  gaps=[Gap(start=12.0, end=30.0, missed_balls=0)], parse_rate=1.0)
+    sig = next(s for s in sd.signals_from_timeline(tl, step=3.0)
+               if s.evidence.get("tick_t") == 30.0)
+    assert sig.evidence["after_blackout"] == 1.0
+    assert sig.time_sigma == sd.OCCLUDED_TICK_TIME_SIGMA
+    assert sig.t == 30.0 - sd.OCCLUDED_TICK_LAG_SEC
+
+
+def test_timing_uncertainty_always_lets_a_real_timer_win():
+    """
+    The board must never drag a fused timestamp away from a detector that knows
+    the moment. The run-up localizer reports sigma around 0.4s, so both of the
+    board's regimes have to stay far above that for inverse-variance weighting
+    to do its job.
+    """
+    assert sd.SCOREBOARD_TIME_SIGMA > 4 * 0.4
+    assert sd.OCCLUDED_TICK_TIME_SIGMA > 4 * 0.4

@@ -30,25 +30,30 @@ from .scoreboard import Timeline, build_timeline
 
 logger = logging.getLogger(__name__)
 
-#: Seconds the counter trails the ball. Hand-verified on two deliveries, where
-#: releases at 4511.6s and 4528.1s were logged at 4515s and 4539s -- lags of 3.4
-#: and 10.9 seconds. The wide spread is the point: a defended ball is logged
-#: almost at once, while a six is only recorded once it has been tracked to the
-#: rope and signalled.
+#: Seconds the counter trails the ball when the board stayed visible.
 #:
-#: STILL PROVISIONAL, from n=2, and the scorecard could not improve it: its
-#: clocks are minute-resolution and carry the scorer's own delay, spreading
-#: measured offsets across 177 seconds on this match. Only hand-labelled
-#: releases against video can settle this. It shifts the reported moment, so it
-#: is wrong to treat as precise -- which is what `SCOREBOARD_TIME_SIGMA` exists
-#: to declare.
-SCOREBOARD_LAG_SEC = 7.0
+#: MEASURED on 15 hand-labelled releases: 9 where the board never went dark gave
+#: 10.1s +/- 2.2s. This replaces 7.0, which was the midpoint of two observations
+#: and 3.8s RMS wrong; 10.1 is 2.2s RMS wrong on the same deliveries.
+SCOREBOARD_LAG_SEC = 10.1
 
-#: How far the corrected timestamp can still be out, in seconds. Covers the
-#: measured 3-11s lag spread plus the 3s OCR sampling interval. Large on
-#: purpose: it is what stops the board from dragging a fused timestamp away from
-#: a detector that actually knows the moment.
-SCOREBOARD_TIME_SIGMA = 4.0
+#: Uncertainty on a clean tick. The measured standard deviation, not a margin
+#: chosen for comfort.
+SCOREBOARD_TIME_SIGMA = 2.2
+
+#: The same two quantities when the board went dark before the tick.
+#:
+#: These are a different regime, not a worse case of the same one. On a boundary
+#: the broadcast cuts to replay, hiding the board; what we record is it
+#: REAPPEARING. Measured on the 6 such deliveries: 21.5s +/- 10.0s, against
+#: 10.1s +/- 2.2s when it stayed visible. A permutation test puts occlusion at
+#: p = 0.005.
+#:
+#: The spread is the honest part. Ten seconds of uncertainty is close to useless
+#: for cutting a clip, and saying so is what lets vision carry the timing here
+#: instead -- see how `time_sigma` is weighted in `fusion._fuse_cluster`.
+OCCLUDED_TICK_LAG_SEC = 21.5
+OCCLUDED_TICK_TIME_SIGMA = 10.0
 
 #: Confidence attached to a delivery the counter actually advanced through.
 #:
@@ -65,15 +70,27 @@ DELIVERY_CONFIDENCE = 0.886
 OCCLUDED_CONFIDENCE = 0.55
 
 
-def signals_from_timeline(timeline: Timeline) -> List[Signal]:
+def _follows_blackout(tick: float, timeline: Timeline, step: float) -> bool:
+    """
+    Did the board reappear at this tick after being hidden?
+
+    This is the difference between a 10-second lag and a 21-second one, so it is
+    asked per delivery rather than assumed for the match.
+    """
+    return any(abs(gap.end - tick) <= step + 0.1 for gap in timeline.gaps)
+
+
+def signals_from_timeline(timeline: Timeline, step: float = 3.0) -> List[Signal]:
     """
     Turn a read scoreboard into delivery signals.
 
-    Two kinds come out. Deliveries seen directly get a timestamp corrected
-    backwards by the measured lag. Deliveries known only from a counter jump
-    across a gap get spread evenly through that gap, with an uncertainty as wide
-    as the gap -- honest about the fact that the board can prove they happened
-    and cannot say where.
+    Three kinds come out, and the distinction between the first two was measured
+    rather than assumed. A tick while the board was continuously visible trails
+    the ball by 10.1s and is good to about 2 seconds. A tick where the board had
+    gone dark is the board REAPPEARING after a replay: it trails by 21.5s and is
+    good to about 10, which is barely a timing claim at all. Deliveries known
+    only from a counter jump across a gap get spread through it, with an
+    uncertainty as wide as the gap.
     """
     signals: List[Signal] = []
 
@@ -84,16 +101,20 @@ def signals_from_timeline(timeline: Timeline) -> List[Signal]:
             and row["balls"] > prev["balls"]
             and row["innings"] == prev["innings"]
         ):
+            dark = _follows_blackout(row["t"], timeline, step)
+            lag = OCCLUDED_TICK_LAG_SEC if dark else SCOREBOARD_LAG_SEC
+            sigma = OCCLUDED_TICK_TIME_SIGMA if dark else SCOREBOARD_TIME_SIGMA
             signals.append(
                 Signal(
                     detector="scoreboard",
-                    t=row["t"] - SCOREBOARD_LAG_SEC,
+                    t=row["t"] - lag,
                     confidence=DELIVERY_CONFIDENCE,
-                    time_sigma=SCOREBOARD_TIME_SIGMA,
+                    time_sigma=sigma,
                     evidence={
                         "tick_t": row["t"],
                         "balls_bowled": float(row["balls"]),
-                        "assumed_lag": SCOREBOARD_LAG_SEC,
+                        "assumed_lag": lag,
+                        "after_blackout": float(dark),
                     },
                 )
             )
@@ -143,15 +164,15 @@ def make_detector(
         if require_trustworthy and not timeline.trustworthy:
             logger.warning("scoreboard detector abstaining: %s", timeline.summary())
             return None
-        return signals_from_timeline(timeline)
+        return signals_from_timeline(timeline, step=step)
 
     return Detector(
         name="scoreboard",
         run=run,
         requires=("scoreboard",),
         # Earned: 30/30 deliveries against an independent CricClubs scorecard.
-        # Note this calibrates *counting*, which is all fusion asks of it. The
-        # timing remains uncalibrated, which is what SCOREBOARD_TIME_SIGMA
-        # declares -- scorecard clocks cannot resolve a lag of seconds.
+        # Note this calibrates *counting*. The timing is separately measured
+        # from 15 hand-labelled releases and reported through time_sigma, which
+        # now differs per delivery depending on whether the board went dark.
         calibrated=True,
     )

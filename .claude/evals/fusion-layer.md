@@ -361,3 +361,68 @@ This is also the clearest possible argument for the fusion layer's capability
 gating: this stream should be detected as lacking a usable over counter and the
 scoreboard detector refused, rather than running to completion and reporting
 that no cricket was played.
+
+---
+
+## Measured: the scoreboard lag, from 15 hand-labelled releases
+
+| regime | n | lag | sd |
+|---|---|---|---|
+| board stayed visible | 9 | **10.1s** | **2.2s** |
+| board went dark before the tick | 6 | 21.5s | 10.0s |
+
+Permutation tests (20k shuffles): **occlusion p = 0.004**, outcome p = 0.078.
+
+RMS error in predicted release time, all 15 deliveries:
+
+| model | RMS | worst |
+|---|---|---|
+| constant 7.0s (previous code) | 11.5s | 31.5s |
+| constant 11.8s (measured median) | 9.0s | 26.7s |
+| split on occlusion | 6.5s | 17.0s |
+
+On the 9 clean deliveries alone the occlusion model is 2.2s RMS, against 3.8s
+for the old constant.
+
+### The hypothesis this was built to test was wrong
+
+Going in, the prediction was that lag depends on OUTCOME: a six logs late
+because the camera tracks it to the rope. The measurement says otherwise.
+
+    four   [8.2, 13.6, 26.8]  mean 16.2s
+    six    [25.2, 12.8, 8.2]  mean 15.4s
+
+Indistinguishable, and within the clean subset outcome gives p = 0.19. What
+looked like outcome-dependence was occlusion wearing a disguise: boundaries get
+replays, replays hide the board, and the hidden board is what moves the number.
+
+Two near-misses worth recording, because neither was caught by a test:
+
+1. An intermediate run reported "outcome predicts lag, improvement 44%". That
+   rested entirely on ONE label -- the wicket -- which the labeller had already
+   said they could not mark. Removing it dropped the figure to 16% and flipped
+   the conclusion. The user caught it, not the tooling.
+2. The `analyse` heuristic compared variance before and after grouping and
+   called any reduction structure. Splitting n=15 across six buckets reduces
+   variance whatever the labels say, and a bucket of one reduces it to zero. It
+   declared outcome-dependence twice. Replaced with a permutation test, and the
+   singleton-bucket case is now a regression test.
+
+### What changed in the code
+
+`SCOREBOARD_LAG_SEC` 7.0 -> 10.1, `SCOREBOARD_TIME_SIGMA` 4.0 -> 2.2, plus
+`OCCLUDED_TICK_LAG_SEC` 21.5 / `OCCLUDED_TICK_TIME_SIGMA` 10.0 applied per
+delivery. The sigma is the measured sd, not a margin chosen for comfort.
+
+Ten seconds of uncertainty on an occluded tick is close to useless for cutting a
+clip. Declaring it is what lets inverse-variance weighting hand the timing to
+vision there instead -- which is the specific thing `time_sigma` was separated
+from `confidence` to allow.
+
+### Still open
+
+Occluded deliveries are timed to +/-10s and they are disproportionately the
+boundaries and wickets a highlight reel is made of. Vision must carry the timing
+there, and vision's own timing accuracy has still never been measured -- the
+0.4s sigma it is given is assumed. These 15 labels are the instrument for that,
+and it is the next measurement.

@@ -41,6 +41,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import random
 import statistics
 import subprocess
 import sys
@@ -475,20 +476,59 @@ def analyse(labels: List[Dict]) -> Dict:
         "current_constant": SCOREBOARD_LAG_SEC,
     }
 
-    # Does knowing the outcome buy anything? Compare the spread left after
-    # correcting per bucket against the spread left by a single constant. Only
-    # meaningful once several buckets have more than one sample in them.
-    usable = {k: v for k, v in by_outcome.items() if len(v) > 1}
-    if len(usable) > 1:
-        overall_sd = statistics.pstdev(lags)
-        residuals = [x - statistics.mean(v) for v in usable.values() for x in v]
-        within_sd = statistics.pstdev(residuals) if len(residuals) > 1 else 0.0
-        result["outcome_dependence"] = {
-            "sd_one_constant": overall_sd,
-            "sd_per_outcome": within_sd,
-            "improvement": (overall_sd - within_sd) / overall_sd if overall_sd else 0.0,
-        }
+    # Does a grouping explain the lag, or does it only look like it?
+    #
+    # The first version of this compared variance before and after grouping and
+    # reported any reduction as structure. It twice declared that outcome
+    # predicts lag, and both times it was wrong: splitting n=15 into six buckets
+    # reduces variance whatever the labels say, and a bucket of one reduces it to
+    # zero. A permutation test asks the question that actually matters -- would
+    # shuffling the labels do this well? -- and answered p = 0.19 for outcome
+    # against p = 0.005 for occlusion.
+    for name, keyf in (("outcome", lambda r: r["outcome"]),
+                       ("occlusion", lambda r: r.get("dark_since") is not None)):
+        if len({keyf(r) for r in done}) > 1:
+            result[f"{name}_dependence"] = _group_significance(done, keyf)
     return result
+
+
+def _between_group_variance(items: List[Dict], keyf) -> float:
+    groups: Dict[object, List[float]] = defaultdict(list)
+    for r in items:
+        groups[keyf(r)].append(r["lag"])
+    grand = statistics.mean(r["lag"] for r in items)
+    return sum(len(v) * (statistics.mean(v) - grand) ** 2 for v in groups.values())
+
+
+def _group_significance(items: List[Dict], keyf, trials: int = 20000) -> Dict:
+    """
+    How often would shuffled labels separate the lags this well?
+
+    Deliberately a permutation test rather than an F-test: fifteen samples across
+    six unequal buckets is not where distributional assumptions are safe, and the
+    whole point is to avoid being convinced by a pattern that is not there.
+    """
+    rng = random.Random(0)
+    observed = _between_group_variance(items, keyf)
+    labels = [keyf(r) for r in items]
+    lags = [r["lag"] for r in items]
+    hits = 0
+    for _ in range(trials):
+        rng.shuffle(lags)
+        shuffled = [{"lag": lag, "_k": k} for lag, k in zip(lags, labels)]
+        if _between_group_variance(shuffled, lambda r: r["_k"]) >= observed:
+            hits += 1
+    p = (hits + 1) / (trials + 1)
+    means = defaultdict(list)
+    for r in items:
+        means[keyf(r)].append(r["lag"])
+    return {
+        "p_value": p,
+        "significant": p < 0.05,
+        "groups": {str(k): {"n": len(v), "mean": statistics.mean(v),
+                            "sd": statistics.pstdev(v) if len(v) > 1 else 0.0}
+                   for k, v in sorted(means.items(), key=lambda kv: str(kv[0]))},
+    }
 
 
 def _cmd_clips(args) -> int:
@@ -530,20 +570,14 @@ def _cmd_analyse(args) -> int:
     for name, stats in result["by_outcome"].items():
         print(f"{name:<10}{stats['n']:>4}{stats['mean']:>10.1f}{stats['sd']:>8.1f}")
 
-    dep = result.get("outcome_dependence")
-    if dep:
-        print(f"\none constant for all balls:  sd {dep['sd_one_constant']:.1f}s")
-        print(f"corrected per outcome:       sd {dep['sd_per_outcome']:.1f}s")
-        print(f"improvement: {dep['improvement']:.0%}")
-        if dep["improvement"] > 0.25:
-            print("\n-> outcome predicts lag. Correct per ball; the board already")
-            print("   reports the outcome, so this costs nothing at runtime.")
-        else:
-            print("\n-> outcome does not explain the spread. Keep one constant,")
-            print("   set to the measured median, and leave time_sigma wide.")
-    else:
-        print("\n(need >1 sample in at least two outcome buckets to test whether")
-        print(" outcome predicts lag)")
+    for name in ("occlusion", "outcome"):
+        dep = result.get(f"{name}_dependence")
+        if not dep:
+            continue
+        verdict = "EXPLAINS the lag" if dep["significant"] else "does not explain the lag"
+        print(f"\ndoes {name} explain the lag?  p = {dep['p_value']:.3f}  -> {verdict}")
+        for k, g in dep["groups"].items():
+            print(f"    {k:<10} n={g['n']:<3} mean {g['mean']:>5.1f}s  sd {g['sd']:>4.1f}s")
     return 0
 
 

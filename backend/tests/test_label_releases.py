@@ -74,7 +74,8 @@ class TestStratify:
 class TestAnalyse:
     @staticmethod
     def _labels(rows):
-        return [{"outcome": o, "tick_t": tick, "release_t": rel}
+        return [{"outcome": o, "tick_t": tick, "release_t": rel,
+                 "dark_since": None}
                 for o, tick, rel in rows]
 
     def test_lag_is_tick_minus_release(self):
@@ -101,31 +102,46 @@ class TestAnalyse:
         assert r["by_outcome"]["dot"]["mean"] == pytest.approx(3.0)
         assert r["by_outcome"]["six"]["mean"] == pytest.approx(11.0)
 
-    def test_separated_buckets_are_reported_as_outcome_dependence(self):
-        """Dots at 3s and sixes at 11s: knowing the outcome removes the spread."""
-        r = analyse(self._labels([
-            ("dot", 100.0, 97.0), ("dot", 200.0, 197.2),
-            ("six", 300.0, 289.0), ("six", 400.0, 389.2),
-        ]))
-        dep = r["outcome_dependence"]
-        assert dep["sd_per_outcome"] < dep["sd_one_constant"]
-        assert dep["improvement"] > 0.9
+    def test_cleanly_separated_groups_are_called_significant(self):
+        """Dots tightly at ~3s and sixes tightly at ~11s, with enough of each."""
+        rows = []
+        for i in range(6):
+            rows.append(("dot", 100.0 + i * 50, 100.0 + i * 50 - 3.0 - i * 0.1))
+            rows.append(("six", 500.0 + i * 50, 500.0 + i * 50 - 11.0 - i * 0.1))
+        dep = analyse(self._labels(rows))["outcome_dependence"]
+        assert dep["significant"], dep["p_value"]
 
-    def test_overlapping_buckets_show_no_improvement(self):
-        """Guards against reading noise as structure and fitting per-outcome."""
-        r = analyse(self._labels([
-            ("dot", 100.0, 93.0), ("dot", 200.0, 195.0),
-            ("six", 300.0, 293.0), ("six", 400.0, 395.0),
-        ]))
-        assert r["outcome_dependence"]["improvement"] < 0.25
+    def test_overlapping_groups_are_not_called_significant(self):
+        """The guard that matters: noise must not be reported as structure."""
+        rows = []
+        for i, lag in enumerate([3.0, 9.0, 4.0, 11.0, 5.0, 10.0]):
+            rows.append(("dot" if i % 2 else "six", 100.0 + i * 60,
+                         100.0 + i * 60 - lag))
+        dep = analyse(self._labels(rows))["outcome_dependence"]
+        assert not dep["significant"], dep["p_value"]
 
-    def test_dependence_is_not_reported_from_single_samples(self):
+    def test_a_split_into_singleton_buckets_is_not_significant(self):
         """
-        One dot and one six always "separate" perfectly. Claiming structure from
-        that would be fitting a rule to two points.
+        Why the variance heuristic this replaced was wrong, pinned as a test.
+
+        Six deliveries in six buckets explains 100% of the variance by
+        construction. The earlier implementation reported that as structure and
+        twice concluded outcome predicts lag; shuffling the labels does exactly
+        as well, so the permutation test does not.
         """
-        r = analyse(self._labels([("dot", 100.0, 97.0), ("six", 300.0, 289.0)]))
-        assert "outcome_dependence" not in r
+        rows = [(f"out{i}", 100.0 + i * 60, 100.0 + i * 60 - lag)
+                for i, lag in enumerate([3.0, 20.0, 7.0, 15.0, 5.0, 11.0])]
+        dep = analyse(self._labels(rows))["outcome_dependence"]
+        assert not dep["significant"], dep["p_value"]
+
+    def test_occlusion_is_tested_alongside_outcome(self):
+        """Occlusion turned out to be the real driver (p=0.005 vs p=0.19), and it
+        was found only because the tool was made to ask about both."""
+        rows = [{"outcome": "dot", "tick_t": 100.0 + i * 60,
+                 "release_t": 100.0 + i * 60 - lag,
+                 "dark_since": None if i % 2 else 10.0}
+                for i, lag in enumerate([10.0, 21.0, 10.5, 22.0, 9.5, 20.5])]
+        assert "occlusion_dependence" in analyse(rows)
 
 
 def test_clips_start_well_before_the_largest_plausible_lag():
