@@ -266,3 +266,49 @@ different person on a different system.
 Vision remains uncalibrated and flattened, unchanged at 0.46 / 0.66. That is
 correct and should stay: its confidence scored AUC 0.384 at predicting its own
 correctness. It contributes timing precision and corroboration, not judgement.
+
+---
+
+## Measured: the "lag" is an occlusion artifact, and it is worst on highlights
+
+Found by hand-labelling, which is the point of hand-labelling. Five of fifteen
+clips could not be labelled at all; four were a four or a six and one was the
+wicket.
+
+`SCOREBOARD_LAG_SEC` encodes a theory: the graphics operator updates the counter
+a few seconds after the ball. On a boundary that theory is wrong. The broadcast
+cuts to replay, the replay hides the board, and what we record as the tick is the
+board REAPPEARING. Measured on the MiLC window, time the board was dark
+immediately before each tick:
+
+| delivery | outcome | dark for |
+|---|---|---|
+| ball 18 | four | **81s** |
+| ball 32 | wicket | 21s |
+| ball 20 | six | 24s |
+| ball 24 | six | 18s |
+| ball 11 | four | 18s |
+
+Against measured medians of 32-46s between deliveries, an 81-second blackout is
+longer than two balls.
+
+Three consequences:
+
+1. **`SCOREBOARD_LAG_SEC = 7.0` is not merely imprecise, it is the wrong shape.**
+   A single constant cannot express "a few seconds normally, tens of seconds when
+   the broadcast cuts away". Correcting per outcome -- the plan going into the
+   labelling -- is still right, but the effect is an order of magnitude larger
+   than the 3.4s/10.9s that motivated it.
+
+2. **It is anti-correlated with what the product needs.** Timing is worst exactly
+   on fours, sixes and wickets, which are the deliveries a highlight reel is made
+   of. Dots and singles, which nobody clips, are timed well.
+
+3. **The gap START is better evidence than the gap END.** The board goes dark
+   because the broadcast cut away, which happens shortly after the shot. So
+   `dark_since` sits far closer to the delivery than the tick does, and is
+   already being used to place the labelling clips. Whether it is good enough to
+   time a clip is the next thing to measure, and the hand labels will say.
+
+This also sharpens the occlusion work from a nice-to-have into the critical path:
+34% of runtime has no readable board, and that 34% is not randomly distributed.
