@@ -39,6 +39,7 @@ measured, and would do so invisibly.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import statistics
 import subprocess
@@ -304,12 +305,33 @@ PAGE_TEMPLATE = r"""<!doctype html>
   <button class="primary" id="save">Download labels.json</button>
   <span style="color:var(--dim);font-size:13px">&nbsp; then replace the file in
     this folder and run the analyse command</span>
+  <div id="status" style="color:var(--ok);font-size:13px;margin-top:10px"></div>
   <textarea id="out" readonly></textarea>
 </div>
 
 <script>
 const ROWS = __ROWS__;
 const LEAD = __LEAD__;
+// Keyed on the clips AND their current labels, so a re-cut or a deliberate
+// server-side clear invalidates the saved copy. Autosave must protect against
+// losing work inside one version of this page -- never against a correction
+// made outside it.
+const KEY = 'powerplay-labels-__FINGERPRINT__';
+
+function save() {
+  try { localStorage.setItem(KEY, JSON.stringify(ROWS.map(r => r.release_t))); }
+  catch (e) { /* private browsing: autosave is a convenience, not the record */ }
+}
+
+function restore() {
+  let raw; try { raw = localStorage.getItem(KEY); } catch (e) { return false; }
+  if (!raw) return false;
+  let saved; try { saved = JSON.parse(raw); } catch (e) { return false; }
+  if (!Array.isArray(saved) || saved.length !== ROWS.length) return false;
+  let n = 0;
+  saved.forEach((v, i) => { if (v !== null && v !== undefined) { ROWS[i].release_t = v; n++; } });
+  return n;
+}
 const FRAME = 1/30;
 let i = 0;
 const v = document.getElementById('v');
@@ -350,6 +372,7 @@ function draw() {
 
 function mark() {
   ROWS[i].release_t = Math.round(absNow() * 100) / 100;
+  save();
   draw();
   if (i < ROWS.length - 1) load(i + 1);
 }
@@ -363,7 +386,7 @@ $('mark').onclick = mark;
 $('next').onclick = () => load(i + 1);
 $('back').onclick = () => load(i - 1);
 $('play').onclick = () => v.paused ? v.play() : v.pause();
-$('skip').onclick = () => { ROWS[i].release_t = null; draw(); load(i + 1); };
+$('skip').onclick = () => { ROWS[i].release_t = null; save(); draw(); load(i + 1); };
 $('save').onclick = () => {
   const b = new Blob([JSON.stringify(ROWS, null, 1)], {type: 'application/json'});
   const a = document.createElement('a');
@@ -377,10 +400,20 @@ addEventListener('keydown', e => {
   if (e.key === 'ArrowRight') { v.pause(); v.currentTime += step; e.preventDefault(); }
   if (e.key === ' ')     { v.paused ? v.play() : v.pause(); e.preventDefault(); }
   if (e.key === 'Enter') { mark(); e.preventDefault(); }
-  if (e.key.toLowerCase() === 's') { ROWS[i].release_t = null; draw(); load(i + 1); }
+  if (e.key.toLowerCase() === 's') { ROWS[i].release_t = null; save(); draw(); load(i + 1); }
 });
 
+const restored = restore();
 load(0);
+if (restored) {
+  $('status').textContent = `restored ${restored} autosaved label(s) from this browser`;
+}
+addEventListener('beforeunload', e => {
+  if (ROWS.some(r => r.release_t !== null) && !window.__saved) {
+    e.preventDefault(); e.returnValue = '';
+  }
+});
+$('save').addEventListener('click', () => { window.__saved = true; });
 </script></body></html>
 """
 
@@ -392,9 +425,14 @@ def write_page(rows: List[Dict], out_dir: Path) -> Path:
     sibling JSON file, and a labelling tool that silently shows no clips is
     worse than one that does not exist.
     """
+    fingerprint = hashlib.sha1(
+        json.dumps([[r["clip"], r.get("clip_start"), r.get("release_t")] for r in rows],
+                   sort_keys=True).encode()
+    ).hexdigest()[:12]
     page = (PAGE_TEMPLATE
             .replace("__ROWS__", json.dumps(rows))
-            .replace("__LEAD__", repr(LEAD_SEC)))
+            .replace("__LEAD__", repr(LEAD_SEC))
+            .replace("__FINGERPRINT__", fingerprint))
     dest = out_dir / "label.html"
     dest.write_text(page, encoding="utf-8")
     return dest

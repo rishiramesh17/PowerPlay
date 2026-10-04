@@ -266,3 +266,61 @@ class TestClipWindows:
         ]), 3.0)
         for earlier, later in zip(found, found[1:]):
             assert later["clip_start"] >= earlier["tick_t"]
+
+
+class TestAutosave:
+    """
+    Twenty minutes of frame-stepping was lost to a page reload. Autosave is the
+    fix, but it introduces a worse failure if done naively: stale browser state
+    silently overwriting a correction made deliberately on disk.
+    """
+
+    @staticmethod
+    def _rows(release=None):
+        return [{"clip": "01_ball9_single.mp4", "ball": 9, "outcome": "single",
+                 "runs_delta": 1, "tick_t": 90.0, "clip_start": 68.0,
+                 "dark_since": None, "release_t": release}]
+
+    def _key(self, tmp_path, rows):
+        import re
+        from tools.label_releases import write_page
+        html = write_page(rows, tmp_path).read_text()
+        m = re.search(r"const KEY = '(powerplay-labels-[0-9a-f]+)'", html)
+        assert m, "page has no autosave key"
+        return m.group(1)
+
+    def test_the_key_is_stable_for_identical_input(self, tmp_path):
+        assert self._key(tmp_path, self._rows()) == self._key(tmp_path, self._rows())
+
+    def test_clearing_a_label_on_disk_invalidates_the_browser_copy(self, tmp_path):
+        """
+        The exact hazard: a label was cleared because it was measured to be
+        unusable. If autosave restored it, the bad value would come back silently
+        and no one would be looking for it.
+        """
+        assert self._key(tmp_path, self._rows(release=81.2)) != \
+               self._key(tmp_path, self._rows(release=None))
+
+    def test_recutting_clips_invalidates_the_browser_copy(self, tmp_path):
+        """Labels are absolute video times, but a different clip window means the
+        labeller was shown different footage."""
+        moved = self._rows()
+        moved[0]["clip_start"] = 40.0
+        assert self._key(tmp_path, self._rows()) != self._key(tmp_path, moved)
+
+    def test_every_mark_is_saved_not_just_the_last(self, tmp_path):
+        from tools.label_releases import write_page
+        html = write_page(self._rows(), tmp_path).read_text()
+        assert html.count("save();") >= 3        # mark, skip button, skip key
+
+    def test_leaving_with_unsaved_work_warns(self, tmp_path):
+        from tools.label_releases import write_page
+        html = write_page(self._rows(), tmp_path).read_text()
+        assert "beforeunload" in html
+
+    def test_a_restore_is_reported_rather_than_silent(self, tmp_path):
+        """The labeller must be able to tell whether they are looking at their
+        own earlier work or at a fresh start."""
+        from tools.label_releases import write_page
+        html = write_page(self._rows(), tmp_path).read_text()
+        assert "restored" in html and "$('status')" in html
