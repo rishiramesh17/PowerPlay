@@ -312,3 +312,52 @@ Three consequences:
 
 This also sharpens the occlusion work from a nice-to-have into the critical path:
 34% of runtime has no readable board, and that 34% is not randomly distributed.
+
+---
+
+## Generalization test 2 (Chicago Tigers v Kingsmen): the reader FAILED
+
+Second MiLC match, different city, different production crew. Result:
+
+    parsed 0/548 samples, 0 deliveries found
+
+Not a degradation -- a total failure, and the most useful result so far.
+
+The ROI detection worked and the OCR read the pixels fine. What changed is the
+graphics package. The Dallas broadcast renders a compact board with an over
+counter; Chicago renders a full-width banner:
+
+    MILANTHA 35 27  MNITHIYANANDAM 51  CHT 92/0  A SHEIKH 26/0 2  POWERED BY ...
+
+Measured across the window:
+
+| | |
+|---|---|
+| team score readable | 338/548 = 62% |
+| over count present | **4/548 = 1%** (3 of those are "POWERED" misread as "OVERS") |
+
+**The over counter is not on screen.** Every delivery-detection result in this
+project rests on it incrementing once per legal ball, so there is nothing here
+to count.
+
+A balls-faced fallback was tested -- the two batters' ball counts should sum to
+the legal delivery total -- and does not work as read: 2/103 frames agreed with
+the scorecard, because only one batter's ball count survives in most frames.
+Whether that is the ROI clipping the banner or the layout itself is unresolved.
+
+### What this overturns
+
+The strategic premise was that targeting professional MiLC made the scoreboard
+trustworthy and the problem tractable. That premise is now measured and wrong in
+an important way: **MiLC is not one broadcast format.** Vendor consistency, not
+production quality, is what the reader depends on, and it does not hold across
+the league.
+
+The 30/30 result stands and still means what it said -- it was never a claim
+about every MiLC stream, and the Wilson bound was chosen for exactly this kind
+of overreach. What has changed is the denominator it applies to.
+
+This is also the clearest possible argument for the fusion layer's capability
+gating: this stream should be detected as lacking a usable over counter and the
+scoreboard detector refused, rather than running to completion and reporting
+that no cricket was played.
