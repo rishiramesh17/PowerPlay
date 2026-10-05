@@ -17,6 +17,7 @@ from typing import Dict, List
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from processing import scoreboard_detect  # noqa: E402
+from processing.delivery_detect import RUNUP_TIME_SIGMA  # noqa: E402
 from processing.fusion import Detector, Signal, fuse  # noqa: E402
 from processing.stream_profile import StreamProfile  # noqa: E402
 from tools.calibrate_scoreboard import parse_scorecard  # noqa: E402
@@ -73,7 +74,9 @@ def main(argv=None) -> int:
         vision_t = json.loads(Path(args.vision).read_text())
 
     def vision_run():
-        return [Signal("vision", t, 0.5, time_sigma=0.4) for t in vision_t]
+        return [
+            Signal("vision", t, 0.5, time_sigma=RUNUP_TIME_SIGMA) for t in vision_t
+        ]
 
     vision = Detector(name="vision", run=vision_run, calibrated=False)
     profile = StreamProfile(

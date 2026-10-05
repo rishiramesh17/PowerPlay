@@ -21,8 +21,9 @@ What it can and cannot settle:
           thing the fusion layer asks of it.
   CANNOT -- the graphics lag. Scorecard clocks are minute-resolution and carry
           the scorer's own delay on top; measured offsets on this match spread
-          over 177 seconds. SCOREBOARD_LAG_SEC stays provisional until somebody
-          hand-labels releases against video.
+          over 177 seconds. The lag was measured separately, by hand-labelling
+          15 releases against video -- see `tools/label_releases.py`, which
+          found two regimes rather than one constant.
 """
 
 from __future__ import annotations

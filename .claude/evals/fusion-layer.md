@@ -426,3 +426,88 @@ boundaries and wickets a highlight reel is made of. Vision must carry the timing
 there, and vision's own timing accuracy has still never been measured -- the
 0.4s sigma it is given is assumed. These 15 labels are the instrument for that,
 and it is the next measurement.
+
+---
+
+## Measured: vision's timing, and the assumption it demolishes (2026-10-05)
+
+Vision's `time_sigma` had been 0.4s since the fusion layer was written. Nothing
+measured it. The 15 hand-labelled releases finally could.
+
+Matching is greedy one-to-one inside the 14s agreement window. The first pass
+was nearest-neighbour and let balls 11 and 12 claim the *same* detection at
+161.06s, which flattered vision by inventing a hit; one-to-one drops vision's
+recall here from 12/15 to 11/15.
+
+| regime | n | bias | sd | mean abs | worst | within 1s |
+|---|---|---|---|---|---|---|
+| all matched | 11 | -0.56s | **7.40s** | 6.08s | 11.88s | 2/11 |
+| board stayed visible | 6 | -0.22s | 7.46s | 5.65s | 11.88s | 1/6 |
+| board went dark | 5 | -0.96s | 8.19s | 6.60s | 9.85s | 1/5 |
+
+**The assumed 0.4s was 18x too confident.** Vision does not know when a delivery
+happened to within a second; it knows to within about seven.
+
+### Why this mattered more than the number
+
+Fusion weights timestamps by inverse variance. At 0.4s vision carried weight
+6.25 against the board's 0.207 -- **30x** -- so the *less* precise detector set
+the moment on every corroborated delivery.
+
+| timing of the fused event | all 15 | visible | dark |
+|---|---|---|---|
+| vision sigma 0.4 (what the code did) | 5.31s | 4.22s | 6.94s |
+| vision sigma 7.4 (measured) | **3.36s** | **1.89s** | **5.56s** |
+| board alone, no vision | 4.70s | 2.07s | 8.65s |
+
+The old constant made fusion *worse than the scoreboard by itself* on
+deliveries where the board was visible -- 4.22s against 2.07s. Correcting it
+puts fusion ahead of both detectors in every regime, which is the first time
+that claim has been true of timing rather than counting.
+
+End-to-end, same vision timestamps, only the constant changed:
+
+| | precision | recall |
+|---|---|---|
+| fused, sigma 0.4 | 0.90 | 0.97 |
+| fused, sigma 7.4 | **0.94** | **1.00** |
+
+### What it kills
+
+The plan recorded earlier -- let vision carry the timing through occlusion --
+**does not work.** On the 5 occluded deliveries vision is +/-8.2s against the
+board's +/-10.9s, and misses one outright. Both are far too coarse to cut a
+clip. Occluded timing remains unsolved, and the next attempt has to be
+something other than this detector: audio onset inside the gap (AUC 0.62-0.81,
+untested for timing) or the replay-boundary cut itself.
+
+### A circularity found in this eval's own truth
+
+`run_capability_eval.py` builds `truth_t` from the board's lag-corrected ticks,
+using whatever `SCOREBOARD_LAG_SEC` is compiled in at the time. So changing the
+lag model silently moves the yardstick: the "fused 1.00 / 1.00" recorded above
+was measured against truth built from the old 7.0s constant, and does not
+reproduce. On the current two-regime model the same code and the same video give
+**0.94 / 1.00**, with vision standalone at 0.49 / 0.69 rather than 0.46 / 0.66.
+
+The detector itself is deterministic -- two runs over 0-300s returned byte-equal
+release times, so this is not run-to-run noise. It is the measurement moving.
+Earlier rows in this document are therefore comparable to each other only where
+the lag constants did not change between them.
+
+The fix is available and not yet applied: 15 of those 30 deliveries now have
+hand-labelled release times that no detector produced. Truth should come from
+those where they exist, which would also let this eval report absolute timing
+instead of only agreement about which deliveries.
+
+### Code changed
+
+- `delivery_detect.RUNUP_TIME_SIGMA = 7.4` added, with the measurement behind it
+- `run_capability_eval.py` uses that constant instead of the literal 0.4
+- `calibrate_scoreboard.py` no longer claims the lag is unmeasured
+
+### Still open
+
+- occluded-delivery timing, now with no candidate solution
+- `truth_t` should prefer hand labels over board-derived ticks
+- vision's 11/15 recall and 0.49 precision are unimproved and uninvestigated

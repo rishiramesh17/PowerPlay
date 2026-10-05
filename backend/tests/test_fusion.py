@@ -299,3 +299,31 @@ def test_the_agreement_window_spans_the_scoreboard_lag():
     """
     assert fz.AGREEMENT_WINDOW_SEC > 11.0
     assert fz.AGREEMENT_WINDOW_SEC < 21.0
+
+
+def test_vision_must_not_outweigh_the_scoreboard_on_timing():
+    """
+    The measured ordering, pinned.
+
+    Vision's time_sigma was 0.4s on no evidence, against the board's measured
+    2.2s. Inverse-variance weighting turned that into 30x the board's say over
+    the fused timestamp, and made fusion worse than the board alone (4.22s mean
+    error against 2.07s). Vision was then measured at 7.4s. Any future edit that
+    makes vision look more precise than a visible scoreboard is reintroducing
+    that bug, so it fails here rather than quietly degrading timing.
+    """
+    from processing.delivery_detect import RUNUP_TIME_SIGMA
+    from processing.scoreboard_detect import SCOREBOARD_TIME_SIGMA
+
+    assert RUNUP_TIME_SIGMA > SCOREBOARD_TIME_SIGMA
+
+
+def test_the_more_precise_detector_sets_the_fused_moment():
+    """Inverse-variance weighting, stated as behaviour rather than arithmetic."""
+    precise = fz.Signal(detector="board", t=100.0, confidence=0.886, time_sigma=2.2)
+    vague = fz.Signal(detector="vision", t=120.0, confidence=0.5, time_sigma=7.4)
+
+    fused = fz._fuse_cluster([precise, vague])
+
+    # Must land nearer the precise detector than the midpoint of the two.
+    assert abs(fused.t - 100.0) < abs(fused.t - 110.0)

@@ -66,6 +66,26 @@ RUNUP_PROMINENCE = 2.5
 #: ratio out of rounding noise.
 RUNUP_SPEED_FLOOR = 0.4
 
+#: Seconds of uncertainty on a release time this detector reports.
+#:
+#: MEASURED against 15 hand-labelled releases: signed error -0.6s +/- 7.4s, mean
+#: absolute error 6.1s, worst 11.9s, and only 2 of 11 matched releases landed
+#: within a second. The fusion layer previously assumed 0.4s, which was never
+#: measured and is 18x too confident.
+#:
+#: The size of the error is not the interesting part -- the consequence is.
+#: Fusion weights timestamps by inverse variance, so 0.4s against the board's
+#: measured 2.2s handed vision 30x the board's weight and let the less precise
+#: detector set the moment. On deliveries where the board stayed visible that
+#: dragged mean error from 2.1s (board alone) to 4.2s; with this value it is
+#: 1.9s, better than either detector alone.
+#:
+#: Note what this kills: the plan to let vision carry the timing through
+#: occlusion. It cannot. On the 5 occluded deliveries it is +/-8.2s against the
+#: board's +/-10.9s and misses one outright -- an improvement too small to cut a
+#: clip from. Whatever solves occluded timing, it is not this detector as built.
+RUNUP_TIME_SIGMA = 7.4
+
 #: Smallest background motion the prominence ratio is allowed to divide by.
 #: Without it the ratio is unbounded: on the second broadcast, tracks break often
 #: enough that most steps measure exactly zero, the median background is zero,
